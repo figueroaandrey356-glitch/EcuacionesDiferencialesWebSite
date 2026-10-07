@@ -50,19 +50,19 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
           {semester === 'Verano' ? 'Verano' : `Semestre ${semester}`} · {year}
         </h2>
         {!loading && !result.failed && (
-          <p className="font-mono text-small text-sand-500">
+          <p className="font-mono text-small text-neutral-500">
             {exams.length === 1 ? '1 examen' : `${exams.length} exámenes`}
           </p>
         )}
       </div>
 
       {exams.length === 0 ? (
-        <p className="mt-6 border-y border-sand-300 py-12 text-sand-600">{emptyMessage}</p>
+        <p className="mt-6 border-y border-neutral-300 py-12 text-neutral-600">{emptyMessage}</p>
       ) : (
         <div className="mt-6 border-t border-ink">
           <div
             aria-hidden="true"
-            className={`hidden border-b border-sand-300 py-2.5 font-mono text-label font-medium uppercase text-sand-500 ${rowColumns}`}
+            className={`hidden border-b border-neutral-300 py-2.5 font-mono text-label font-medium uppercase text-neutral-500 ${rowColumns}`}
           >
             <span>N.º</span>
             <span>Examen</span>
@@ -76,23 +76,23 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
               const hasQuestions = exam.questions.length > 0;
 
               return (
-                <li key={exam.id} className="border-b border-sand-200">
+                <li key={exam.id} className="border-b border-neutral-200">
                   <Link
                     to={`/exam/${exam.id}`}
-                    className={`group block py-5 transition-colors duration-150 hover:bg-sand-100 ${rowColumns}`}
+                    className={`group block py-5 transition-colors duration-150 hover:bg-neutral-100 ${rowColumns}`}
                   >
-                    <span className="hidden font-mono text-small text-sand-500 sm:block">
+                    <span className="hidden font-mono text-small text-neutral-500 sm:block">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="block font-display text-subheading font-semibold text-ink">
                       {exam.name}
                     </span>
                     {/* En móvil, tipo y contenido comparten una línea bajo el nombre */}
-                    <span className="text-small text-sand-600 sm:block">
+                    <span className="text-small text-neutral-600 sm:block">
                       {exam.variant}
                       <span className="sm:hidden"> · </span>
                     </span>
-                    <span className="text-small text-sand-600 sm:block">
+                    <span className="text-small text-neutral-600 sm:block">
                       {describeContent(exam)}
                     </span>
                     <span className="mt-3 block text-small font-semibold text-accent group-hover:underline sm:mt-0 sm:text-right">

@@ -94,7 +94,7 @@ export default function ExamDashboard() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-heading font-semibold text-ink">Exámenes</h1>
-          <p className="mt-1 text-small text-sand-500">
+          <p className="mt-1 text-small text-neutral-500">
             Solo los exámenes publicados aparecen en el sitio de estudiantes.
           </p>
         </div>
@@ -115,16 +115,16 @@ export default function ExamDashboard() {
         </p>
       )}
 
-      <div className="mt-6 overflow-x-auto rounded-panel border border-sand-200 bg-surface">
+      <div className="mt-6 overflow-x-auto rounded-panel border border-neutral-200 bg-surface">
         {exams === null ? (
-          <p className="px-6 py-12 text-center text-sand-500">Cargando exámenes…</p>
+          <p className="px-6 py-12 text-center text-neutral-500">Cargando exámenes…</p>
         ) : exams.length === 0 ? (
-          <p className="px-6 py-12 text-center text-sand-500">
+          <p className="px-6 py-12 text-center text-neutral-500">
             Aún no hay exámenes. Sube un PDF o crea uno paso a paso para empezar.
           </p>
         ) : (
           <table className="w-full min-w-[640px] text-left text-small">
-            <thead className="border-b border-sand-200 font-mono text-label uppercase text-sand-500">
+            <thead className="border-b border-neutral-200 font-mono text-label uppercase text-neutral-500">
               <tr>
                 <th className="px-6 py-3 font-semibold">Examen</th>
                 <th className="px-4 py-3 font-semibold">Periodo</th>
@@ -133,7 +133,7 @@ export default function ExamDashboard() {
                 <th className="px-6 py-3 text-right font-semibold">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-sand-100">
+            <tbody className="divide-y divide-neutral-100">
               {exams.map(exam => {
                 const busy = busyId === exam.id;
 
@@ -146,12 +146,12 @@ export default function ExamDashboard() {
                       >
                         {exam.name}
                       </Link>
-                      <span className="block text-caption text-sand-500">{exam.variant}</span>
+                      <span className="block text-caption text-neutral-500">{exam.variant}</span>
                     </td>
-                    <td className="px-4 py-4 text-sand-600">
+                    <td className="px-4 py-4 text-neutral-600">
                       {exam.year} · {exam.semester}
                     </td>
-                    <td className="px-4 py-4 text-sand-600">{describeContent(exam)}</td>
+                    <td className="px-4 py-4 text-neutral-600">{describeContent(exam)}</td>
                     <td className="px-4 py-4">
                       <span
                         className={`rounded-pill px-2.5 py-1 text-caption font-semibold ${statusStyles[exam.status]}`}
@@ -167,14 +167,14 @@ export default function ExamDashboard() {
                         <button
                           disabled={busy}
                           onClick={() => handleToggleStatus(exam)}
-                          className="text-sand-600 hover:text-ink hover:underline"
+                          className="text-neutral-600 hover:text-ink hover:underline"
                         >
                           {exam.status === 'published' ? 'Despublicar' : 'Publicar'}
                         </button>
                         <button
                           disabled={busy}
                           onClick={() => handleDuplicate(exam)}
-                          className="text-sand-600 hover:text-ink hover:underline"
+                          className="text-neutral-600 hover:text-ink hover:underline"
                         >
                           Duplicar
                         </button>

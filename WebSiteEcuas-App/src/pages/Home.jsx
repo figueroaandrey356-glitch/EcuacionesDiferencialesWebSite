@@ -33,25 +33,31 @@ export default function Home() {
       <Navbar />
 
       <main className="grow">
-        {/* Hero: título a la izquierda, problema de ejemplo anclado abajo a la derecha */}
-        <section className="border-b border-sand-200">
-          <div className="mx-auto grid max-w-page gap-x-12 gap-y-14 px-gutter pb-section pt-section-sm lg:grid-cols-12 lg:pt-section">
+        {/* Hero oscuro: título a la izquierda, problema de ejemplo anclado abajo a la derecha */}
+        <section className="relative overflow-hidden bg-ink text-white">
+          <div className="bg-grid absolute inset-0" aria-hidden="true" />
+          <div
+            className="absolute -top-40 left-1/3 h-130 w-205 -translate-x-1/2 rounded-pill bg-accent/50 blur-3xl"
+            aria-hidden="true"
+          />
+
+          <div className="relative mx-auto grid max-w-page gap-x-12 gap-y-14 px-gutter pb-section pt-section-sm lg:grid-cols-12 lg:pt-section">
             <div className="lg:col-span-8">
-              <h1 className="font-display text-display font-semibold text-ink">
+              <h1 className="font-display text-display font-semibold text-white">
                 Ecuaciones diferenciales,{' '}
-                <em className="font-normal text-accent">paso a paso</em>.
+                <em className="font-normal text-accent-soft">paso a paso</em>.
               </h1>
 
               {/* TODO(copy): texto genérico. Propuesta: "Exámenes parciales de Ecuaciones Diferenciales del TEC,
                   resueltos paso a paso. Intenta cada problema y revela solo el paso que te falta." */}
-              <p className="mt-8 max-w-prose text-lead text-sand-600">
+              <p className="mt-8 max-w-prose text-lead text-neutral-300">
                 Practica con exámenes de semestres anteriores y revela la
                 solución gradualmente, a tu ritmo.
               </p>
 
               <Link
                 to="/exams"
-                className="mt-10 inline-flex items-center gap-2 rounded-control bg-accent px-6 py-3 font-semibold text-white transition-colors duration-150 hover:bg-accent-dark"
+                className="mt-10 inline-flex items-center gap-2 rounded-control bg-crimson px-6 py-3 font-semibold text-white transition-colors duration-150 hover:bg-crimson-dark focus-visible:outline-white"
               >
                 {/* TODO(copy): botón genérico. Propuesta: "Ver exámenes" */}
                 Comenzar a practicar
@@ -61,26 +67,26 @@ export default function Home() {
 
             {/* Vista previa decorativa de un problema */}
             <div
-              className="rounded-panel border border-sand-300 bg-surface p-6 lg:col-span-4 lg:self-end"
+              className="rounded-panel bg-paper p-6 text-ink shadow-overlay lg:col-span-4 lg:self-end"
               aria-hidden="true"
             >
-              <p className="font-mono text-label font-medium uppercase text-sand-500">
+              <p className="font-mono text-label font-medium uppercase text-neutral-500">
                 Problema de ejemplo
               </p>
               <p className="mt-4 text-body text-ink">
                 <MathText text={previewStatement} />
               </p>
 
-              <ol className="mt-6 space-y-3 border-t border-sand-200 pt-5">
+              <ol className="mt-6 space-y-3 border-t border-neutral-200 pt-5">
                 {previewSteps.map((step, index) => (
-                  <li key={index} className="flex gap-3 text-small text-sand-700">
-                    <span className="font-mono text-sand-500">{index + 1}</span>
+                  <li key={index} className="flex gap-3 text-small text-neutral-700">
+                    <span className="font-mono text-neutral-500">{index + 1}</span>
                     <span>
                       <MathText text={step} />
                     </span>
                   </li>
                 ))}
-                <li className="flex gap-3 text-small text-sand-500">
+                <li className="flex gap-3 text-small text-neutral-500">
                   <span className="font-mono">3</span>
                   <span>Paso oculto</span>
                 </li>
@@ -95,20 +101,20 @@ export default function Home() {
             Cómo funciona
           </h2>
 
-          <ol className="border-t border-ink lg:col-span-8">
+          <ol className="border-t-2 border-crimson lg:col-span-8">
             {features.map((feature, index) => (
               <li
                 key={feature.title}
-                className="grid gap-x-8 gap-y-2 border-b border-sand-200 py-8 sm:grid-cols-[3rem_1fr]"
+                className="grid gap-x-8 gap-y-2 border-b border-neutral-200 py-8 sm:grid-cols-[3rem_1fr]"
               >
-                <span className="pt-1.5 font-mono text-small text-sand-500">
+                <span className="pt-1.5 font-mono text-small text-neutral-500">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div>
                   <h3 className="font-display text-heading font-semibold text-ink">
                     {feature.title}
                   </h3>
-                  <p className="mt-2 max-w-prose text-sand-600">{feature.text}</p>
+                  <p className="mt-2 max-w-prose text-neutral-600">{feature.text}</p>
                 </div>
               </li>
             ))}

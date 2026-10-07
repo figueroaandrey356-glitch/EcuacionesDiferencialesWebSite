@@ -14,7 +14,7 @@ function CenteredMessage({ title, children }) {
     <div className="flex min-h-screen items-center justify-center px-6 py-12">
       <div className="max-w-md text-center">
         {title && <h1 className="font-display text-heading font-semibold text-ink">{title}</h1>}
-        <div className="mt-3 text-sand-600">{children}</div>
+        <div className="mt-3 text-neutral-600">{children}</div>
       </div>
     </div>
   );
@@ -39,13 +39,13 @@ function EditExamPage() {
   }, [examId]);
 
   if (result.examId !== examId) {
-    return <p className="py-12 text-center text-sand-500">Cargando examen…</p>;
+    return <p className="py-12 text-center text-neutral-500">Cargando examen…</p>;
   }
 
   if (!result.exam) {
     return (
       <div className="py-12 text-center">
-        <p className="text-sand-600">No se encontró ese examen.</p>
+        <p className="text-neutral-600">No se encontró ese examen.</p>
         <Link to="/admin" className={`mt-6 inline-block ${secondaryButton}`}>
           ← Volver a exámenes
         </Link>

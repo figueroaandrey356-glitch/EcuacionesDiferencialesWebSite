@@ -39,11 +39,11 @@ export default function ExamIndex({ questions }) {
       aria-label="Índice del examen"
       className="print:hidden lg:sticky lg:top-24"
     >
-      <h2 className="mb-3 font-mono text-label font-medium uppercase text-sand-500">
+      <h2 className="mb-3 font-mono text-label font-medium uppercase text-neutral-500">
         Índice del examen
       </h2>
 
-      <ol className="border-l border-sand-300">
+      <ol className="border-l border-neutral-300">
         {questions.map((question, index) => {
           const questionNumber = index + 1;
           const isActive = activeNumber === questionNumber;
@@ -54,11 +54,11 @@ export default function ExamIndex({ questions }) {
                 onClick={() => handleGoTo(questionNumber)}
                 aria-current={isActive ? 'true' : undefined}
                 className={`-ml-px flex w-full items-baseline gap-3 border-l-2 py-2 pl-4 pr-2 text-left transition-colors duration-150 ${
-                  isActive ? 'border-accent' : 'border-transparent hover:border-sand-400'
+                  isActive ? 'border-crimson' : 'border-transparent hover:border-neutral-400'
                 }`}
               >
                 <span
-                  className={`font-mono text-caption ${isActive ? 'text-accent' : 'text-sand-500'}`}
+                  className={`font-mono text-caption ${isActive ? 'text-crimson' : 'text-neutral-500'}`}
                 >
                   {String(questionNumber).padStart(2, '0')}
                 </span>
@@ -67,7 +67,7 @@ export default function ExamIndex({ questions }) {
                     Pregunta {questionNumber}
                   </span>
                   {question.topic && (
-                    <span className="block text-caption text-sand-500">
+                    <span className="block text-caption text-neutral-500">
                       {question.topic}
                     </span>
                   )}

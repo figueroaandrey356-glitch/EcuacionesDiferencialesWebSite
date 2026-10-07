@@ -25,13 +25,13 @@ export default function AdminLogin() {
     <div className="flex min-h-screen items-center justify-center px-6 py-12">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-panel border border-sand-200 bg-surface p-8"
+        className="w-full max-w-sm rounded-panel border border-neutral-200 bg-surface p-8"
       >
         <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" className="h-12 w-12" />
         <h1 className="mt-4 font-display text-heading font-semibold text-ink">
           Administración
         </h1>
-        <p className="mt-1 text-small text-sand-500">Estudiando ED · acceso restringido</p>
+        <p className="mt-1 text-small text-neutral-500">Estudiando ED · acceso restringido</p>
 
         <div className="mt-6 space-y-4">
           <div>

@@ -6,7 +6,7 @@ function MathPreview({ text }) {
   if (!text.includes('$')) return null;
 
   return (
-    <p className="mt-2 whitespace-pre-line rounded-control bg-sand-50 px-3 py-2 text-body text-ink ring-1 ring-sand-200/70">
+    <p className="mt-2 whitespace-pre-line rounded-control bg-neutral-50 px-3 py-2 text-body text-ink ring-1 ring-neutral-200/70">
       <MathText text={text} />
     </p>
   );
@@ -22,7 +22,7 @@ function RemovableField({ id, label, onRemove, children }) {
         <button
           type="button"
           onClick={onRemove}
-          className="mb-1.5 text-caption font-semibold text-sand-400 transition-colors duration-150 hover:text-danger"
+          className="mb-1.5 text-caption font-semibold text-neutral-400 transition-colors duration-150 hover:text-danger"
         >
           Quitar
         </button>
@@ -199,7 +199,7 @@ export default function QuestionEditor({ question, number, isFirst, isLast, onCh
         )}
       </div>
 
-      <div className="mt-5 flex flex-wrap gap-2 border-t border-sand-200 pt-5">
+      <div className="mt-5 flex flex-wrap gap-2 border-t border-neutral-200 pt-5">
         {question.topic === null && (
           <button type="button" onClick={() => onChange({ topic: '' })} className={addButton}>
             + Agregar título del enunciado

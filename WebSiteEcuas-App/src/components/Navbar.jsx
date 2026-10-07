@@ -13,7 +13,7 @@ export default function Navbar() {
   const showBack = pathname !== '/';
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-sand-200 bg-paper print:hidden">
+    <nav className="sticky top-0 z-50 border-b border-neutral-200 bg-paper print:hidden">
       <div className="mx-auto flex max-w-page items-center justify-between gap-3 px-gutter py-3">
         {/* Logo */}
         <Link to="/" className="flex min-w-0 items-center gap-3">
@@ -26,7 +26,7 @@ export default function Navbar() {
             <span className="block whitespace-nowrap font-display text-body font-semibold text-ink sm:text-subheading">
               Estudiando ED
             </span>
-            <span className="hidden text-caption text-sand-500 sm:block">
+            <span className="hidden text-caption text-neutral-500 sm:block">
               Ecuaciones Diferenciales · TEC
             </span>
           </span>
@@ -36,7 +36,7 @@ export default function Navbar() {
           {showBack && (
             <Link
               to={backPath}
-              className="mr-1 hidden rounded-control border border-sand-300 px-3 py-2 text-small font-medium text-sand-600 transition-colors duration-150 hover:border-sand-400 hover:bg-sand-100 hover:text-ink sm:block sm:px-4"
+              className="mr-1 hidden rounded-control border border-neutral-300 px-3 py-2 text-small font-medium text-neutral-600 transition-colors duration-150 hover:border-neutral-400 hover:bg-neutral-100 hover:text-ink sm:block sm:px-4"
             >
               <span aria-hidden="true">← </span>Volver
             </Link>
@@ -49,8 +49,8 @@ export default function Navbar() {
               className={({ isActive }) =>
                 `rounded-control px-2.5 py-2 text-small font-medium transition-colors duration-150 sm:px-4 ${
                   isActive
-                    ? 'bg-ink text-white'
-                    : 'text-sand-600 hover:bg-sand-100 hover:text-ink'
+                    ? 'bg-accent text-white'
+                    : 'text-neutral-600 hover:bg-neutral-100 hover:text-ink'
                 }`
               }
             >

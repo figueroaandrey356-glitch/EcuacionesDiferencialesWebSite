@@ -13,14 +13,14 @@ export default function QuestionCard({ questionNumber, question }) {
           Problema {questionNumber}
         </h3>
         {question.topic && (
-          <span className="font-mono text-label font-medium uppercase text-sand-500">
+          <span className="font-mono text-label font-medium uppercase text-neutral-500">
             {question.topic}
           </span>
         )}
       </header>
 
       {/* El enunciado es el único bloque con fondo: es lo que se lee primero */}
-      <div className="rounded-panel border border-sand-200 bg-surface px-5 py-5 sm:px-6">
+      <div className="rounded-panel border border-neutral-200 bg-surface px-5 py-5 sm:px-6">
         <p className="max-w-prose whitespace-pre-line text-body text-ink">
           <MathText text={question.statement} />
         </p>

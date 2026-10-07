@@ -35,14 +35,14 @@ export default function ExamPractice() {
         <Navbar />
         <main className="flex grow items-center justify-center px-gutter py-section">
           {loading ? (
-            <p className="text-sand-500">Cargando examen…</p>
+            <p className="text-neutral-500">Cargando examen…</p>
           ) : (
             <div className="text-center">
-              <p aria-hidden="true" className="font-display text-display italic text-sand-300">∅</p>
+              <p aria-hidden="true" className="font-display text-display italic text-neutral-300">∅</p>
               <h1 className="mt-4 font-display text-heading font-semibold text-ink">
                 {failed ? 'No se pudo cargar el examen' : 'Examen no encontrado'}
               </h1>
-              <p className="mt-2 text-sand-600">
+              <p className="mt-2 text-neutral-600">
                 {failed
                   ? 'Revisa tu conexión e inténtalo de nuevo.'
                   : 'Lo sentimos, no pudimos encontrar ese examen.'}
@@ -69,10 +69,10 @@ export default function ExamPractice() {
         <div className="mx-auto max-w-page px-gutter pb-section pt-section-sm">
           <ExamView exam={exam} />
 
-          <div className="flex border-t border-sand-300 pt-6 print:hidden">
+          <div className="flex border-t border-neutral-300 pt-6 print:hidden">
             <Link
               to="/exams"
-              className="font-semibold text-sand-600 underline-offset-4 transition-colors duration-150 hover:text-ink hover:underline"
+              className="font-semibold text-neutral-600 underline-offset-4 transition-colors duration-150 hover:text-ink hover:underline"
             >
               <span aria-hidden="true">← </span>Volver a exámenes
             </Link>

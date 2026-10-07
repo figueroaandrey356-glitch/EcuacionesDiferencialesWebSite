@@ -21,12 +21,12 @@ export default function BrowseExams() {
           <h1 className="font-display text-title font-semibold text-ink">
             Selecciona un examen
           </h1>
-          <p className="mt-3 max-w-prose text-sand-600">
+          <p className="mt-3 max-w-prose text-neutral-600">
             Elige el año y el semestre para ver los exámenes disponibles.
           </p>
 
           {/* Filtros: año y semestre */}
-          <div className="mt-10 border-y border-sand-300 py-6">
+          <div className="mt-10 border-y border-neutral-300 py-6">
             <div className="flex flex-wrap gap-x-10 gap-y-5">
               <YearSelector
                 selectedYear={selectedYear}
@@ -39,11 +39,11 @@ export default function BrowseExams() {
             </div>
 
             {/* Filtros avanzados: tipo de examen */}
-            <div className="mt-5 border-t border-sand-200 pt-4">
+            <div className="mt-5 border-t border-neutral-200 pt-4">
               <button
                 onClick={() => setShowAdvanced(!showAdvanced)}
                 aria-expanded={showAdvanced}
-                className="flex items-center gap-2 text-small font-semibold text-sand-600 transition-colors duration-150 hover:text-ink"
+                className="flex items-center gap-2 text-small font-semibold text-neutral-600 transition-colors duration-150 hover:text-ink"
               >
                 <span
                   aria-hidden="true"
