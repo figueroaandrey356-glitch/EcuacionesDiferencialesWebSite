@@ -33,22 +33,22 @@ export default function StepReveal({ steps, fullSolution }) {
     <div className="mt-6">
       {/* Progreso */}
       <div className={`mb-5 items-center gap-3 ${hasSteps ? 'flex' : 'hidden'}`}>
-        <div className="h-1.5 grow overflow-hidden rounded-full bg-slate-100">
+        <div className="h-1.5 grow overflow-hidden rounded-pill bg-sand-100">
           <motion.div
-            className="h-full rounded-full bg-primary"
+            className="h-full rounded-pill bg-accent"
             initial={false}
             animate={{ width: `${hasSteps ? (revealedSteps / steps.length) * 100 : 0}%` }}
             transition={{ duration: 0.3 }}
           />
         </div>
-        <span className="shrink-0 text-xs font-medium tabular-nums text-slate-500">
+        <span className="shrink-0 text-xs font-medium tabular-nums text-sand-500">
           {revealedSteps} de {steps.length} pasos
         </span>
       </div>
 
       {/* Pasos Revelados */}
       {!hasSteps ? null : revealedSteps === 0 ? (
-        <p className="rounded-xl border border-dashed border-slate-300 px-5 py-6 text-center text-sm text-slate-500">
+        <p className="rounded-control border border-dashed border-sand-300 px-5 py-6 text-center text-sm text-sand-500">
           Intenta resolverlo primero. Cuando quieras, revela la solución paso a paso.
         </p>
       ) : (
@@ -63,14 +63,14 @@ export default function StepReveal({ steps, fullSolution }) {
                 className="flex gap-4"
               >
                 <div className="flex flex-col items-center">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-xs font-bold text-accent">
                     {index + 1}
                   </span>
                   {index < revealedSteps - 1 && (
-                    <span className="mt-1 w-px grow bg-slate-200" />
+                    <span className="mt-1 w-px grow bg-sand-200" />
                   )}
                 </div>
-                <p className="pb-4 pt-0.5 font-mono text-sm leading-relaxed text-slate-700">
+                <p className="pb-4 pt-0.5 font-mono text-sm leading-relaxed text-sand-700">
                   <MathText text={step} />
                 </p>
               </motion.li>
@@ -84,7 +84,7 @@ export default function StepReveal({ steps, fullSolution }) {
         {revealedSteps > 0 && (
           <button
             onClick={handleHideLast}
-            className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:border-slate-400 hover:bg-slate-100 hover:text-ink"
+            className="rounded-control border border-sand-300 px-4 py-2.5 text-sm font-semibold text-sand-600 transition hover:border-sand-400 hover:bg-sand-100 hover:text-ink"
           >
             ← Paso anterior
           </button>
@@ -93,14 +93,14 @@ export default function StepReveal({ steps, fullSolution }) {
         {!hasSteps ? null : allRevealed ? (
           <button
             onClick={handleReset}
-            className="rounded-lg bg-slate-100 px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-slate-200"
+            className="rounded-control bg-sand-100 px-4 py-2.5 text-sm font-semibold text-ink transition hover:bg-sand-200"
           >
             ↺ Ocultar pasos
           </button>
         ) : (
           <button
             onClick={handleRevealNext}
-            className="rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-dark"
+            className="rounded-control bg-accent px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-dark"
           >
             Revelar siguiente paso →
           </button>
@@ -110,7 +110,7 @@ export default function StepReveal({ steps, fullSolution }) {
           <button
             onClick={toggleFullSolution}
             aria-expanded={showFullSolution}
-            className="rounded-lg px-4 py-2.5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50 sm:ml-auto"
+            className="rounded-control px-4 py-2.5 text-sm font-semibold text-success transition hover:bg-success-soft sm:ml-auto"
           >
             {showFullSolution ? 'Ocultar' : 'Ver'} solución completa
           </button>
@@ -126,11 +126,11 @@ export default function StepReveal({ steps, fullSolution }) {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="mt-4 rounded-xl bg-emerald-50 p-5 ring-1 ring-emerald-200">
-              <h4 className="mb-2 text-xs font-semibold uppercase tracking-widest text-emerald-700">
+            <div className="mt-4 rounded-control bg-success-soft p-5 ring-1 ring-success/25">
+              <h4 className="mb-2 text-xs font-semibold uppercase tracking-widest text-success">
                 Solución completa
               </h4>
-              <p className="whitespace-pre-line font-mono text-sm leading-relaxed text-slate-700">
+              <p className="whitespace-pre-line font-mono text-sm leading-relaxed text-sand-700">
                 <MathText text={fullSolution} />
               </p>
             </div>

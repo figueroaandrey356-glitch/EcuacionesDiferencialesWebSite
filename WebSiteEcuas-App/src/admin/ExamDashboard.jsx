@@ -4,8 +4,8 @@ import { deleteExam, fetchAllExams, saveExam, setExamStatus } from '../data/exam
 import { primaryButton, secondaryButton } from './ui';
 
 const statusStyles = {
-  published: 'bg-emerald-100 text-emerald-700',
-  draft: 'bg-amber-100 text-amber-700',
+  published: 'bg-success-soft text-success',
+  draft: 'bg-warning-soft text-warning',
 };
 
 const statusLabels = { published: 'Publicado', draft: 'Borrador' };
@@ -94,7 +94,7 @@ export default function ExamDashboard() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Exámenes</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-sand-500">
             Solo los exámenes publicados aparecen en el sitio de estudiantes.
           </p>
         </div>
@@ -110,21 +110,21 @@ export default function ExamDashboard() {
       </div>
 
       {error && (
-        <p role="alert" className="mt-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">
+        <p role="alert" className="mt-6 rounded-control bg-danger-soft px-4 py-3 text-sm text-danger">
           {error}
         </p>
       )}
 
-      <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm">
+      <div className="mt-6 overflow-x-auto rounded-panel border border-sand-200 bg-surface">
         {exams === null ? (
-          <p className="px-6 py-12 text-center text-slate-500">Cargando exámenes…</p>
+          <p className="px-6 py-12 text-center text-sand-500">Cargando exámenes…</p>
         ) : exams.length === 0 ? (
-          <p className="px-6 py-12 text-center text-slate-500">
+          <p className="px-6 py-12 text-center text-sand-500">
             Aún no hay exámenes. Sube un PDF o crea uno paso a paso para empezar.
           </p>
         ) : (
           <table className="w-full min-w-[640px] text-left text-sm">
-            <thead className="border-b border-slate-200 text-xs uppercase tracking-widest text-slate-500">
+            <thead className="border-b border-sand-200 text-xs uppercase tracking-widest text-sand-500">
               <tr>
                 <th className="px-6 py-3 font-semibold">Examen</th>
                 <th className="px-4 py-3 font-semibold">Periodo</th>
@@ -133,7 +133,7 @@ export default function ExamDashboard() {
                 <th className="px-6 py-3 text-right font-semibold">Acciones</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-sand-100">
               {exams.map(exam => {
                 const busy = busyId === exam.id;
 
@@ -142,46 +142,46 @@ export default function ExamDashboard() {
                     <td className="px-6 py-4">
                       <Link
                         to={`/admin/examen/${exam.id}`}
-                        className="font-semibold text-ink hover:text-primary"
+                        className="font-semibold text-ink hover:text-accent"
                       >
                         {exam.name}
                       </Link>
-                      <span className="block text-xs text-slate-500">{exam.variant}</span>
+                      <span className="block text-xs text-sand-500">{exam.variant}</span>
                     </td>
-                    <td className="px-4 py-4 text-slate-600">
+                    <td className="px-4 py-4 text-sand-600">
                       {exam.year} · {exam.semester}
                     </td>
-                    <td className="px-4 py-4 text-slate-600">{describeContent(exam)}</td>
+                    <td className="px-4 py-4 text-sand-600">{describeContent(exam)}</td>
                     <td className="px-4 py-4">
                       <span
-                        className={`rounded-full px-2.5 py-1 text-xs font-semibold ${statusStyles[exam.status]}`}
+                        className={`rounded-pill px-2.5 py-1 text-xs font-semibold ${statusStyles[exam.status]}`}
                       >
                         {statusLabels[exam.status]}
                       </span>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex justify-end gap-3 whitespace-nowrap font-semibold">
-                        <Link to={`/admin/examen/${exam.id}`} className="text-primary hover:underline">
+                        <Link to={`/admin/examen/${exam.id}`} className="text-accent hover:underline">
                           Editar
                         </Link>
                         <button
                           disabled={busy}
                           onClick={() => handleToggleStatus(exam)}
-                          className="text-slate-600 hover:text-ink hover:underline"
+                          className="text-sand-600 hover:text-ink hover:underline"
                         >
                           {exam.status === 'published' ? 'Despublicar' : 'Publicar'}
                         </button>
                         <button
                           disabled={busy}
                           onClick={() => handleDuplicate(exam)}
-                          className="text-slate-600 hover:text-ink hover:underline"
+                          className="text-sand-600 hover:text-ink hover:underline"
                         >
                           Duplicar
                         </button>
                         <button
                           disabled={busy}
                           onClick={() => handleDelete(exam)}
-                          className="text-red-600 hover:underline"
+                          className="text-danger hover:underline"
                         >
                           Eliminar
                         </button>

@@ -12,14 +12,14 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
       {/* Título y meta del examen */}
       <div className="mb-8">
         <div className="flex flex-wrap gap-2 text-xs font-semibold">
-          <span className="rounded-full bg-slate-200/70 px-2.5 py-1 text-slate-600">
+          <span className="rounded-pill bg-sand-200/70 px-2.5 py-1 text-sand-600">
             {exam.year}
           </span>
-          <span className="rounded-full bg-slate-200/70 px-2.5 py-1 text-slate-600">
+          <span className="rounded-pill bg-sand-200/70 px-2.5 py-1 text-sand-600">
             {exam.semester === 'Verano' ? 'Verano' : `Semestre ${exam.semester}`}
           </span>
           {exam.variant && (
-            <span className="rounded-full bg-primary/10 px-2.5 py-1 text-primary">
+            <span className="rounded-pill bg-accent/10 px-2.5 py-1 text-accent">
               {exam.variant}
             </span>
           )}
@@ -36,7 +36,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
               target="_blank"
               rel="noreferrer"
               download
-              className="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-dark"
+              className="rounded-control bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-dark"
             >
               ↓ Descargar enunciado (PDF)
             </a>
@@ -44,7 +44,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
             <button
               disabled
               title="El enunciado en PDF de este examen aún no está disponible"
-              className="cursor-not-allowed rounded-lg border border-dashed border-slate-300 px-4 py-2 text-sm font-semibold text-slate-400"
+              className="cursor-not-allowed rounded-control border border-dashed border-sand-300 px-4 py-2 text-sm font-semibold text-sand-400"
             >
               Descargar enunciado · pronto
             </button>
@@ -68,7 +68,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
           </div>
         </div>
       ) : (
-        <p className="rounded-2xl border border-dashed border-slate-300 px-6 py-12 text-center text-slate-500">
+        <p className="rounded-panel border border-dashed border-sand-300 px-6 py-12 text-center text-sand-500">
           {pdfUrl
             ? 'Este examen está disponible solo para descargar. La solución paso a paso aún no se ha cargado.'
             : 'Este examen aún no tiene contenido.'}

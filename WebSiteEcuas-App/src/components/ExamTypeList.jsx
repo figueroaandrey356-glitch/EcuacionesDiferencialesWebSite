@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { fetchPublishedExams } from '../data/examsApi';
 
 const variantStyles = {
-  Ordinario: 'bg-primary/10 text-primary',
-  Extraordinario: 'bg-accent/15 text-amber-700',
-  Reposición: 'bg-slate-200/70 text-slate-600',
+  Ordinario: 'bg-sand-200/70 text-sand-600',
+  Extraordinario: 'bg-sand-200/70 text-sand-600',
+  Reposición: 'bg-sand-200/70 text-sand-600',
 };
 
 export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
@@ -46,7 +46,7 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
           {semester === 'Verano' ? 'Verano' : `Semestre ${semester}`} · {year}
         </h2>
         {!loading && !result.failed && (
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-sand-500">
             {exams.length === 1
               ? '1 examen disponible'
               : `${exams.length} exámenes disponibles`}
@@ -55,7 +55,7 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
       </div>
 
       {exams.length === 0 ? (
-        <p className="rounded-2xl border border-dashed border-slate-300 px-6 py-12 text-center text-slate-500">
+        <p className="rounded-panel border border-dashed border-sand-300 px-6 py-12 text-center text-sand-500">
           {emptyMessage}
         </p>
       ) : (
@@ -67,14 +67,14 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
               <Link
                 key={exam.id}
                 to={`/exam/${exam.id}`}
-                className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+                className="group rounded-panel border border-sand-200 bg-surface p-6 transition hover:-translate-y-1 hover:border-accent/40"
               >
                 <div className="flex items-start justify-between">
-                  <span className="font-mono text-sm text-slate-400">
+                  <span className="font-mono text-sm text-sand-400">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <span
-                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${variantStyles[exam.variant] ?? variantStyles.Reposición}`}
+                    className={`rounded-pill px-2.5 py-1 text-xs font-semibold ${variantStyles[exam.variant] ?? variantStyles.Reposición}`}
                   >
                     {exam.variant}
                   </span>
@@ -85,12 +85,12 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
                 </h3>
 
                 <p className="mt-6 flex items-center justify-between text-sm">
-                  <span className="text-slate-500">
+                  <span className="text-sand-500">
                     {questionCount === 0 && 'Solo PDF'}
                     {questionCount === 1 && '1 problema'}
                     {questionCount > 1 && `${questionCount} problemas`}
                   </span>
-                  <span className="font-semibold text-primary transition group-hover:translate-x-1">
+                  <span className="font-semibold text-accent transition group-hover:translate-x-1">
                     {questionCount === 0 ? 'Descargar →' : 'Practicar →'}
                   </span>
                 </p>

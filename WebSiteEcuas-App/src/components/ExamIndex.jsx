@@ -35,9 +35,9 @@ export default function ExamIndex({ questions }) {
   return (
     <nav
       aria-label="Índice del examen"
-      className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm print:hidden lg:sticky lg:top-24"
+      className="rounded-panel border border-sand-200 bg-surface p-4 print:hidden lg:sticky lg:top-24"
     >
-      <h2 className="mb-3 px-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
+      <h2 className="mb-3 px-2 text-xs font-semibold uppercase tracking-widest text-sand-500">
         Índice del examen
       </h2>
 
@@ -51,13 +51,13 @@ export default function ExamIndex({ questions }) {
               <button
                 onClick={() => handleGoTo(questionNumber)}
                 aria-current={isActive ? 'true' : undefined}
-                className={`flex w-full items-start gap-3 rounded-xl px-2 py-2 text-left transition ${
-                  isActive ? 'bg-primary/10' : 'hover:bg-slate-100'
+                className={`flex w-full items-start gap-3 rounded-control px-2 py-2 text-left transition ${
+                  isActive ? 'bg-accent/10' : 'hover:bg-sand-100'
                 }`}
               >
                 <span
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                    isActive ? 'bg-primary text-white' : 'bg-slate-100 text-slate-500'
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-pill text-xs font-bold ${
+                    isActive ? 'bg-accent text-white' : 'bg-sand-100 text-sand-500'
                   }`}
                 >
                   {questionNumber}
@@ -67,7 +67,7 @@ export default function ExamIndex({ questions }) {
                     Pregunta {questionNumber}
                   </span>
                   {question.topic && (
-                    <span className="block text-xs text-slate-500">
+                    <span className="block text-xs text-sand-500">
                       {question.topic}
                     </span>
                   )}

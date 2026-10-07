@@ -35,7 +35,7 @@ export default function Home() {
         <section className="relative overflow-hidden bg-ink text-white">
           <div className="bg-grid absolute inset-0" aria-hidden="true" />
           <div
-            className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-primary/40 blur-3xl"
+            className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-pill bg-accent/40 blur-3xl"
             aria-hidden="true"
           />
 
@@ -43,17 +43,17 @@ export default function Home() {
             <div>
               <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
                 Ecuaciones diferenciales,{' '}
-                <em className="text-accent">paso a paso</em>.
+                <em className="text-accent-soft">paso a paso</em>.
               </h1>
 
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-sand-300">
                 Practica con exámenes de semestres anteriores y revela la
                 solución gradualmente, a tu ritmo.
               </p>
 
               <Link
                 to="/exams"
-                className="mt-10 inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 font-semibold text-ink shadow-lg transition hover:-translate-y-0.5 hover:bg-slate-100"
+                className="mt-10 inline-flex items-center gap-2 rounded-control bg-surface px-7 py-3.5 font-semibold text-ink transition hover:-translate-y-0.5 hover:bg-sand-100"
               >
                 Comenzar a practicar
                 <span aria-hidden="true">→</span>
@@ -62,34 +62,34 @@ export default function Home() {
 
             {/* Vista previa decorativa de un problema */}
             <div
-              className="rounded-2xl bg-white p-6 text-ink shadow-2xl ring-1 ring-white/20 lg:rotate-1"
+              className="rounded-panel bg-surface p-6 text-ink ring-1 ring-white/20 lg:rotate-1"
               aria-hidden="true"
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+              <p className="text-xs font-semibold uppercase tracking-widest text-sand-400">
                 Problema de ejemplo
               </p>
-              <p className="mt-3 rounded-xl bg-slate-50 px-4 py-3 font-mono text-sm ring-1 ring-slate-200/70">
+              <p className="mt-3 rounded-control bg-sand-50 px-4 py-3 font-mono text-sm ring-1 ring-sand-200/70">
                 dy/dx + 2y = 0, &nbsp; y(0) = 3
               </p>
 
               <ol className="mt-5 space-y-3">
                 {previewSteps.map((step, index) => (
                   <li key={index} className="flex gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-xs font-bold text-accent">
                       {index + 1}
                     </span>
-                    <span className="font-mono text-sm text-slate-700">{step}</span>
+                    <span className="font-mono text-sm text-sand-700">{step}</span>
                   </li>
                 ))}
                 <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-400">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-sand-100 text-xs font-bold text-sand-400">
                     3
                   </span>
-                  <span className="h-5 grow rounded bg-slate-100" />
+                  <span className="h-5 grow rounded bg-sand-100" />
                 </li>
               </ol>
 
-              <div className="mt-5 rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white">
+              <div className="mt-5 rounded-control bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white">
                 Revelar siguiente paso →
               </div>
             </div>
@@ -102,15 +102,15 @@ export default function Home() {
             {features.map(feature => (
               <div
                 key={feature.title}
-                className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"
+                className="rounded-panel border border-sand-200 bg-surface p-7"
               >
-                <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-xl bg-primary/10 px-3 font-display text-lg italic text-primary">
+                <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-control bg-accent/10 px-3 font-display text-lg italic text-accent">
                   {feature.symbol}
                 </span>
                 <h2 className="mt-5 font-display text-xl font-semibold text-ink">
                   {feature.title}
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                <p className="mt-2 text-sm leading-relaxed text-sand-600">
                   {feature.text}
                 </p>
               </div>

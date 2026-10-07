@@ -157,7 +157,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">{heading}</h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-sand-500">
             Estado:{' '}
             <span className="font-semibold text-ink">
               {exam.status === 'published' ? 'Publicado' : 'Borrador'}
@@ -167,7 +167,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
         </div>
 
         {/* Editar / Vista estudiante */}
-        <div className="inline-flex gap-1 rounded-xl bg-slate-200/70 p-1">
+        <div className="inline-flex gap-1 rounded-control bg-sand-200/70 p-1">
           {[
             { id: 'edit', label: 'Editar' },
             { id: 'preview', label: 'Vista estudiante' },
@@ -177,8 +177,8 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
               type="button"
               onClick={() => setView(tab.id)}
               aria-pressed={view === tab.id}
-              className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
-                view === tab.id ? 'bg-white text-ink shadow-sm' : 'text-slate-500 hover:text-ink'
+              className={`rounded-control px-4 py-2 text-sm font-semibold transition ${
+                view === tab.id ? 'bg-ink text-paper' : 'text-sand-500 hover:text-ink'
               }`}
             >
               {tab.label}
@@ -190,8 +190,8 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
       {notice && (
         <p
           role={notice.type === 'error' ? 'alert' : 'status'}
-          className={`mt-6 rounded-lg px-4 py-3 text-sm ${
-            notice.type === 'error' ? 'bg-red-50 text-red-700' : 'bg-emerald-50 text-emerald-700'
+          className={`mt-6 rounded-control px-4 py-3 text-sm ${
+            notice.type === 'error' ? 'bg-danger-soft text-danger' : 'bg-success-soft text-success'
           }`}
         >
           {notice.text}
@@ -199,8 +199,8 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
       )}
 
       {view === 'preview' ? (
-        <div className="mt-6 rounded-2xl border-2 border-dashed border-slate-300 p-4 sm:p-8">
-          <p className="mb-6 text-xs font-semibold uppercase tracking-widest text-slate-500">
+        <div className="mt-6 rounded-panel border-2 border-dashed border-sand-300 p-4 sm:p-8">
+          <p className="mb-6 text-xs font-semibold uppercase tracking-widest text-sand-500">
             Así lo verá el estudiante
           </p>
           <ExamView exam={previewExam} pdfUrl={pdfUrl} />
@@ -245,7 +245,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
           {/* PDF descargable */}
           <section className={cardClass}>
             <h2 className="font-display text-xl font-semibold text-ink">Enunciado en PDF</h2>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-sand-500">
               El estudiante podrá descargar este archivo desde la página del examen.
             </p>
 
@@ -255,7 +255,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
                   href={pdfUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="max-w-full truncate rounded-lg bg-slate-100 px-3 py-2 text-sm font-semibold text-ink hover:text-primary"
+                  className="max-w-full truncate rounded-control bg-sand-100 px-3 py-2 text-sm font-semibold text-ink hover:text-accent"
                 >
                   {pendingPdf ? `${pendingPdf.file.name} · se subirá al guardar` : 'Ver PDF actual ↗'}
                 </a>
@@ -275,7 +275,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
                 <button
                   type="button"
                   onClick={handleRemovePdf}
-                  className="text-sm font-semibold text-slate-500 transition hover:text-red-600"
+                  className="text-sm font-semibold text-sand-500 transition hover:text-danger"
                 >
                   Quitar PDF
                 </button>
@@ -286,7 +286,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
           {/* Problemas paso a paso */}
           {showQuestions && (
             <section className="space-y-6">
-              <div className="rounded-2xl bg-primary/5 px-5 py-4 text-sm text-slate-600 ring-1 ring-primary/15">
+              <div className="rounded-panel bg-accent/5 px-5 py-4 text-sm text-sand-600 ring-1 ring-accent/15">
                 <p className="font-semibold text-ink">Cómo escribir fórmulas</p>
                 <p className="mt-1">
                   Pega el texto tal cual y encierra cada fórmula entre signos de dólar con notación
@@ -318,7 +318,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
       )}
 
       {/* Guardar */}
-      <div className="sticky bottom-0 mt-8 flex flex-wrap items-center justify-end gap-2 border-t border-slate-200 bg-paper/95 py-4 backdrop-blur">
+      <div className="sticky bottom-0 mt-8 flex flex-wrap items-center justify-end gap-2 border-t border-sand-200 bg-paper/95 py-4 backdrop-blur">
         <button
           type="button"
           disabled={saving}

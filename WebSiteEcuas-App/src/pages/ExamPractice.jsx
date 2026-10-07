@@ -35,21 +35,21 @@ export default function ExamPractice() {
         <Navbar />
         <main className="flex grow items-center justify-center px-6 py-20">
           {loading ? (
-            <p className="text-slate-500">Cargando examen…</p>
+            <p className="text-sand-500">Cargando examen…</p>
           ) : (
             <div className="text-center">
-              <p className="font-display text-7xl italic text-slate-300">∅</p>
+              <p className="font-display text-7xl italic text-sand-300">∅</p>
               <h1 className="mt-4 font-display text-3xl font-semibold text-ink">
                 {failed ? 'No se pudo cargar el examen' : 'Examen no encontrado'}
               </h1>
-              <p className="mt-2 text-slate-600">
+              <p className="mt-2 text-sand-600">
                 {failed
                   ? 'Revisa tu conexión e inténtalo de nuevo.'
                   : 'Lo sentimos, no pudimos encontrar ese examen.'}
               </p>
               <Link
                 to="/exams"
-                className="mt-8 inline-block rounded-xl bg-ink px-6 py-3 font-semibold text-white transition hover:bg-primary-dark"
+                className="mt-8 inline-block rounded-control bg-ink px-6 py-3 font-semibold text-white transition hover:bg-accent-dark"
               >
                 ← Volver a exámenes
               </Link>
@@ -72,7 +72,7 @@ export default function ExamPractice() {
           <div className="mt-12 flex justify-center print:hidden">
             <Link
               to="/exams"
-              className="rounded-xl px-6 py-3 font-semibold text-slate-600 transition hover:bg-slate-200/60 hover:text-ink"
+              className="rounded-control px-6 py-3 font-semibold text-sand-600 transition hover:bg-sand-200/60 hover:text-ink"
             >
               ← Volver a exámenes
             </Link>
