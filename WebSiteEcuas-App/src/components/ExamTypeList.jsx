@@ -1,81 +1,104 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { fetchPublishedExams } from '../data/examsApi';
 
-export default function ExamTypeList({ year, semester }) {
-  const navigate = useNavigate();
+const variantStyles = {
+  Ordinario: 'bg-primary/10 text-primary',
+  Extraordinario: 'bg-accent/15 text-amber-700',
+  Reposición: 'bg-slate-200/70 text-slate-600',
+};
 
-  // Datos mock - luego vendrán de una API
-  const examTypes = [
-    { id: 1, name: 'Primer Parcial', variant: 'Ordinario', emoji: '📋' },
-    { id: 2, name: 'Primer Parcial', variant: 'Extraordinario', emoji: '⭐' },
-    { id: 3, name: 'Segundo Parcial', variant: 'Ordinario', emoji: '📋' },
-    { id: 4, name: 'Segundo Parcial', variant: 'Extraordinario', emoji: '⭐' },
-    { id: 5, name: 'Tercer Parcial', variant: 'Ordinario', emoji: '📋' },
-    { id: 6, name: 'Tercer Parcial', variant: 'Extraordinario', emoji: '⭐' },
-    { id: 7, name: 'Examen de Reposición', variant: '', emoji: '🔄' },
-  ];
+export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
+  const period = `${year}_${semester}`;
+  // period identifica a qué consulta pertenece el resultado, para no mostrar uno viejo al cambiar de filtro
+  const [result, setResult] = useState({ period: null, exams: [], failed: false });
 
-  const handlePractice = (examId) => {
-    navigate(`/exam/${year}_${semester}_${examId}`);
-  };
+  useEffect(() => {
+    let cancelled = false;
 
-  // Mensaje especial para semestre actual
-  const isCurrent = year === 2026 && semester === 'II';
+    fetchPublishedExams(year, semester)
+      .then(exams => {
+        if (!cancelled) setResult({ period, exams, failed: false });
+      })
+      .catch(() => {
+        if (!cancelled) setResult({ period, exams: [], failed: true });
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [year, semester, period]);
+
+  const loading = result.period !== period;
+  const exams = loading
+    ? []
+    : result.exams.filter(exam => variant === 'Todos' || exam.variant === variant);
+
+  let emptyMessage = `Aún no hay exámenes de tipo ${variant} cargados para este periodo.`;
+  if (loading) emptyMessage = 'Cargando exámenes…';
+  else if (result.failed) emptyMessage = 'No se pudieron cargar los exámenes. Revisa tu conexión e inténtalo de nuevo.';
+  else if (variant === 'Todos') emptyMessage = 'Aún no hay exámenes cargados para este periodo.';
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold text-gray-900">
-          Exámenes - Semestre {semester} {year}
+    <section className="mt-10">
+      <div className="mb-6">
+        <h2 className="font-display text-2xl font-semibold text-ink">
+          {semester === 'Verano' ? 'Verano' : `Semestre ${semester}`} · {year}
         </h2>
-        {isCurrent && (
-          <span className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold">
-            📍 Semestre Actual
-          </span>
+        {!loading && !result.failed && (
+          <p className="mt-1 text-sm text-slate-500">
+            {exams.length === 1
+              ? '1 examen disponible'
+              : `${exams.length} exámenes disponibles`}
+          </p>
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {examTypes.map(exam => (
-          <div
-            key={exam.id}
-            className="bg-white p-6 rounded-lg shadow hover:shadow-lg transition transform hover:scale-105 border-l-4 border-primary cursor-pointer"
-          >
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-                  {exam.emoji} {exam.name}
+      {exams.length === 0 ? (
+        <p className="rounded-2xl border border-dashed border-slate-300 px-6 py-12 text-center text-slate-500">
+          {emptyMessage}
+        </p>
+      ) : (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {exams.map((exam, index) => {
+            const questionCount = exam.questions.length;
+
+            return (
+              <Link
+                key={exam.id}
+                to={`/exam/${exam.id}`}
+                className="group rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+              >
+                <div className="flex items-start justify-between">
+                  <span className="font-mono text-sm text-slate-400">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span
+                    className={`rounded-full px-2.5 py-1 text-xs font-semibold ${variantStyles[exam.variant] ?? variantStyles.Reposición}`}
+                  >
+                    {exam.variant}
+                  </span>
+                </div>
+
+                <h3 className="mt-6 font-display text-xl font-semibold text-ink">
+                  {exam.name}
                 </h3>
-                {exam.variant && (
-                  <p className="text-sm text-gray-600 mt-1">{exam.variant}</p>
-                )}
-              </div>
-            </div>
 
-            <p className="text-xs text-gray-500 mb-4">
-              {exam.variant ? '📄 Examen ordinario/extraordinario' : '🔄 Examen de reposición'}
-            </p>
-
-            <button
-              onClick={() => handlePractice(exam.id)}
-              className="w-full bg-gradient-to-r from-primary to-secondary text-white px-4 py-2 rounded font-bold hover:from-secondary hover:to-primary transition"
-            >
-              Practicar →
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {/* Mensaje informativo */}
-      <div className="mt-12 bg-blue-50 border-l-4 border-primary p-6 rounded">
-        <h3 className="font-bold text-primary mb-2">💡 Cómo usar la plataforma:</h3>
-        <ul className="text-gray-700 space-y-1 text-sm">
-          <li>✅ Selecciona un examen para practicar</li>
-          <li>✅ Lee el enunciado de cada pregunta</li>
-          <li>✅ Haz clic en "Revelar siguiente paso" para ver la solución gradualmente</li>
-          <li>✅ Aprende paso a paso sin ver todo de una vez</li>
-          <li>✅ Descarga el enunciado o ve la solución completa cuando lo necesites</li>
-        </ul>
-      </div>
-    </div>
+                <p className="mt-6 flex items-center justify-between text-sm">
+                  <span className="text-slate-500">
+                    {questionCount === 0 && 'Solo PDF'}
+                    {questionCount === 1 && '1 problema'}
+                    {questionCount > 1 && `${questionCount} problemas`}
+                  </span>
+                  <span className="font-semibold text-primary transition group-hover:translate-x-1">
+                    {questionCount === 0 ? 'Descargar →' : 'Practicar →'}
+                  </span>
+                </p>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+    </section>
   );
 }

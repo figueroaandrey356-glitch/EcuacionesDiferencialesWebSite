@@ -7,7 +7,8 @@ export const examQuestions = {
     questions: [
       {
         id: 1,
-        statement: 'Resuelve la ecuación diferencial ordinaria:\n\ndy/dx = 2x',
+        topic: 'Variables separables',
+        statement: 'Resuelve la ecuación diferencial:\n\ndy/dx = 2x',
         steps: [
           'Separamos variables: dy = 2x dx',
           'Integramos ambos lados: ∫dy = ∫2x dx',
@@ -19,6 +20,7 @@ export const examQuestions = {
       },
       {
         id: 2,
+        topic: 'Problema de valor inicial',
         statement: 'Encuentra la solución particular de:\n\ndy/dx + 2y = 0, con condición inicial y(0) = 3',
         steps: [
           'Separamos variables: dy/y = -2 dx',
@@ -41,6 +43,7 @@ export const examQuestions = {
     questions: [
       {
         id: 1,
+        topic: 'Variables separables',
         statement: 'Resuelve: (x² + 1) dy/dx = 2xy',
         steps: [
           'Separamos variables: dy/y = 2x/(x² + 1) dx',

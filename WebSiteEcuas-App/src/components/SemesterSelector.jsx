@@ -1,26 +1,27 @@
+import { SEMESTERS } from '../data/examOptions';
+
 export default function SemesterSelector({ selectedSemester, onSelectSemester }) {
-  const semesters = [
-    { id: 'I', label: 'Semestre I', emoji: '🔵' },
-    { id: 'II', label: 'Semestre II', emoji: '🟣' },
-    { id: 'Verano', label: 'Verano', emoji: '☀️' },
-  ];
+  const semesters = SEMESTERS;
 
   return (
-    <div className="mb-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">📚 Semestre</h2>
+    <div>
+      <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
+        Semestre
+      </h2>
 
-      <div className="flex gap-4 flex-wrap">
+      <div className="inline-flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1">
         {semesters.map(sem => (
           <button
             key={sem.id}
             onClick={() => onSelectSemester(sem.id)}
-            className={`px-8 py-3 rounded-lg font-bold transition transform hover:scale-105 shadow ${
+            aria-pressed={selectedSemester === sem.id}
+            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
               selectedSemester === sem.id
-                ? 'bg-secondary text-white shadow-lg'
-                : 'bg-white text-secondary border-2 border-secondary hover:bg-secondary hover:text-white'
+                ? 'bg-white text-ink shadow-sm'
+                : 'text-slate-500 hover:text-ink'
             }`}
           >
-            {sem.emoji} {sem.label}
+            {sem.label}
           </button>
         ))}
       </div>

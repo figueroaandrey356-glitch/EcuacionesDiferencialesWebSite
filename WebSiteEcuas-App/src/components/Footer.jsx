@@ -1,53 +1,52 @@
 export default function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-100 py-12">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-          {/* Sección 1: Profesor */}
-          <div className="text-center md:text-left">
-            <h3 className="text-lg font-bold text-white mb-3">Profesor</h3>
-            <p className="font-semibold">MSc. Norberto Gerardo Oviedo Ugalde</p>
-            <p className="text-sm text-gray-400">2026</p>
+    <footer className="bg-ink text-slate-300 print:hidden">
+      <div className="mx-auto max-w-6xl px-6 py-12">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+          {/* Sección 1: Sitio */}
+          <div>
+            <p className="font-display text-xl font-semibold text-white">
+              Estudiando ED
+            </p>
+            <p className="mt-2 max-w-xs text-sm text-slate-400">
+              Plataforma interactiva de práctica para estudiantes de
+              Ecuaciones Diferenciales.
+            </p>
+          </div>
+
+          {/* Sección 2: Curso */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+              Curso
+            </h3>
+            <p className="mt-3 text-sm font-medium text-white">
+              Ecuaciones Diferenciales
+            </p>
+            <p className="text-sm text-slate-400">
+              Instituto Tecnológico de Costa Rica
+            </p>
+          </div>
+
+          {/* Sección 3: Profesor */}
+          <div>
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-slate-500">
+              Profesor
+            </h3>
+            <p className="mt-3 text-sm font-medium text-white">
+              MSc. Norberto Gerardo Oviedo Ugalde
+            </p>
             <a
               href="mailto:noviedo@itcr.ac.cr"
-              className="text-blue-400 hover:text-blue-300 transition"
+              className="text-sm text-slate-400 underline-offset-4 transition hover:text-white hover:underline"
             >
               noviedo@itcr.ac.cr
             </a>
           </div>
-
-          {/* Sección 2: Institución y Curso */}
-          <div className="text-center">
-            <h3 className="text-lg font-bold text-white mb-3">Curso</h3>
-            <p className="font-semibold">Instituto Tecnológico de Costa Rica</p>
-            <p className="text-sm">Ecuaciones Diferenciales Ordinarias</p>
-            <p className="text-sm text-gray-400">Año 2026</p>
-          </div>
-
-          {/* Sección 3: Información */}
-          <div className="text-center md:text-right">
-            <h3 className="text-lg font-bold text-white mb-3">Sobre este sitio</h3>
-            <p className="text-sm">
-              Plataforma interactiva de práctica para estudiantes de EDO
-            </p>
-            <p className="text-sm text-gray-400 mt-2">v1.0 - 2026</p>
-          </div>
         </div>
 
-        {/* Línea divisora */}
-        <hr className="border-gray-700 mb-6" />
-
-        {/* Derechos de autor */}
-        <div className="text-center border-t border-gray-700 pt-6">
-          <p className="text-sm text-gray-400 mb-2">
-            © 2026 Instituto Tecnológico de Costa Rica
-          </p>
-          <p className="text-xs text-gray-500">
-            Reserva de Derechos. Todos los derechos reservados.
-          </p>
-          <p className="text-xs text-gray-500 mt-1">
-            WebSiteEcuas es una plataforma educativa desarrollada para fines académicos.
-          </p>
+        <div className="mt-10 flex flex-col gap-1 border-t border-white/10 pt-6 text-xs text-slate-500 sm:flex-row sm:justify-between">
+          <p>© 2026 Instituto Tecnológico de Costa Rica. Todos los derechos reservados.</p>
+          <p>Plataforma educativa con fines académicos · v1.0</p>
         </div>
       </div>
     </footer>

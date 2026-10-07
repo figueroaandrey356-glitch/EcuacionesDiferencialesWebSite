@@ -1,47 +1,80 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
-import Header from '../components/Header';
 import Footer from '../components/Footer';
 import YearSelector from '../components/YearSelector';
 import SemesterSelector from '../components/SemesterSelector';
+import VariantSelector from '../components/VariantSelector';
 import ExamTypeList from '../components/ExamTypeList';
 
 export default function BrowseExams() {
   const [selectedYear, setSelectedYear] = useState(2026);
   const [selectedSemester, setSelectedSemester] = useState('II');
+  const [selectedVariant, setSelectedVariant] = useState('Todos');
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
-      <Header breadcrumb={['Inicio', 'Exámenes']} />
 
-      <main className="flex-grow bg-gray-50">
-        <div className="max-w-7xl mx-auto p-6">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Selecciona un Examen
-            </h1>
-            <p className="text-gray-600">
-              Elige el año y semestre para ver los exámenes disponibles
-            </p>
+      <main className="grow">
+        <div className="mx-auto max-w-6xl px-6 py-10">
+          <h1 className="font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+            Selecciona un examen
+          </h1>
+          <p className="mt-3 text-slate-600">
+            Elige el año y el semestre para ver los exámenes disponibles.
+          </p>
+
+          {/* Filtros: año y semestre */}
+          <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="flex flex-wrap gap-x-10 gap-y-5">
+              <YearSelector
+                selectedYear={selectedYear}
+                onSelectYear={setSelectedYear}
+              />
+              <SemesterSelector
+                selectedSemester={selectedSemester}
+                onSelectSemester={setSelectedSemester}
+              />
+            </div>
+
+            {/* Filtros avanzados: tipo de examen */}
+            <div className="mt-5 border-t border-slate-200 pt-4">
+              <button
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                aria-expanded={showAdvanced}
+                className="flex items-center gap-2 text-sm font-semibold text-slate-600 transition hover:text-ink"
+              >
+                <span
+                  aria-hidden="true"
+                  className={`text-xs transition-transform ${showAdvanced ? 'rotate-90' : ''}`}
+                >
+                  ▶
+                </span>
+                Filtros avanzados
+                {selectedVariant !== 'Todos' && (
+                  <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">
+                    {selectedVariant}
+                  </span>
+                )}
+              </button>
+
+              {showAdvanced && (
+                <div className="mt-4">
+                  <VariantSelector
+                    selectedVariant={selectedVariant}
+                    onSelectVariant={setSelectedVariant}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Paso 1: Seleccionar año */}
-          <YearSelector
-            selectedYear={selectedYear}
-            onSelectYear={setSelectedYear}
-          />
-
-          {/* Paso 2: Seleccionar semestre */}
-          <SemesterSelector
-            selectedSemester={selectedSemester}
-            onSelectSemester={setSelectedSemester}
-          />
-
-          {/* Paso 3: Mostrar lista de exámenes */}
+          {/* Lista de exámenes */}
           <ExamTypeList
             year={selectedYear}
             semester={selectedSemester}
+            variant={selectedVariant}
           />
         </div>
       </main>

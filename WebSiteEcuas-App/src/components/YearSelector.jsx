@@ -1,19 +1,24 @@
+import { YEARS } from '../data/examOptions';
+
 export default function YearSelector({ selectedYear, onSelectYear }) {
-  const years = [2023, 2024, 2025, 2026];
+  const years = YEARS;
 
   return (
-    <div className="mb-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">📅 Año</h2>
+    <div>
+      <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
+        Año
+      </h2>
 
-      <div className="flex gap-4 flex-wrap">
+      <div className="inline-flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1">
         {years.map(year => (
           <button
             key={year}
             onClick={() => onSelectYear(year)}
-            className={`px-8 py-3 rounded-lg font-bold transition transform hover:scale-105 shadow ${
+            aria-pressed={selectedYear === year}
+            className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
               selectedYear === year
-                ? 'bg-primary text-white shadow-lg'
-                : 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white'
+                ? 'bg-white text-ink shadow-sm'
+                : 'text-slate-500 hover:text-ink'
             }`}
           >
             {year}

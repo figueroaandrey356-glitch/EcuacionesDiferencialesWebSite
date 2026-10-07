@@ -1,40 +1,122 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-export default function Home() {
-  const navigate = useNavigate();
+const features = [
+  {
+    symbol: '∫',
+    title: 'Exámenes anteriores',
+    text: 'Parciales ordinarios, extraordinarios y de reposición, organizados por año y semestre.',
+  },
+  {
+    symbol: '1→n',
+    title: 'Solución paso a paso',
+    text: 'Revela un paso a la vez y comprueba tu avance antes de ver el siguiente.',
+  },
+  {
+    symbol: 'y′',
+    title: 'A tu ritmo',
+    text: 'Intenta cada problema primero y consulta solo lo que necesites para destrabarte.',
+  },
+];
 
+const previewSteps = [
+  'Separamos variables: dy/y = -2 dx',
+  'Integramos: ln|y| = -2x + C₁',
+];
+
+export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <main className="flex-grow flex items-center justify-center bg-gradient-to-br from-primary to-secondary">
-        <div className="text-center text-white px-6 py-20">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-lg">
-            WebSiteEcuas
-          </h1>
+      <main className="grow">
+        {/* Hero */}
+        <section className="relative overflow-hidden bg-ink text-white">
+          <div className="bg-grid absolute inset-0" aria-hidden="true" />
+          <div
+            className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-primary/40 blur-3xl"
+            aria-hidden="true"
+          />
 
-          <p className="text-xl md:text-2xl mb-4 text-gray-100">
-            Practica Ecuaciones Diferenciales Ordinarias
-          </p>
+          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:py-28">
+            <div>
+              <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+                Ecuaciones diferenciales,{' '}
+                <em className="text-accent">paso a paso</em>.
+              </h1>
 
-          <p className="text-lg mb-12 text-gray-200">
-            Instituto Tecnológico de Costa Rica · Semestre II 2026
-          </p>
+              <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">
+                Practica con exámenes de semestres anteriores y revela la
+                solución gradualmente, a tu ritmo.
+              </p>
 
-          <button
-            onClick={() => navigate('/exams')}
-            className="bg-white text-primary px-10 py-4 rounded-lg text-lg font-bold hover:bg-gray-100 hover:scale-105 transition transform shadow-lg"
-          >
-            📝 Comenzar a Practicar →
-          </button>
+              <Link
+                to="/exams"
+                className="mt-10 inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 font-semibold text-ink shadow-lg transition hover:-translate-y-0.5 hover:bg-slate-100"
+              >
+                Comenzar a practicar
+                <span aria-hidden="true">→</span>
+              </Link>
+            </div>
 
-          <p className="text-sm text-gray-300 mt-8 max-w-2xl mx-auto">
-            Accede a exámenes de semestres anteriores con soluciones paso a paso.
-            Practica gradualmente y aprende a tu ritmo.
-          </p>
-        </div>
+            {/* Vista previa decorativa de un problema */}
+            <div
+              className="rounded-2xl bg-white p-6 text-ink shadow-2xl ring-1 ring-white/20 lg:rotate-1"
+              aria-hidden="true"
+            >
+              <p className="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                Problema de ejemplo
+              </p>
+              <p className="mt-3 rounded-xl bg-slate-50 px-4 py-3 font-mono text-sm ring-1 ring-slate-200/70">
+                dy/dx + 2y = 0, &nbsp; y(0) = 3
+              </p>
+
+              <ol className="mt-5 space-y-3">
+                {previewSteps.map((step, index) => (
+                  <li key={index} className="flex gap-3">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {index + 1}
+                    </span>
+                    <span className="font-mono text-sm text-slate-700">{step}</span>
+                  </li>
+                ))}
+                <li className="flex gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-400">
+                    3
+                  </span>
+                  <span className="h-5 grow rounded bg-slate-100" />
+                </li>
+              </ol>
+
+              <div className="mt-5 rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-semibold text-white">
+                Revelar siguiente paso →
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Características */}
+        <section className="mx-auto max-w-6xl px-6 py-20">
+          <div className="grid gap-6 md:grid-cols-3">
+            {features.map(feature => (
+              <div
+                key={feature.title}
+                className="rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"
+              >
+                <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-xl bg-primary/10 px-3 font-display text-lg italic text-primary">
+                  {feature.symbol}
+                </span>
+                <h2 className="mt-5 font-display text-xl font-semibold text-ink">
+                  {feature.title}
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  {feature.text}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
 
       <Footer />

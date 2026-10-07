@@ -1,85 +1,63 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+
+const navItems = [
+  { path: '/', label: 'Inicio', end: true },
+  { path: '/exams', label: 'Exámenes' },
+];
 
 export default function Navbar() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [isOpen, setIsOpen] = useState(false);
+  const { pathname } = useLocation();
 
-  const isActive = (path) => location.pathname === path;
-
-  const navItems = [
-    { path: '/', label: 'Inicio' },
-    { path: '/exams', label: 'Exámenes' },
-    { path: '/about', label: 'Acerca de' },
-  ];
+  // "Volver" sube un nivel: examen → lista de exámenes → inicio
+  const backPath = pathname.startsWith('/exam/') ? '/exams' : '/';
+  const showBack = pathname !== '/';
 
   return (
-    <nav className="bg-gradient-to-r from-primary to-secondary shadow-lg sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <div
-            onClick={() => {
-              navigate('/');
-              setIsOpen(false);
-            }}
-            className="cursor-pointer flex items-center gap-2 hover:opacity-80 transition"
-          >
-            <div className="text-2xl">📚</div>
-            <div>
-              <h1 className="text-xl font-bold text-white">WebSiteEcuas</h1>
-              <p className="text-xs text-gray-100">EDO - TEC</p>
-            </div>
-          </div>
+    <nav className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-md print:hidden">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src={`${import.meta.env.BASE_URL}logo.svg`}
+            alt=""
+            className="h-10 w-10"
+          />
+          <span className="leading-tight">
+            <span className="block font-display text-lg font-semibold text-ink">
+              Estudiando ED
+            </span>
+            <span className="block text-xs text-slate-500">
+              Ecuaciones Diferenciales · TEC
+            </span>
+          </span>
+        </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex gap-8">
-            {navItems.map(item => (
-              <button
-                key={item.path}
-                onClick={() => navigate(item.path)}
-                className={`px-4 py-2 rounded-lg transition font-medium ${
-                  isActive(item.path)
-                    ? 'bg-white text-primary'
-                    : 'text-white hover:bg-white hover:text-primary'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white text-2xl"
-          >
-            ☰
-          </button>
+        <div className="flex items-center gap-1">
+          {showBack && (
+            <Link
+              to={backPath}
+              className="mr-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 transition hover:border-slate-400 hover:bg-slate-100 hover:text-ink sm:px-4"
+            >
+              ← Volver
+            </Link>
+          )}
+          {navItems.map(item => (
+            <NavLink
+              key={item.path}
+              to={item.path}
+              end={item.end}
+              className={({ isActive }) =>
+                `rounded-lg px-3 py-2 text-sm font-medium transition sm:px-4 ${
+                  isActive
+                    ? 'bg-ink text-white'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-ink'
+                }`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
         </div>
-
-        {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-white border-opacity-20">
-            {navItems.map(item => (
-              <button
-                key={item.path}
-                onClick={() => {
-                  navigate(item.path);
-                  setIsOpen(false);
-                }}
-                className={`block w-full text-left px-4 py-3 rounded-lg transition ${
-                  isActive(item.path)
-                    ? 'bg-white text-primary'
-                    : 'text-white hover:bg-white hover:text-primary'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        )}
       </div>
     </nav>
   );
