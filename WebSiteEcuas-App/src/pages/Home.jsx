@@ -41,12 +41,12 @@ export default function Home() {
 
           <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:py-28">
             <div>
-              <h1 className="font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
+              <h1 className="font-display text-display font-semibold">
                 Ecuaciones diferenciales,{' '}
                 <em className="text-accent-soft">paso a paso</em>.
               </h1>
 
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-sand-300">
+              <p className="mt-6 max-w-prose text-lead text-sand-300">
                 Practica con exámenes de semestres anteriores y revela la
                 solución gradualmente, a tu ritmo.
               </p>
@@ -65,31 +65,31 @@ export default function Home() {
               className="rounded-panel bg-surface p-6 text-ink ring-1 ring-white/20 lg:rotate-1"
               aria-hidden="true"
             >
-              <p className="text-xs font-semibold uppercase tracking-widest text-sand-400">
+              <p className="font-mono text-label font-medium uppercase text-sand-400">
                 Problema de ejemplo
               </p>
-              <p className="mt-3 rounded-control bg-sand-50 px-4 py-3 font-mono text-sm ring-1 ring-sand-200/70">
+              <p className="mt-3 rounded-control bg-sand-50 px-4 py-3 font-mono text-small ring-1 ring-sand-200/70">
                 dy/dx + 2y = 0, &nbsp; y(0) = 3
               </p>
 
               <ol className="mt-5 space-y-3">
                 {previewSteps.map((step, index) => (
                   <li key={index} className="flex gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-xs font-bold text-accent">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-caption font-bold text-accent">
                       {index + 1}
                     </span>
-                    <span className="font-mono text-sm text-sand-700">{step}</span>
+                    <span className="font-mono text-small text-sand-700">{step}</span>
                   </li>
                 ))}
                 <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-sand-100 text-xs font-bold text-sand-400">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-sand-100 text-caption font-bold text-sand-400">
                     3
                   </span>
                   <span className="h-5 grow rounded bg-sand-100" />
                 </li>
               </ol>
 
-              <div className="mt-5 rounded-control bg-accent px-4 py-2.5 text-center text-sm font-semibold text-white">
+              <div className="mt-5 rounded-control bg-accent px-4 py-2.5 text-center text-small font-semibold text-white">
                 Revelar siguiente paso →
               </div>
             </div>
@@ -107,10 +107,10 @@ export default function Home() {
                 <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-control bg-accent/10 px-3 font-display text-lg italic text-accent">
                   {feature.symbol}
                 </span>
-                <h2 className="mt-5 font-display text-xl font-semibold text-ink">
+                <h2 className="mt-5 font-display text-subheading font-semibold text-ink">
                   {feature.title}
                 </h2>
-                <p className="mt-2 text-sm leading-relaxed text-sand-600">
+                <p className="mt-2 text-small text-sand-600">
                   {feature.text}
                 </p>
               </div>

@@ -5,7 +5,7 @@ export default function YearSelector({ selectedYear, onSelectYear }) {
 
   return (
     <div>
-      <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-sand-500">
+      <h2 className="mb-2 font-mono text-label font-medium uppercase text-sand-500">
         Año
       </h2>
 
@@ -15,7 +15,7 @@ export default function YearSelector({ selectedYear, onSelectYear }) {
             key={year}
             onClick={() => onSelectYear(year)}
             aria-pressed={selectedYear === year}
-            className={`rounded-control px-4 py-2 text-sm font-semibold transition ${
+            className={`rounded-control px-4 py-2 text-small font-semibold transition ${
               selectedYear === year
                 ? 'bg-ink text-paper'
                 : 'text-sand-500 hover:text-ink'

@@ -37,7 +37,7 @@ export default function ExamIndex({ questions }) {
       aria-label="Índice del examen"
       className="rounded-panel border border-sand-200 bg-surface p-4 print:hidden lg:sticky lg:top-24"
     >
-      <h2 className="mb-3 px-2 text-xs font-semibold uppercase tracking-widest text-sand-500">
+      <h2 className="mb-3 px-2 font-mono text-label font-medium uppercase text-sand-500">
         Índice del examen
       </h2>
 
@@ -56,18 +56,18 @@ export default function ExamIndex({ questions }) {
                 }`}
               >
                 <span
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-pill text-xs font-bold ${
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-pill text-caption font-bold ${
                     isActive ? 'bg-accent text-white' : 'bg-sand-100 text-sand-500'
                   }`}
                 >
                   {questionNumber}
                 </span>
                 <span className="leading-tight">
-                  <span className="block text-sm font-semibold text-ink">
+                  <span className="block text-small font-semibold text-ink">
                     Pregunta {questionNumber}
                   </span>
                   {question.topic && (
-                    <span className="block text-xs text-sand-500">
+                    <span className="block text-caption text-sand-500">
                       {question.topic}
                     </span>
                   )}

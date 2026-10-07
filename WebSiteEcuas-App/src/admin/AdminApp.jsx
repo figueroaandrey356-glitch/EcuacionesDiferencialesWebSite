@@ -13,7 +13,7 @@ function CenteredMessage({ title, children }) {
   return (
     <div className="flex min-h-screen items-center justify-center px-6 py-12">
       <div className="max-w-md text-center">
-        {title && <h1 className="font-display text-2xl font-semibold text-ink">{title}</h1>}
+        {title && <h1 className="font-display text-heading font-semibold text-ink">{title}</h1>}
         <div className="mt-3 text-sand-600">{children}</div>
       </div>
     </div>

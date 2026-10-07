@@ -93,8 +93,8 @@ export default function ExamDashboard() {
     <div>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Exámenes</h1>
-          <p className="mt-1 text-sm text-sand-500">
+          <h1 className="font-display text-heading font-semibold text-ink">Exámenes</h1>
+          <p className="mt-1 text-small text-sand-500">
             Solo los exámenes publicados aparecen en el sitio de estudiantes.
           </p>
         </div>
@@ -110,7 +110,7 @@ export default function ExamDashboard() {
       </div>
 
       {error && (
-        <p role="alert" className="mt-6 rounded-control bg-danger-soft px-4 py-3 text-sm text-danger">
+        <p role="alert" className="mt-6 rounded-control bg-danger-soft px-4 py-3 text-small text-danger">
           {error}
         </p>
       )}
@@ -123,8 +123,8 @@ export default function ExamDashboard() {
             Aún no hay exámenes. Sube un PDF o crea uno paso a paso para empezar.
           </p>
         ) : (
-          <table className="w-full min-w-[640px] text-left text-sm">
-            <thead className="border-b border-sand-200 text-xs uppercase tracking-widest text-sand-500">
+          <table className="w-full min-w-[640px] text-left text-small">
+            <thead className="border-b border-sand-200 font-mono text-label uppercase text-sand-500">
               <tr>
                 <th className="px-6 py-3 font-semibold">Examen</th>
                 <th className="px-4 py-3 font-semibold">Periodo</th>
@@ -146,7 +146,7 @@ export default function ExamDashboard() {
                       >
                         {exam.name}
                       </Link>
-                      <span className="block text-xs text-sand-500">{exam.variant}</span>
+                      <span className="block text-caption text-sand-500">{exam.variant}</span>
                     </td>
                     <td className="px-4 py-4 text-sand-600">
                       {exam.year} · {exam.semester}
@@ -154,7 +154,7 @@ export default function ExamDashboard() {
                     <td className="px-4 py-4 text-sand-600">{describeContent(exam)}</td>
                     <td className="px-4 py-4">
                       <span
-                        className={`rounded-pill px-2.5 py-1 text-xs font-semibold ${statusStyles[exam.status]}`}
+                        className={`rounded-pill px-2.5 py-1 text-caption font-semibold ${statusStyles[exam.status]}`}
                       >
                         {statusLabels[exam.status]}
                       </span>

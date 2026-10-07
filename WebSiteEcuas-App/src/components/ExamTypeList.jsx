@@ -42,11 +42,11 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
   return (
     <section className="mt-10">
       <div className="mb-6">
-        <h2 className="font-display text-2xl font-semibold text-ink">
+        <h2 className="font-display text-heading font-semibold text-ink">
           {semester === 'Verano' ? 'Verano' : `Semestre ${semester}`} · {year}
         </h2>
         {!loading && !result.failed && (
-          <p className="mt-1 text-sm text-sand-500">
+          <p className="mt-1 text-small text-sand-500">
             {exams.length === 1
               ? '1 examen disponible'
               : `${exams.length} exámenes disponibles`}
@@ -70,21 +70,21 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
                 className="group rounded-panel border border-sand-200 bg-surface p-6 transition hover:-translate-y-1 hover:border-accent/40"
               >
                 <div className="flex items-start justify-between">
-                  <span className="font-mono text-sm text-sand-400">
+                  <span className="font-mono text-small text-sand-400">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <span
-                    className={`rounded-pill px-2.5 py-1 text-xs font-semibold ${variantStyles[exam.variant] ?? variantStyles.Reposición}`}
+                    className={`rounded-pill px-2.5 py-1 text-caption font-semibold ${variantStyles[exam.variant] ?? variantStyles.Reposición}`}
                   >
                     {exam.variant}
                   </span>
                 </div>
 
-                <h3 className="mt-6 font-display text-xl font-semibold text-ink">
+                <h3 className="mt-6 font-display text-subheading font-semibold text-ink">
                   {exam.name}
                 </h3>
 
-                <p className="mt-6 flex items-center justify-between text-sm">
+                <p className="mt-6 flex items-center justify-between text-small">
                   <span className="text-sand-500">
                     {questionCount === 0 && 'Solo PDF'}
                     {questionCount === 1 && '1 problema'}

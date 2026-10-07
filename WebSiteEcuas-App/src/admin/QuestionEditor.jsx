@@ -6,7 +6,7 @@ function MathPreview({ text }) {
   if (!text.includes('$')) return null;
 
   return (
-    <p className="mt-2 whitespace-pre-line rounded-control bg-sand-50 px-3 py-2 font-mono text-sm leading-relaxed text-ink ring-1 ring-sand-200/70">
+    <p className="mt-2 whitespace-pre-line rounded-control bg-sand-50 px-3 py-2 text-body text-ink ring-1 ring-sand-200/70">
       <MathText text={text} />
     </p>
   );
@@ -22,7 +22,7 @@ function RemovableField({ id, label, onRemove, children }) {
         <button
           type="button"
           onClick={onRemove}
-          className="mb-1.5 text-xs font-semibold text-sand-400 transition hover:text-danger"
+          className="mb-1.5 text-caption font-semibold text-sand-400 transition hover:text-danger"
         >
           Quitar
         </button>
@@ -53,10 +53,10 @@ export default function QuestionEditor({ question, number, isFirst, isLast, onCh
   return (
     <article className={cardClass}>
       <header className="mb-5 flex items-center gap-3">
-        <span className="flex h-9 w-9 items-center justify-center rounded-pill bg-ink font-display text-sm font-semibold text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-pill bg-ink font-display text-small font-semibold text-white">
           {number}
         </span>
-        <h3 className="font-display text-xl font-semibold text-ink">Problema {number}</h3>
+        <h3 className="font-display text-subheading font-semibold text-ink">Problema {number}</h3>
 
         <div className="ml-auto flex items-center gap-1">
           <button
@@ -130,7 +130,7 @@ export default function QuestionEditor({ question, number, isFirst, isLast, onCh
             <ol className="space-y-3">
               {question.steps.map((step, index) => (
                 <li key={index} className="flex gap-3">
-                  <span className="mt-1.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-xs font-bold text-accent">
+                  <span className="mt-1.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-caption font-bold text-accent">
                     {index + 1}
                   </span>
 

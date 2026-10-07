@@ -38,8 +38,8 @@ export default function ExamPractice() {
             <p className="text-sand-500">Cargando examen…</p>
           ) : (
             <div className="text-center">
-              <p className="font-display text-7xl italic text-sand-300">∅</p>
-              <h1 className="mt-4 font-display text-3xl font-semibold text-ink">
+              <p className="font-display text-display italic text-sand-300">∅</p>
+              <h1 className="mt-4 font-display text-heading font-semibold text-ink">
                 {failed ? 'No se pudo cargar el examen' : 'Examen no encontrado'}
               </h1>
               <p className="mt-2 text-sand-600">

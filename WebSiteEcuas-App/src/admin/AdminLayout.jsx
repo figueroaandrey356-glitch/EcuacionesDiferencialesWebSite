@@ -15,12 +15,12 @@ export default function AdminLayout({ email, children }) {
           <Link to="/admin" className="flex items-center gap-3">
             <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" className="h-9 w-9" />
             <span className="leading-tight">
-              <span className="block font-display text-lg font-semibold">Estudiando ED</span>
-              <span className="block text-xs text-white/60">Administración</span>
+              <span className="block font-display text-subheading font-semibold">Estudiando ED</span>
+              <span className="block text-caption text-white/60">Administración</span>
             </span>
           </Link>
 
-          <div className="flex items-center gap-3 text-sm">
+          <div className="flex items-center gap-3 text-small">
             <span className="hidden text-white/60 sm:inline">{email}</span>
             <button
               onClick={() => supabase.auth.signOut()}
@@ -49,8 +49,8 @@ export default function AdminLayout({ email, children }) {
                     }`
                   }
                 >
-                  <span className="block text-sm font-semibold text-ink">{item.label}</span>
-                  <span className="block text-xs text-sand-500">{item.hint}</span>
+                  <span className="block text-small font-semibold text-ink">{item.label}</span>
+                  <span className="block text-caption text-sand-500">{item.hint}</span>
                 </NavLink>
               </li>
             ))}
@@ -61,7 +61,7 @@ export default function AdminLayout({ email, children }) {
               href={`${import.meta.env.BASE_URL}exams`}
               target="_blank"
               rel="noreferrer"
-              className="block rounded-control px-3 py-2.5 text-sm font-semibold text-sand-600 transition hover:bg-sand-100 hover:text-ink"
+              className="block rounded-control px-3 py-2.5 text-small font-semibold text-sand-600 transition hover:bg-sand-100 hover:text-ink"
             >
               Abrir sitio de estudiantes ↗
             </a>

@@ -5,7 +5,7 @@ export default function SemesterSelector({ selectedSemester, onSelectSemester })
 
   return (
     <div>
-      <h2 className="mb-2 text-xs font-semibold uppercase tracking-widest text-sand-500">
+      <h2 className="mb-2 font-mono text-label font-medium uppercase text-sand-500">
         Semestre
       </h2>
 
@@ -15,7 +15,7 @@ export default function SemesterSelector({ selectedSemester, onSelectSemester })
             key={sem.id}
             onClick={() => onSelectSemester(sem.id)}
             aria-pressed={selectedSemester === sem.id}
-            className={`rounded-control px-4 py-2 text-sm font-semibold transition ${
+            className={`rounded-control px-4 py-2 text-small font-semibold transition ${
               selectedSemester === sem.id
                 ? 'bg-ink text-paper'
                 : 'text-sand-500 hover:text-ink'

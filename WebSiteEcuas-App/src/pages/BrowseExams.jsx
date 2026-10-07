@@ -18,10 +18,10 @@ export default function BrowseExams() {
 
       <main className="grow">
         <div className="mx-auto max-w-6xl px-6 py-10">
-          <h1 className="font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+          <h1 className="font-display text-title font-semibold text-ink">
             Selecciona un examen
           </h1>
-          <p className="mt-3 text-sand-600">
+          <p className="mt-3 max-w-prose text-sand-600">
             Elige el año y el semestre para ver los exámenes disponibles.
           </p>
 
@@ -43,17 +43,17 @@ export default function BrowseExams() {
               <button
                 onClick={() => setShowAdvanced(!showAdvanced)}
                 aria-expanded={showAdvanced}
-                className="flex items-center gap-2 text-sm font-semibold text-sand-600 transition hover:text-ink"
+                className="flex items-center gap-2 text-small font-semibold text-sand-600 transition hover:text-ink"
               >
                 <span
                   aria-hidden="true"
-                  className={`text-xs transition-transform ${showAdvanced ? 'rotate-90' : ''}`}
+                  className={`text-caption transition-transform ${showAdvanced ? 'rotate-90' : ''}`}
                 >
                   ▶
                 </span>
                 Filtros avanzados
                 {selectedVariant !== 'Todos' && (
-                  <span className="rounded-pill bg-accent/10 px-2 py-0.5 text-xs text-accent">
+                  <span className="rounded-pill bg-accent/10 px-2 py-0.5 text-caption text-accent">
                     {selectedVariant}
                   </span>
                 )}

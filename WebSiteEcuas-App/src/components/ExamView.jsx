@@ -11,7 +11,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
     <>
       {/* Título y meta del examen */}
       <div className="mb-8">
-        <div className="flex flex-wrap gap-2 text-xs font-semibold">
+        <div className="flex flex-wrap gap-2 text-caption font-semibold">
           <span className="rounded-pill bg-sand-200/70 px-2.5 py-1 text-sand-600">
             {exam.year}
           </span>
@@ -25,7 +25,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
           )}
         </div>
 
-        <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+        <h1 className="mt-4 font-display text-title font-semibold text-ink">
           {exam.name}
         </h1>
 
@@ -36,7 +36,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
               target="_blank"
               rel="noreferrer"
               download
-              className="rounded-control bg-ink px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-dark"
+              className="rounded-control bg-ink px-4 py-2 text-small font-semibold text-white transition hover:bg-accent-dark"
             >
               ↓ Descargar enunciado (PDF)
             </a>
@@ -44,7 +44,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
             <button
               disabled
               title="El enunciado en PDF de este examen aún no está disponible"
-              className="cursor-not-allowed rounded-control border border-dashed border-sand-300 px-4 py-2 text-sm font-semibold text-sand-400"
+              className="cursor-not-allowed rounded-control border border-dashed border-sand-300 px-4 py-2 text-small font-semibold text-sand-400"
             >
               Descargar enunciado · pronto
             </button>

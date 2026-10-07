@@ -28,10 +28,10 @@ export default function AdminLogin() {
         className="w-full max-w-sm rounded-panel border border-sand-200 bg-surface p-8"
       >
         <img src={`${import.meta.env.BASE_URL}logo.svg`} alt="" className="h-12 w-12" />
-        <h1 className="mt-4 font-display text-2xl font-semibold text-ink">
+        <h1 className="mt-4 font-display text-heading font-semibold text-ink">
           Administración
         </h1>
-        <p className="mt-1 text-sm text-sand-500">Estudiando ED · acceso restringido</p>
+        <p className="mt-1 text-small text-sand-500">Estudiando ED · acceso restringido</p>
 
         <div className="mt-6 space-y-4">
           <div>
@@ -66,7 +66,7 @@ export default function AdminLogin() {
         </div>
 
         {error && (
-          <p role="alert" className="mt-4 rounded-control bg-danger-soft px-3 py-2 text-sm text-danger">
+          <p role="alert" className="mt-4 rounded-control bg-danger-soft px-3 py-2 text-small text-danger">
             {error}
           </p>
         )}
