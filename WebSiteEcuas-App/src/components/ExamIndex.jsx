@@ -35,13 +35,13 @@ export default function ExamIndex({ questions }) {
   return (
     <nav
       aria-label="Índice del examen"
-      className="rounded-panel border border-sand-200 bg-surface p-4 print:hidden lg:sticky lg:top-24"
+      className="print:hidden lg:sticky lg:top-24"
     >
-      <h2 className="mb-3 px-2 font-mono text-label font-medium uppercase text-sand-500">
+      <h2 className="mb-3 font-mono text-label font-medium uppercase text-sand-500">
         Índice del examen
       </h2>
 
-      <ol className="space-y-1">
+      <ol className="border-l border-sand-300">
         {questions.map((question, index) => {
           const questionNumber = index + 1;
           const isActive = activeNumber === questionNumber;
@@ -51,16 +51,14 @@ export default function ExamIndex({ questions }) {
               <button
                 onClick={() => handleGoTo(questionNumber)}
                 aria-current={isActive ? 'true' : undefined}
-                className={`flex w-full items-start gap-3 rounded-control px-2 py-2 text-left transition ${
-                  isActive ? 'bg-accent/10' : 'hover:bg-sand-100'
+                className={`-ml-px flex w-full items-baseline gap-3 border-l-2 py-2 pl-4 pr-2 text-left transition ${
+                  isActive ? 'border-accent' : 'border-transparent hover:border-sand-400'
                 }`}
               >
                 <span
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-pill text-caption font-bold ${
-                    isActive ? 'bg-accent text-white' : 'bg-sand-100 text-sand-500'
-                  }`}
+                  className={`font-mono text-caption ${isActive ? 'text-accent' : 'text-sand-500'}`}
                 >
-                  {questionNumber}
+                  {String(questionNumber).padStart(2, '0')}
                 </span>
                 <span className="leading-tight">
                   <span className="block text-small font-semibold text-ink">

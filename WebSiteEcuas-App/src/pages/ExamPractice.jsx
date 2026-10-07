@@ -33,7 +33,7 @@ export default function ExamPractice() {
     return (
       <div className="flex min-h-screen flex-col">
         <Navbar />
-        <main className="flex grow items-center justify-center px-6 py-20">
+        <main className="flex grow items-center justify-center px-gutter py-section">
           {loading ? (
             <p className="text-sand-500">Cargando examen…</p>
           ) : (
@@ -66,13 +66,13 @@ export default function ExamPractice() {
       <Navbar />
 
       <main className="grow">
-        <div className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mx-auto max-w-page px-gutter pb-section pt-section-sm">
           <ExamView exam={exam} />
 
-          <div className="mt-12 flex justify-center print:hidden">
+          <div className="flex border-t border-sand-300 pt-6 print:hidden">
             <Link
               to="/exams"
-              className="rounded-control px-6 py-3 font-semibold text-sand-600 transition hover:bg-sand-200/60 hover:text-ink"
+              className="font-semibold text-sand-600 underline-offset-4 transition hover:text-ink hover:underline"
             >
               ← Volver a exámenes
             </Link>

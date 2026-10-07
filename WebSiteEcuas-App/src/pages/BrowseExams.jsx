@@ -17,7 +17,7 @@ export default function BrowseExams() {
       <Navbar />
 
       <main className="grow">
-        <div className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mx-auto max-w-page px-gutter pb-section pt-section-sm">
           <h1 className="font-display text-title font-semibold text-ink">
             Selecciona un examen
           </h1>
@@ -26,7 +26,7 @@ export default function BrowseExams() {
           </p>
 
           {/* Filtros: año y semestre */}
-          <div className="mt-8 rounded-panel border border-sand-200 bg-surface p-5">
+          <div className="mt-10 border-y border-sand-300 py-6">
             <div className="flex flex-wrap gap-x-10 gap-y-5">
               <YearSelector
                 selectedYear={selectedYear}

@@ -6,23 +6,21 @@ export default function QuestionCard({ questionNumber, question }) {
     <article
       id={`problema-${questionNumber}`}
       data-question-number={questionNumber}
-      className="scroll-mt-24 break-inside-avoid rounded-panel border border-sand-200 bg-surface p-6 sm:p-8"
+      className="scroll-mt-24 break-inside-avoid border-t border-ink pb-section-sm pt-6"
     >
-      <header className="mb-5 flex flex-wrap items-center gap-3">
-        <span className="flex h-9 w-9 items-center justify-center rounded-pill bg-ink font-display text-small font-semibold text-white">
-          {questionNumber}
-        </span>
-        <h3 className="font-display text-subheading font-semibold text-ink">
+      <header className="mb-6 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+        <h3 className="font-display text-heading font-semibold text-ink">
           Problema {questionNumber}
         </h3>
         {question.topic && (
-          <span className="rounded-pill bg-accent/10 px-2.5 py-1 text-caption font-semibold text-accent sm:ml-auto">
+          <span className="font-mono text-label font-medium uppercase text-sand-500">
             {question.topic}
           </span>
         )}
       </header>
 
-      <div className="rounded-control bg-sand-50 px-5 py-4 ring-1 ring-sand-200/70">
+      {/* El enunciado es el único bloque con fondo: es lo que se lee primero */}
+      <div className="rounded-panel border border-sand-200 bg-surface px-5 py-5 sm:px-6">
         <p className="max-w-prose whitespace-pre-line text-body text-ink">
           <MathText text={question.statement} />
         </p>

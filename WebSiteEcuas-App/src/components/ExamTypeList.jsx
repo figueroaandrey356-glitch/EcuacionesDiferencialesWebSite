@@ -2,10 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPublishedExams } from '../data/examsApi';
 
-const variantStyles = {
-  Ordinario: 'bg-sand-200/70 text-sand-600',
-  Extraordinario: 'bg-sand-200/70 text-sand-600',
-  Reposición: 'bg-sand-200/70 text-sand-600',
+// Columnas compartidas por el encabezado y las filas (solo desde sm; en móvil la fila se apila)
+const rowColumns = 'sm:grid sm:grid-cols-[2.5rem_minmax(0,1fr)_9rem_8rem_7rem] sm:items-baseline sm:gap-x-6';
+
+const describeContent = exam => {
+  const count = exam.questions.length;
+  if (count === 0) return 'Solo PDF';
+  const problems = count === 1 ? '1 problema' : `${count} problemas`;
+  return exam.pdfPath ? `${problems} + PDF` : problems;
 };
 
 export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
@@ -40,63 +44,66 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
   else if (variant === 'Todos') emptyMessage = 'Aún no hay exámenes cargados para este periodo.';
 
   return (
-    <section className="mt-10">
-      <div className="mb-6">
+    <section className="mt-section-sm">
+      <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <h2 className="font-display text-heading font-semibold text-ink">
           {semester === 'Verano' ? 'Verano' : `Semestre ${semester}`} · {year}
         </h2>
         {!loading && !result.failed && (
-          <p className="mt-1 text-small text-sand-500">
-            {exams.length === 1
-              ? '1 examen disponible'
-              : `${exams.length} exámenes disponibles`}
+          <p className="font-mono text-small text-sand-500">
+            {exams.length === 1 ? '1 examen' : `${exams.length} exámenes`}
           </p>
         )}
       </div>
 
       {exams.length === 0 ? (
-        <p className="rounded-panel border border-dashed border-sand-300 px-6 py-12 text-center text-sand-500">
-          {emptyMessage}
-        </p>
+        <p className="mt-6 border-y border-sand-300 py-12 text-sand-600">{emptyMessage}</p>
       ) : (
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {exams.map((exam, index) => {
-            const questionCount = exam.questions.length;
+        <div className="mt-6 border-t border-ink">
+          <div
+            aria-hidden="true"
+            className={`hidden border-b border-sand-300 py-2.5 font-mono text-label font-medium uppercase text-sand-500 ${rowColumns}`}
+          >
+            <span>N.º</span>
+            <span>Examen</span>
+            <span>Tipo</span>
+            <span>Contenido</span>
+            <span />
+          </div>
 
-            return (
-              <Link
-                key={exam.id}
-                to={`/exam/${exam.id}`}
-                className="group rounded-panel border border-sand-200 bg-surface p-6 transition hover:-translate-y-1 hover:border-accent/40"
-              >
-                <div className="flex items-start justify-between">
-                  <span className="font-mono text-small text-sand-400">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span
-                    className={`rounded-pill px-2.5 py-1 text-caption font-semibold ${variantStyles[exam.variant] ?? variantStyles.Reposición}`}
+          <ul>
+            {exams.map((exam, index) => {
+              const hasQuestions = exam.questions.length > 0;
+
+              return (
+                <li key={exam.id} className="border-b border-sand-200">
+                  <Link
+                    to={`/exam/${exam.id}`}
+                    className={`group block py-5 transition hover:bg-sand-100 ${rowColumns}`}
                   >
-                    {exam.variant}
-                  </span>
-                </div>
-
-                <h3 className="mt-6 font-display text-subheading font-semibold text-ink">
-                  {exam.name}
-                </h3>
-
-                <p className="mt-6 flex items-center justify-between text-small">
-                  <span className="text-sand-500">
-                    {questionCount === 0 && 'Solo PDF'}
-                    {questionCount === 1 && '1 problema'}
-                    {questionCount > 1 && `${questionCount} problemas`}
-                  </span>
-                  <span className="font-semibold text-accent transition group-hover:translate-x-1">
-                    {questionCount === 0 ? 'Descargar →' : 'Practicar →'}
-                  </span>
-                </p>
-              </Link>
-            );
-          })}
+                    <span className="hidden font-mono text-small text-sand-500 sm:block">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="block font-display text-subheading font-semibold text-ink">
+                      {exam.name}
+                    </span>
+                    {/* En móvil, tipo y contenido comparten una línea bajo el nombre */}
+                    <span className="text-small text-sand-600 sm:block">
+                      {exam.variant}
+                      <span className="sm:hidden"> · </span>
+                    </span>
+                    <span className="text-small text-sand-600 sm:block">
+                      {describeContent(exam)}
+                    </span>
+                    <span className="mt-3 block text-small font-semibold text-accent group-hover:underline sm:mt-0 sm:text-right">
+                      {hasQuestions ? 'Practicar' : 'Descargar'}
+                      <span aria-hidden="true"> →</span>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
     </section>

@@ -13,8 +13,8 @@ export default function Navbar() {
   const showBack = pathname !== '/';
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-sand-200/70 bg-white/80 backdrop-blur-md print:hidden">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
+    <nav className="sticky top-0 z-50 border-b border-sand-200 bg-paper print:hidden">
+      <div className="mx-auto flex max-w-page items-center justify-between px-gutter py-3">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
           <img

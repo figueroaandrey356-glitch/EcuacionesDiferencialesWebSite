@@ -126,11 +126,3 @@ a {
   outline-offset: 2px;
 }
 
-/* Cuadrícula tipo papel milimétrico para el hero */
-.bg-grid {
-  background-image:
-    linear-gradient(to right, rgb(255 255 255 / 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(255 255 255 / 0.06) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
-}

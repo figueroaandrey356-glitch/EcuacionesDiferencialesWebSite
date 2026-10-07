@@ -33,7 +33,7 @@ export default function StepReveal({ steps, fullSolution }) {
     <div className="mt-6">
       {/* Progreso */}
       <div className={`mb-5 items-center gap-3 ${hasSteps ? 'flex' : 'hidden'}`}>
-        <div className="h-1.5 grow overflow-hidden rounded-pill bg-sand-100">
+        <div className="h-1 grow overflow-hidden rounded-pill bg-sand-200">
           <motion.div
             className="h-full rounded-pill bg-accent"
             initial={false}
@@ -41,14 +41,14 @@ export default function StepReveal({ steps, fullSolution }) {
             transition={{ duration: 0.3 }}
           />
         </div>
-        <span className="shrink-0 text-caption font-medium tabular-nums text-sand-500">
+        <span className="shrink-0 font-mono text-caption tabular-nums text-sand-500">
           {revealedSteps} de {steps.length} pasos
         </span>
       </div>
 
       {/* Pasos Revelados */}
       {!hasSteps ? null : revealedSteps === 0 ? (
-        <p className="rounded-control border border-dashed border-sand-300 px-5 py-6 text-center text-small text-sand-500">
+        <p className="text-small text-sand-600">
           Intenta resolverlo primero. Cuando quieras, revela la solución paso a paso.
         </p>
       ) : (
@@ -63,7 +63,7 @@ export default function StepReveal({ steps, fullSolution }) {
                 className="flex gap-4"
               >
                 <div className="flex flex-col items-center">
-                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-caption font-bold text-accent">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-pill border border-sand-300 font-mono text-caption text-sand-600">
                     {index + 1}
                   </span>
                   {index < revealedSteps - 1 && (
@@ -110,7 +110,7 @@ export default function StepReveal({ steps, fullSolution }) {
           <button
             onClick={toggleFullSolution}
             aria-expanded={showFullSolution}
-            className="rounded-control px-4 py-2.5 text-small font-semibold text-success transition hover:bg-success-soft sm:ml-auto"
+            className="rounded-control px-4 py-2.5 text-small font-semibold text-ink underline underline-offset-4 transition hover:bg-sand-100 sm:ml-auto"
           >
             {showFullSolution ? 'Ocultar' : 'Ver'} solución completa
           </button>
@@ -126,8 +126,8 @@ export default function StepReveal({ steps, fullSolution }) {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="mt-4 rounded-control bg-success-soft p-5 ring-1 ring-success/25">
-              <h4 className="mb-2 font-mono text-label font-medium uppercase text-success">
+            <div className="mt-4 rounded-panel bg-sand-100 p-5 sm:p-6">
+              <h4 className="mb-3 font-mono text-label font-medium uppercase text-sand-600">
                 Solución completa
               </h4>
               <p className="max-w-prose whitespace-pre-line text-body text-sand-700">

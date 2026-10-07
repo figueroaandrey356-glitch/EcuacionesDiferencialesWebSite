@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import MathText from '../components/MathText';
 
 const features = [
   {
@@ -20,9 +21,11 @@ const features = [
   },
 ];
 
+const previewStatement = '$\\dfrac{dy}{dx} + 2y = 0, \\quad y(0) = 3$';
+
 const previewSteps = [
-  'Separamos variables: dy/y = -2 dx',
-  'Integramos: ln|y| = -2x + C₁',
+  'Separamos variables: $\\frac{dy}{y} = -2\\,dx$',
+  'Integramos: $\\ln|y| = -2x + C_1$',
 ];
 
 export default function Home() {
@@ -31,29 +34,23 @@ export default function Home() {
       <Navbar />
 
       <main className="grow">
-        {/* Hero */}
-        <section className="relative overflow-hidden bg-ink text-white">
-          <div className="bg-grid absolute inset-0" aria-hidden="true" />
-          <div
-            className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-pill bg-accent/40 blur-3xl"
-            aria-hidden="true"
-          />
-
-          <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 py-20 lg:grid-cols-[1.1fr_1fr] lg:py-28">
-            <div>
-              <h1 className="font-display text-display font-semibold">
+        {/* Hero: título a la izquierda, problema de ejemplo anclado abajo a la derecha */}
+        <section className="border-b border-sand-200">
+          <div className="mx-auto grid max-w-page gap-x-12 gap-y-14 px-gutter pb-section pt-section-sm lg:grid-cols-12 lg:pt-section">
+            <div className="lg:col-span-8">
+              <h1 className="font-display text-display font-semibold text-ink">
                 Ecuaciones diferenciales,{' '}
-                <em className="text-accent-soft">paso a paso</em>.
+                <em className="font-normal text-accent">paso a paso</em>.
               </h1>
 
-              <p className="mt-6 max-w-prose text-lead text-sand-300">
+              <p className="mt-8 max-w-prose text-lead text-sand-600">
                 Practica con exámenes de semestres anteriores y revela la
                 solución gradualmente, a tu ritmo.
               </p>
 
               <Link
                 to="/exams"
-                className="mt-10 inline-flex items-center gap-2 rounded-control bg-surface px-7 py-3.5 font-semibold text-ink transition hover:-translate-y-0.5 hover:bg-sand-100"
+                className="mt-10 inline-flex items-center gap-2 rounded-control bg-accent px-6 py-3 font-semibold text-white transition hover:bg-accent-dark"
               >
                 Comenzar a practicar
                 <span aria-hidden="true">→</span>
@@ -62,60 +59,58 @@ export default function Home() {
 
             {/* Vista previa decorativa de un problema */}
             <div
-              className="rounded-panel bg-surface p-6 text-ink ring-1 ring-white/20 lg:rotate-1"
+              className="rounded-panel border border-sand-300 bg-surface p-6 lg:col-span-4 lg:self-end"
               aria-hidden="true"
             >
-              <p className="font-mono text-label font-medium uppercase text-sand-400">
+              <p className="font-mono text-label font-medium uppercase text-sand-500">
                 Problema de ejemplo
               </p>
-              <p className="mt-3 rounded-control bg-sand-50 px-4 py-3 font-mono text-small ring-1 ring-sand-200/70">
-                dy/dx + 2y = 0, &nbsp; y(0) = 3
+              <p className="mt-4 text-body text-ink">
+                <MathText text={previewStatement} />
               </p>
 
-              <ol className="mt-5 space-y-3">
+              <ol className="mt-6 space-y-3 border-t border-sand-200 pt-5">
                 {previewSteps.map((step, index) => (
-                  <li key={index} className="flex gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-accent/10 text-caption font-bold text-accent">
-                      {index + 1}
+                  <li key={index} className="flex gap-3 text-small text-sand-700">
+                    <span className="font-mono text-sand-500">{index + 1}</span>
+                    <span>
+                      <MathText text={step} />
                     </span>
-                    <span className="font-mono text-small text-sand-700">{step}</span>
                   </li>
                 ))}
-                <li className="flex gap-3">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-pill bg-sand-100 text-caption font-bold text-sand-400">
-                    3
-                  </span>
-                  <span className="h-5 grow rounded bg-sand-100" />
+                <li className="flex gap-3 text-small text-sand-500">
+                  <span className="font-mono">3</span>
+                  <span>Paso oculto</span>
                 </li>
               </ol>
-
-              <div className="mt-5 rounded-control bg-accent px-4 py-2.5 text-center text-small font-semibold text-white">
-                Revelar siguiente paso →
-              </div>
             </div>
           </div>
         </section>
 
-        {/* Características */}
-        <section className="mx-auto max-w-6xl px-6 py-20">
-          <div className="grid gap-6 md:grid-cols-3">
-            {features.map(feature => (
-              <div
+        {/* Cómo funciona: título en una columna angosta, lista numerada en la ancha */}
+        <section className="mx-auto grid max-w-page gap-x-12 gap-y-8 px-gutter py-section lg:grid-cols-12 lg:py-section-lg">
+          <h2 className="font-display text-title font-semibold text-ink lg:col-span-4">
+            Cómo funciona
+          </h2>
+
+          <ol className="border-t border-ink lg:col-span-8">
+            {features.map((feature, index) => (
+              <li
                 key={feature.title}
-                className="rounded-panel border border-sand-200 bg-surface p-7"
+                className="grid gap-x-8 gap-y-2 border-b border-sand-200 py-8 sm:grid-cols-[3rem_1fr]"
               >
-                <span className="inline-flex h-11 min-w-11 items-center justify-center rounded-control bg-accent/10 px-3 font-display text-lg italic text-accent">
-                  {feature.symbol}
+                <span className="pt-1.5 font-mono text-small text-sand-500">
+                  {String(index + 1).padStart(2, '0')}
                 </span>
-                <h2 className="mt-5 font-display text-subheading font-semibold text-ink">
-                  {feature.title}
-                </h2>
-                <p className="mt-2 text-small text-sand-600">
-                  {feature.text}
-                </p>
-              </div>
+                <div>
+                  <h3 className="font-display text-heading font-semibold text-ink">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-2 max-w-prose text-sand-600">{feature.text}</p>
+                </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </section>
       </main>
 
