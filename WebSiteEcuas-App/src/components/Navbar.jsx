@@ -38,7 +38,7 @@ export default function Navbar() {
               to={backPath}
               className="mr-1 rounded-control border border-sand-300 px-3 py-2 text-small font-medium text-sand-600 transition hover:border-sand-400 hover:bg-sand-100 hover:text-ink sm:px-4"
             >
-              ← Volver
+              <span aria-hidden="true">← </span>Volver
             </Link>
           )}
           {navItems.map(item => (

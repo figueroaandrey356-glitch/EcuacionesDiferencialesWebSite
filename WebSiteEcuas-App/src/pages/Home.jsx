@@ -5,22 +5,21 @@ import MathText from '../components/MathText';
 
 const features = [
   {
-    symbol: '∫',
     title: 'Exámenes anteriores',
     text: 'Parciales ordinarios, extraordinarios y de reposición, organizados por año y semestre.',
   },
   {
-    symbol: '1→n',
     title: 'Solución paso a paso',
     text: 'Revela un paso a la vez y comprueba tu avance antes de ver el siguiente.',
   },
   {
-    symbol: 'y′',
+    // TODO(copy): título genérico. Propuesta: 'Intenta primero'
     title: 'A tu ritmo',
     text: 'Intenta cada problema primero y consulta solo lo que necesites para destrabarte.',
   },
 ];
 
+// TODO(contenido): problema de relleno. Reemplazar por uno tomado de un examen real del curso.
 const previewStatement = '$\\dfrac{dy}{dx} + 2y = 0, \\quad y(0) = 3$';
 
 const previewSteps = [
@@ -43,6 +42,8 @@ export default function Home() {
                 <em className="font-normal text-accent">paso a paso</em>.
               </h1>
 
+              {/* TODO(copy): texto genérico. Propuesta: "Exámenes parciales de Ecuaciones Diferenciales del TEC,
+                  resueltos paso a paso. Intenta cada problema y revela solo el paso que te falta." */}
               <p className="mt-8 max-w-prose text-lead text-sand-600">
                 Practica con exámenes de semestres anteriores y revela la
                 solución gradualmente, a tu ritmo.
@@ -52,6 +53,7 @@ export default function Home() {
                 to="/exams"
                 className="mt-10 inline-flex items-center gap-2 rounded-control bg-accent px-6 py-3 font-semibold text-white transition hover:bg-accent-dark"
               >
+                {/* TODO(copy): botón genérico. Propuesta: "Ver exámenes" */}
                 Comenzar a practicar
                 <span aria-hidden="true">→</span>
               </Link>

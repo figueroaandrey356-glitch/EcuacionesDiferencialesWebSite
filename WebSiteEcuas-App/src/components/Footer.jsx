@@ -8,6 +8,8 @@ export default function Footer() {
             <p className="font-display text-heading font-semibold text-white">
               Estudiando ED
             </p>
+            {/* TODO(copy): texto genérico. Propuesta: "Exámenes anteriores de Ecuaciones Diferenciales
+                del TEC, con la solución paso a paso." */}
             <p className="mt-3 max-w-sm text-small text-sand-300">
               Plataforma interactiva de práctica para estudiantes de
               Ecuaciones Diferenciales.
@@ -43,7 +45,9 @@ export default function Footer() {
         </div>
 
         <div className="mt-section-sm flex flex-col gap-1 border-t border-white/15 pt-6 text-caption text-sand-300 sm:flex-row sm:justify-between">
+          {/* TODO(copy): confirmar con el TEC si este aviso legal es correcto para el sitio */}
           <p>© 2026 Instituto Tecnológico de Costa Rica. Todos los derechos reservados.</p>
+          {/* TODO(copy): texto genérico. Propuesta: "Material de práctica del curso · v1.0", o quitar la línea */}
           <p>Plataforma educativa con fines académicos · v1.0</p>
         </div>
       </div>

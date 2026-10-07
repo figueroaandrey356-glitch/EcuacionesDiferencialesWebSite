@@ -86,7 +86,7 @@ export default function StepReveal({ steps, fullSolution }) {
             onClick={handleHideLast}
             className="rounded-control border border-sand-300 px-4 py-2.5 text-small font-semibold text-sand-600 transition hover:border-sand-400 hover:bg-sand-100 hover:text-ink"
           >
-            ← Paso anterior
+            <span aria-hidden="true">← </span>Paso anterior
           </button>
         )}
 
@@ -95,14 +95,14 @@ export default function StepReveal({ steps, fullSolution }) {
             onClick={handleReset}
             className="rounded-control bg-sand-100 px-4 py-2.5 text-small font-semibold text-ink transition hover:bg-sand-200"
           >
-            ↺ Ocultar pasos
+            <span aria-hidden="true">↺ </span>Ocultar pasos
           </button>
         ) : (
           <button
             onClick={handleRevealNext}
             className="rounded-control bg-accent px-4 py-2.5 text-small font-semibold text-white transition hover:bg-accent-dark"
           >
-            Revelar siguiente paso →
+            Revelar siguiente paso<span aria-hidden="true"> →</span>
           </button>
         )}
 

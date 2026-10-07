@@ -38,7 +38,7 @@ export default function ExamPractice() {
             <p className="text-sand-500">Cargando examen…</p>
           ) : (
             <div className="text-center">
-              <p className="font-display text-display italic text-sand-300">∅</p>
+              <p aria-hidden="true" className="font-display text-display italic text-sand-300">∅</p>
               <h1 className="mt-4 font-display text-heading font-semibold text-ink">
                 {failed ? 'No se pudo cargar el examen' : 'Examen no encontrado'}
               </h1>
@@ -51,7 +51,7 @@ export default function ExamPractice() {
                 to="/exams"
                 className="mt-8 inline-block rounded-control bg-ink px-6 py-3 font-semibold text-white transition hover:bg-accent-dark"
               >
-                ← Volver a exámenes
+                <span aria-hidden="true">← </span>Volver a exámenes
               </Link>
             </div>
           )}
@@ -74,7 +74,7 @@ export default function ExamPractice() {
               to="/exams"
               className="font-semibold text-sand-600 underline-offset-4 transition hover:text-ink hover:underline"
             >
-              ← Volver a exámenes
+              <span aria-hidden="true">← </span>Volver a exámenes
             </Link>
           </div>
         </div>
