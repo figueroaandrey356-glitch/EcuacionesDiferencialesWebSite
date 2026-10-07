@@ -73,7 +73,7 @@ export default function StepReveal({ steps, fullSolution }) {
                     <span className="mt-1 w-px grow bg-neutral-200" />
                   )}
                 </div>
-                <p className="max-w-prose pb-4 pt-0.5 text-body text-neutral-700">
+                <p className="min-w-0 max-w-prose grow pb-4 pt-0.5 text-body text-neutral-700">
                   <MathText text={step} />
                 </p>
               </motion.li>
