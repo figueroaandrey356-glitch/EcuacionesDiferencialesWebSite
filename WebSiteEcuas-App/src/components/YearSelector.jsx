@@ -15,7 +15,7 @@ export default function YearSelector({ selectedYear, onSelectYear }) {
             key={year}
             onClick={() => onSelectYear(year)}
             aria-pressed={selectedYear === year}
-            className={`rounded-control px-4 py-2 text-small font-semibold transition ${
+            className={`rounded-control px-4 py-2 text-small font-semibold transition-colors duration-150 ${
               selectedYear === year
                 ? 'bg-ink text-paper'
                 : 'text-sand-500 hover:text-ink'

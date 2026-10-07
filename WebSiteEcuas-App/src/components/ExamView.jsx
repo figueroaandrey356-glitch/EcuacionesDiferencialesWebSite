@@ -28,7 +28,7 @@ export default function ExamView({ exam, pdfUrl = getPdfUrl(exam.pdfPath) }) {
               target="_blank"
               rel="noreferrer"
               download
-              className="inline-block rounded-control bg-ink px-4 py-2.5 text-small font-semibold text-white transition hover:bg-sand-700"
+              className="inline-block rounded-control bg-ink px-4 py-2.5 text-small font-semibold text-white transition-colors duration-150 hover:bg-sand-700"
             >
               <span aria-hidden="true">↓ </span>Descargar enunciado (PDF)
             </a>

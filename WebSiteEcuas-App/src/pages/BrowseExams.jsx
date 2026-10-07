@@ -43,11 +43,11 @@ export default function BrowseExams() {
               <button
                 onClick={() => setShowAdvanced(!showAdvanced)}
                 aria-expanded={showAdvanced}
-                className="flex items-center gap-2 text-small font-semibold text-sand-600 transition hover:text-ink"
+                className="flex items-center gap-2 text-small font-semibold text-sand-600 transition-colors duration-150 hover:text-ink"
               >
                 <span
                   aria-hidden="true"
-                  className={`text-caption transition-transform ${showAdvanced ? 'rotate-90' : ''}`}
+                  className={`text-caption transition-transform duration-150 ${showAdvanced ? 'rotate-90' : ''}`}
                 >
                   ▶
                 </span>

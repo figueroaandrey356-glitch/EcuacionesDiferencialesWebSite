@@ -15,7 +15,7 @@ export default function VariantSelector({ selectedVariant, onSelectVariant }) {
             key={variant}
             onClick={() => onSelectVariant(variant)}
             aria-pressed={selectedVariant === variant}
-            className={`rounded-control px-4 py-2 text-small font-semibold transition ${
+            className={`rounded-control px-4 py-2 text-small font-semibold transition-colors duration-150 ${
               selectedVariant === variant
                 ? 'bg-ink text-paper'
                 : 'text-sand-500 hover:text-ink'

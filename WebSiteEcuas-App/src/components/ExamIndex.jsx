@@ -27,9 +27,11 @@ export default function ExamIndex({ questions }) {
   }, [questions]);
 
   const handleGoTo = (questionNumber) => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     document
       .getElementById(questionAnchor(questionNumber))
-      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      ?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   };
 
   return (
@@ -51,7 +53,7 @@ export default function ExamIndex({ questions }) {
               <button
                 onClick={() => handleGoTo(questionNumber)}
                 aria-current={isActive ? 'true' : undefined}
-                className={`-ml-px flex w-full items-baseline gap-3 border-l-2 py-2 pl-4 pr-2 text-left transition ${
+                className={`-ml-px flex w-full items-baseline gap-3 border-l-2 py-2 pl-4 pr-2 text-left transition-colors duration-150 ${
                   isActive ? 'border-accent' : 'border-transparent hover:border-sand-400'
                 }`}
               >

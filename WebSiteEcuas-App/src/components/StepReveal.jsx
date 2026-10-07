@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import MathText from './MathText';
 
 export default function StepReveal({ steps, fullSolution }) {
   const [revealedSteps, setRevealedSteps] = useState(0);
   const [showFullSolution, setShowFullSolution] = useState(false);
+
+  // Sin animación para quien pidió movimiento reducido en su sistema
+  const duration = useReducedMotion() ? 0 : 0.18;
 
   const hasSteps = steps.length > 0;
   const allRevealed = revealedSteps >= steps.length;
@@ -38,7 +41,7 @@ export default function StepReveal({ steps, fullSolution }) {
             className="h-full rounded-pill bg-accent"
             initial={false}
             animate={{ width: `${hasSteps ? (revealedSteps / steps.length) * 100 : 0}%` }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration }}
           />
         </div>
         <span className="shrink-0 font-mono text-caption tabular-nums text-sand-500">
@@ -57,9 +60,9 @@ export default function StepReveal({ steps, fullSolution }) {
             {steps.slice(0, revealedSteps).map((step, index) => (
               <motion.li
                 key={index}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.25 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration }}
                 className="flex gap-4"
               >
                 <div className="flex flex-col items-center">
@@ -84,7 +87,7 @@ export default function StepReveal({ steps, fullSolution }) {
         {revealedSteps > 0 && (
           <button
             onClick={handleHideLast}
-            className="rounded-control border border-sand-300 px-4 py-2.5 text-small font-semibold text-sand-600 transition hover:border-sand-400 hover:bg-sand-100 hover:text-ink"
+            className="rounded-control border border-sand-300 px-4 py-2.5 text-small font-semibold text-sand-600 transition-colors duration-150 hover:border-sand-400 hover:bg-sand-100 hover:text-ink"
           >
             <span aria-hidden="true">← </span>Paso anterior
           </button>
@@ -93,14 +96,14 @@ export default function StepReveal({ steps, fullSolution }) {
         {!hasSteps ? null : allRevealed ? (
           <button
             onClick={handleReset}
-            className="rounded-control bg-sand-100 px-4 py-2.5 text-small font-semibold text-ink transition hover:bg-sand-200"
+            className="rounded-control bg-sand-100 px-4 py-2.5 text-small font-semibold text-ink transition-colors duration-150 hover:bg-sand-200"
           >
             <span aria-hidden="true">↺ </span>Ocultar pasos
           </button>
         ) : (
           <button
             onClick={handleRevealNext}
-            className="rounded-control bg-accent px-4 py-2.5 text-small font-semibold text-white transition hover:bg-accent-dark"
+            className="rounded-control bg-accent px-4 py-2.5 text-small font-semibold text-white transition-colors duration-150 hover:bg-accent-dark"
           >
             Revelar siguiente paso<span aria-hidden="true"> →</span>
           </button>
@@ -110,7 +113,7 @@ export default function StepReveal({ steps, fullSolution }) {
           <button
             onClick={toggleFullSolution}
             aria-expanded={showFullSolution}
-            className="rounded-control px-4 py-2.5 text-small font-semibold text-ink underline underline-offset-4 transition hover:bg-sand-100 sm:ml-auto"
+            className="rounded-control px-4 py-2.5 text-small font-semibold text-ink underline underline-offset-4 transition-colors duration-150 hover:bg-sand-100 sm:ml-auto"
           >
             {showFullSolution ? 'Ocultar' : 'Ver'} solución completa
           </button>
@@ -124,6 +127,7 @@ export default function StepReveal({ steps, fullSolution }) {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
+            transition={{ duration }}
             className="overflow-hidden"
           >
             <div className="mt-4 rounded-panel bg-sand-100 p-5 sm:p-6">

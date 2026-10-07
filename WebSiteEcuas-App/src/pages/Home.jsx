@@ -51,7 +51,7 @@ export default function Home() {
 
               <Link
                 to="/exams"
-                className="mt-10 inline-flex items-center gap-2 rounded-control bg-accent px-6 py-3 font-semibold text-white transition hover:bg-accent-dark"
+                className="mt-10 inline-flex items-center gap-2 rounded-control bg-accent px-6 py-3 font-semibold text-white transition-colors duration-150 hover:bg-accent-dark"
               >
                 {/* TODO(copy): botón genérico. Propuesta: "Ver exámenes" */}
                 Comenzar a practicar

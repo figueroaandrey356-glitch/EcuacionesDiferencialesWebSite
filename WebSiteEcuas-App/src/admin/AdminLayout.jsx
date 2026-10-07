@@ -24,7 +24,7 @@ export default function AdminLayout({ email, children }) {
             <span className="hidden text-white/60 sm:inline">{email}</span>
             <button
               onClick={() => supabase.auth.signOut()}
-              className="rounded-control border border-white/25 px-3 py-2 font-medium transition hover:bg-white/10"
+              className="rounded-control border border-white/25 px-3 py-2 font-medium transition-colors duration-150 hover:bg-white/10"
             >
               Cerrar sesión
             </button>
@@ -44,7 +44,7 @@ export default function AdminLayout({ email, children }) {
                   to={item.path}
                   end={item.end}
                   className={({ isActive }) =>
-                    `block rounded-control px-3 py-2.5 transition ${
+                    `block rounded-control px-3 py-2.5 transition-colors duration-150 ${
                       isActive ? 'bg-accent/10' : 'hover:bg-sand-100'
                     }`
                   }
@@ -61,7 +61,7 @@ export default function AdminLayout({ email, children }) {
               href={`${import.meta.env.BASE_URL}exams`}
               target="_blank"
               rel="noreferrer"
-              className="block rounded-control px-3 py-2.5 text-small font-semibold text-sand-600 transition hover:bg-sand-100 hover:text-ink"
+              className="block rounded-control px-3 py-2.5 text-small font-semibold text-sand-600 transition-colors duration-150 hover:bg-sand-100 hover:text-ink"
             >
               Abrir sitio de estudiantes ↗
             </a>

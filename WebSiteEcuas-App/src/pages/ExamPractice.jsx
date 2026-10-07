@@ -49,7 +49,7 @@ export default function ExamPractice() {
               </p>
               <Link
                 to="/exams"
-                className="mt-8 inline-block rounded-control bg-ink px-6 py-3 font-semibold text-white transition hover:bg-accent-dark"
+                className="mt-8 inline-block rounded-control bg-ink px-6 py-3 font-semibold text-white transition-colors duration-150 hover:bg-accent-dark"
               >
                 <span aria-hidden="true">← </span>Volver a exámenes
               </Link>
@@ -72,7 +72,7 @@ export default function ExamPractice() {
           <div className="flex border-t border-sand-300 pt-6 print:hidden">
             <Link
               to="/exams"
-              className="font-semibold text-sand-600 underline-offset-4 transition hover:text-ink hover:underline"
+              className="font-semibold text-sand-600 underline-offset-4 transition-colors duration-150 hover:text-ink hover:underline"
             >
               <span aria-hidden="true">← </span>Volver a exámenes
             </Link>

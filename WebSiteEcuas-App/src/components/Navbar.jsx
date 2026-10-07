@@ -36,7 +36,7 @@ export default function Navbar() {
           {showBack && (
             <Link
               to={backPath}
-              className="mr-1 rounded-control border border-sand-300 px-3 py-2 text-small font-medium text-sand-600 transition hover:border-sand-400 hover:bg-sand-100 hover:text-ink sm:px-4"
+              className="mr-1 rounded-control border border-sand-300 px-3 py-2 text-small font-medium text-sand-600 transition-colors duration-150 hover:border-sand-400 hover:bg-sand-100 hover:text-ink sm:px-4"
             >
               <span aria-hidden="true">← </span>Volver
             </Link>
@@ -47,7 +47,7 @@ export default function Navbar() {
               to={item.path}
               end={item.end}
               className={({ isActive }) =>
-                `rounded-control px-3 py-2 text-small font-medium transition sm:px-4 ${
+                `rounded-control px-3 py-2 text-small font-medium transition-colors duration-150 sm:px-4 ${
                   isActive
                     ? 'bg-ink text-white'
                     : 'text-sand-600 hover:bg-sand-100 hover:text-ink'

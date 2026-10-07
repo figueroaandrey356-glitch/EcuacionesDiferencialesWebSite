@@ -22,7 +22,7 @@ function RemovableField({ id, label, onRemove, children }) {
         <button
           type="button"
           onClick={onRemove}
-          className="mb-1.5 text-caption font-semibold text-sand-400 transition hover:text-danger"
+          className="mb-1.5 text-caption font-semibold text-sand-400 transition-colors duration-150 hover:text-danger"
         >
           Quitar
         </button>

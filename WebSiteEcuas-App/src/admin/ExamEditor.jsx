@@ -177,7 +177,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
               type="button"
               onClick={() => setView(tab.id)}
               aria-pressed={view === tab.id}
-              className={`rounded-control px-4 py-2 text-small font-semibold transition ${
+              className={`rounded-control px-4 py-2 text-small font-semibold transition-colors duration-150 ${
                 view === tab.id ? 'bg-ink text-paper' : 'text-sand-500 hover:text-ink'
               }`}
             >
@@ -275,7 +275,7 @@ export default function ExamEditor({ initialExam, pdfOnly = false }) {
                 <button
                   type="button"
                   onClick={handleRemovePdf}
-                  className="text-small font-semibold text-sand-500 transition hover:text-danger"
+                  className="text-small font-semibold text-sand-500 transition-colors duration-150 hover:text-danger"
                 >
                   Quitar PDF
                 </button>

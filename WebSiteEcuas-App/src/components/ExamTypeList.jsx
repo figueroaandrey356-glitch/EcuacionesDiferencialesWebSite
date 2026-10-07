@@ -79,7 +79,7 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
                 <li key={exam.id} className="border-b border-sand-200">
                   <Link
                     to={`/exam/${exam.id}`}
-                    className={`group block py-5 transition hover:bg-sand-100 ${rowColumns}`}
+                    className={`group block py-5 transition-colors duration-150 hover:bg-sand-100 ${rowColumns}`}
                   >
                     <span className="hidden font-mono text-small text-sand-500 sm:block">
                       {String(index + 1).padStart(2, '0')}

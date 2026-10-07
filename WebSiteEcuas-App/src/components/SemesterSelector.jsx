@@ -15,7 +15,7 @@ export default function SemesterSelector({ selectedSemester, onSelectSemester })
             key={sem.id}
             onClick={() => onSelectSemester(sem.id)}
             aria-pressed={selectedSemester === sem.id}
-            className={`rounded-control px-4 py-2 text-small font-semibold transition ${
+            className={`rounded-control px-4 py-2 text-small font-semibold transition-colors duration-150 ${
               selectedSemester === sem.id
                 ? 'bg-ink text-paper'
                 : 'text-sand-500 hover:text-ink'

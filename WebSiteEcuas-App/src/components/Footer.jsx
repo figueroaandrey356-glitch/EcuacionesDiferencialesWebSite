@@ -37,7 +37,7 @@ export default function Footer() {
             </p>
             <a
               href="mailto:noviedo@itcr.ac.cr"
-              className="text-small text-sand-300 underline underline-offset-4 transition hover:text-white"
+              className="text-small text-sand-300 underline underline-offset-4 transition-colors duration-150 hover:text-white"
             >
               noviedo@itcr.ac.cr
             </a>
