@@ -4,5 +4,6 @@ import { defineConfig } from 'vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/EcuacionesDiferencialesWebSite/',
+  // Vercel sirve el sitio en la raíz; GitHub Pages en /<repo>/
+  base: process.env.VERCEL ? '/' : '/EcuacionesDiferencialesWebSite/',
 })
