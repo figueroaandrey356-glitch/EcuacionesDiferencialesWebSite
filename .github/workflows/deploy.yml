@@ -32,13 +32,10 @@ jobs:
         working-directory: ./WebSiteEcuas-App
         run: npm ci
 
-      # Claves públicas de Supabase (Settings → Secrets and variables → Actions → Variables).
-      # Si faltan, el sitio se publica sin exámenes y sin /admin.
+      # Las claves públicas de Supabase vienen de WebSiteEcuas-App/.env.production. No se pasan aquí:
+      # Vite prioriza las variables del entorno, y una vacía borraría las del archivo.
       - name: Build React app
         working-directory: ./WebSiteEcuas-App
-        env:
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ vars.VITE_SUPABASE_ANON_KEY }}
         run: npm run build
 
       # GitHub Pages has no SPA fallback; serving index.html as 404 lets deep links like /exams load
