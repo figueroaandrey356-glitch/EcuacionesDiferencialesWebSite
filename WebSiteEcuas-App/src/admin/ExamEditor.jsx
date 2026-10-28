@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ExamView from '../components/ExamView';
-import { getPdfUrl, saveExam } from '../data/examsApi';
+import { DUPLICATE_KEY, findDuplicateExam, getPdfUrl, saveExam } from '../data/examsApi';
 import { EXAM_NAMES, SEMESTERS, VARIANTS, YEARS } from '../data/examOptions';
 import { cardClass, inputClass, labelClass, primaryButton, secondaryButton } from './ui';
 
@@ -36,23 +36,48 @@ export default function ExamEditor({ initialExam }) {
   const [view, setView] = useState('edit');
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState(location.state?.notice ?? null);
+  // Examen que ya tiene el mismo año, semestre, nombre y tipo; null si la combinación está libre
+  const [duplicate, setDuplicate] = useState(null);
+  const [draggingPdf, setDraggingPdf] = useState(false);
 
   const isNew = exam.id === null;
   const pdfUrl = pendingPdf?.url ?? getPdfUrl(exam.pdfPath);
 
   const updateExam = changes => setExam(current => ({ ...current, ...changes }));
 
+  const { id, year, semester, name, variant } = exam;
+  useEffect(() => {
+    let cancelled = false;
+
+    findDuplicateExam({ id, year, semester, name, variant })
+      // Si la consulta falla, la restricción única de la base de datos sigue impidiendo el duplicado
+      .catch(() => null)
+      .then(found => {
+        if (!cancelled) setDuplicate(found);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id, year, semester, name, variant]);
+
+  // Un PDF soltado fuera de la zona no debe abrirse en la pestaña y hacer perder lo que no se guardó
+  useEffect(() => {
+    const preventOpen = event => event.preventDefault();
+    window.addEventListener('dragover', preventOpen);
+    window.addEventListener('drop', preventOpen);
+    return () => {
+      window.removeEventListener('dragover', preventOpen);
+      window.removeEventListener('drop', preventOpen);
+    };
+  }, []);
+
   const clearPendingPdf = () => {
     if (pendingPdf) URL.revokeObjectURL(pendingPdf.url);
     setPendingPdf(null);
   };
 
-  const handleSelectPdf = event => {
-    const file = event.target.files[0];
-    // Permite volver a elegir el mismo archivo después de quitarlo
-    event.target.value = '';
-    if (!file) return;
-
+  const acceptPdf = file => {
     if (file.type !== 'application/pdf') {
       setNotice({ type: 'error', text: 'El archivo debe ser un PDF.' });
       return;
@@ -67,12 +92,42 @@ export default function ExamEditor({ initialExam }) {
     setNotice(null);
   };
 
+  const handleSelectPdf = event => {
+    const file = event.target.files[0];
+    // Permite volver a elegir el mismo archivo después de quitarlo
+    event.target.value = '';
+    if (file) acceptPdf(file);
+  };
+
+  const handleDragOver = event => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'copy';
+    setDraggingPdf(true);
+  };
+
+  const handleDragLeave = event => {
+    // Pasar por encima de un elemento hijo también dispara dragleave
+    if (!event.currentTarget.contains(event.relatedTarget)) setDraggingPdf(false);
+  };
+
+  const handleDrop = event => {
+    event.preventDefault();
+    setDraggingPdf(false);
+    const files = event.dataTransfer.files;
+    if (files.length > 1) {
+      setNotice({ type: 'error', text: 'Suelta un solo PDF por examen.' });
+      return;
+    }
+    if (files.length === 1) acceptPdf(files[0]);
+  };
+
   const handleRemovePdf = () => {
     clearPendingPdf();
     updateExam({ pdfPath: null });
   };
 
   const handleSave = async status => {
+    if (duplicate) return;
     if (status === 'published' && !pdfUrl) {
       setNotice({ type: 'error', text: 'Para publicar, el examen necesita su PDF.' });
       return;
@@ -82,6 +137,14 @@ export default function ExamEditor({ initialExam }) {
     setNotice(null);
 
     try {
+      // Revisa de nuevo justo antes de guardar, por si otra persona lo creó mientras tanto
+      const found = await findDuplicateExam(exam);
+      if (found) {
+        setDuplicate(found);
+        setSaving(false);
+        return;
+      }
+
       const saved = await saveExam(
         { ...exam, status },
         { pdfFile: pendingPdf?.file ?? null, previousPdfPath: savedPdfPath }
@@ -104,8 +167,14 @@ export default function ExamEditor({ initialExam }) {
       setExam(saved);
       setSavedPdfPath(saved.pdfPath);
       setNotice(savedNotice);
-    } catch {
-      setNotice({ type: 'error', text: 'No se pudo guardar el examen. Inténtalo de nuevo.' });
+    } catch (error) {
+      setNotice({
+        type: 'error',
+        text:
+          error?.code === DUPLICATE_KEY
+            ? 'Ya existe un examen con ese año, semestre, nombre y tipo.'
+            : 'No se pudo guardar el examen. Inténtalo de nuevo.',
+      });
     }
     setSaving(false);
   };
@@ -200,14 +269,44 @@ export default function ExamEditor({ initialExam }) {
                 options={VARIANTS.map(variant => ({ value: variant, label: variant }))}
               />
             </div>
+
+            {duplicate && (
+              <p role="alert" className="mt-4 rounded-control bg-danger-soft px-4 py-3 text-small text-danger">
+                Ya existe un examen {duplicate.status === 'published' ? 'publicado' : 'en borrador'} con
+                estas asignaciones ({duplicate.name} {duplicate.variant},{' '}
+                {SEMESTERS.find(option => option.id === duplicate.semester)?.label} {duplicate.year}). Cambia
+                algún dato o{' '}
+                <Link to={`/admin/examen/${duplicate.id}`} className="font-semibold underline">
+                  edita el existente
+                </Link>
+                .
+              </p>
+            )}
           </section>
 
-          {/* PDF descargable */}
-          <section className={cardClass}>
+          {/* PDF descargable: se puede elegir o arrastrar desde el explorador de archivos */}
+          <section
+            className={`${cardClass} transition-colors duration-150 ${
+              draggingPdf ? 'border-accent bg-accent/5' : ''
+            }`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
             <h2 className="font-display text-subheading font-semibold text-ink">PDF del examen</h2>
             <p className="mt-1 text-small text-neutral-500">
               Se muestra en la página del examen y el estudiante puede descargarlo.
             </p>
+
+            <div
+              className={`mt-4 rounded-control border-2 border-dashed px-4 py-8 text-center text-small transition-colors duration-150 ${
+                draggingPdf ? 'border-accent text-accent' : 'border-neutral-300 text-neutral-500'
+              }`}
+            >
+              {draggingPdf
+                ? 'Suelta el PDF aquí'
+                : `Arrastra el PDF desde el explorador de archivos${pdfUrl ? ' para reemplazarlo' : ''}, o usa el botón.`}
+            </div>
 
             <div className="mt-4 flex flex-wrap items-center gap-3">
               {pdfUrl && (
@@ -249,7 +348,7 @@ export default function ExamEditor({ initialExam }) {
       <div className="sticky bottom-0 mt-8 flex flex-wrap items-center justify-end gap-2 border-t border-neutral-200 bg-paper/95 py-4 backdrop-blur">
         <button
           type="button"
-          disabled={saving}
+          disabled={saving || Boolean(duplicate)}
           onClick={() => handleSave('draft')}
           className={secondaryButton}
         >
@@ -257,7 +356,7 @@ export default function ExamEditor({ initialExam }) {
         </button>
         <button
           type="button"
-          disabled={saving}
+          disabled={saving || Boolean(duplicate)}
           onClick={() => handleSave('published')}
           className={primaryButton}
         >

@@ -5,6 +5,8 @@ const PDF_BUCKET = 'exam-pdfs';
 
 // Código de Postgres cuando el id de la URL no es un uuid válido
 const INVALID_UUID = '22P02';
+// Código de Postgres cuando ya existe un examen con las mismas asignaciones
+export const DUPLICATE_KEY = '23505';
 
 const fromRow = row => ({
   id: row.id,
@@ -98,6 +100,23 @@ export async function fetchAllExams() {
   if (error) throw error;
 
   return data.map(fromRow);
+}
+
+// Otro examen con el mismo año, semestre, nombre y tipo (solo puede haber uno por combinación)
+export async function findDuplicateExam(exam) {
+  let query = supabase
+    .from('exams')
+    .select('*')
+    .eq('year', exam.year)
+    .eq('semester', exam.semester)
+    .eq('name', exam.name)
+    .eq('variant', exam.variant);
+  if (exam.id) query = query.neq('id', exam.id);
+
+  const { data, error } = await query.limit(1).maybeSingle();
+  if (error) throw error;
+
+  return data ? fromRow(data) : null;
 }
 
 export async function checkIsAdmin(userId) {

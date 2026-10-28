@@ -45,6 +45,10 @@ create table if not exists public.exams (
 
 create index if not exists exams_period_idx on public.exams (year, semester);
 
+-- Un solo examen por combinación de año, semestre, nombre y tipo
+create unique index if not exists exams_assignment_key
+  on public.exams (year, semester, name, variant);
+
 -- Proyectos creados antes de que el sitio fuera solo un banco de exámenes tenían una columna
 -- con la solución paso a paso. El sitio ya no la usa; se puede borrar con:
 --   alter table public.exams drop column if exists questions;
