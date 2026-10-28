@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { deleteExam, fetchAllExams, hasAnyPdf, setExamStatus } from '../data/examsApi';
 import { primaryButton } from './ui';
 import MathLoader from '../components/MathLoader';
@@ -12,6 +12,10 @@ const statusStyles = {
 const statusLabels = { published: 'Publicado', draft: 'Borrador' };
 
 export default function ExamDashboard() {
+  const location = useLocation();
+  // Al volver de crear un examen: mensaje de confirmación y la fila del examen resaltada
+  const { notice = null, createdId = null } = location.state ?? {};
+
   // null mientras carga
   const [exams, setExams] = useState(null);
   const [error, setError] = useState('');
@@ -87,6 +91,12 @@ export default function ExamDashboard() {
         </Link>
       </div>
 
+      {notice && !error && (
+        <p role="status" className="mt-6 rounded-control bg-success-soft px-4 py-3 text-small text-success">
+          {notice.text}
+        </p>
+      )}
+
       {error && (
         <p role="alert" className="mt-6 rounded-control bg-danger-soft px-4 py-3 text-small text-danger">
           {error}
@@ -116,7 +126,10 @@ export default function ExamDashboard() {
                 const busy = busyId === exam.id;
 
                 return (
-                  <tr key={exam.id} className={busy ? 'opacity-50' : ''}>
+                  <tr
+                    key={exam.id}
+                    className={`${busy ? 'opacity-50' : ''} ${exam.id === createdId ? 'bg-success-soft/60' : ''}`}
+                  >
                     <td className="px-6 py-4">
                       <Link
                         to={`/admin/examen/${exam.id}`}

@@ -137,8 +137,21 @@ export default function ExamEditor({ initialExam }) {
 
       PDF_FIELDS.forEach(clearPendingPdf);
       if (isNew) {
-        // La pantalla de edición vuelve a cargar el examen ya con su id
-        navigate(`/admin/examen/${saved.id}`, { replace: true, state: { notice: savedNotice } });
+        // Recién creado vuelve a la lista de exámenes, donde se puede ver, editar y publicar
+        const label = `${saved.name} ${saved.variant} (${saved.year} · Semestre ${saved.semester})`;
+        navigate('/admin', {
+          replace: true,
+          state: {
+            createdId: saved.id,
+            notice: {
+              type: 'success',
+              text:
+                status === 'published'
+                  ? `${label} se publicó y ya está disponible para el estudiantado.`
+                  : `${label} se guardó como borrador. Publícalo desde esta lista cuando esté listo.`,
+            },
+          },
+        });
         return;
       }
 
