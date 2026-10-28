@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { deleteExam, fetchAllExams, hasAnyPdf, setExamStatus } from '../data/examsApi';
+import { examLabel, hasVariant } from '../data/examOptions';
 import { primaryButton } from './ui';
 import MathLoader from '../components/MathLoader';
 
@@ -61,7 +62,7 @@ export default function ExamDashboard() {
   const handleToggleStatus = exam => {
     const nextStatus = exam.status === 'published' ? 'draft' : 'published';
     if (nextStatus === 'published' && !hasAnyPdf(exam)) {
-      setError(`"${exam.name} - ${exam.variant}" no tiene ningún PDF. Sube al menos uno antes de publicarlo.`);
+      setError(`"${examLabel(exam)}" no tiene ningún PDF. Sube al menos uno antes de publicarlo.`);
       return;
     }
     runAction(exam, () => setExamStatus(exam.id, nextStatus), 'No se pudo cambiar el estado del examen.');
@@ -69,7 +70,7 @@ export default function ExamDashboard() {
 
   const handleDelete = exam => {
     const confirmed = window.confirm(
-      `¿Eliminar "${exam.name} - ${exam.variant}" (${exam.year}, ${exam.semester})? Esta acción no se puede deshacer.`
+      `¿Eliminar "${examLabel(exam)}" (${exam.year}, ${exam.semester})? Esta acción no se puede deshacer.`
     );
     if (confirmed) {
       runAction(exam, () => deleteExam(exam), 'No se pudo eliminar el examen.');
@@ -137,7 +138,9 @@ export default function ExamDashboard() {
                       >
                         {exam.name}
                       </Link>
-                      <span className="block text-caption text-neutral-500">{exam.variant}</span>
+                      {hasVariant(exam.name) && (
+                        <span className="block text-caption text-neutral-500">{exam.variant}</span>
+                      )}
                     </td>
                     <td className="px-4 py-4 text-neutral-600">
                       {exam.year} · {exam.semester}

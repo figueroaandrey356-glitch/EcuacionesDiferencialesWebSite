@@ -3,7 +3,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ExamView from '../components/ExamView';
 import MathLoader from '../components/MathLoader';
 import { DUPLICATE_KEY, findDuplicateExam, getPdfUrl, PDF_FIELDS, saveExam } from '../data/examsApi';
-import { EXAM_NAMES, SEMESTERS, VARIANTS, YEARS } from '../data/examOptions';
+import {
+  EXAM_NAMES,
+  examLabel,
+  hasVariant,
+  MAKEUP_VARIANT,
+  SEMESTERS,
+  VARIANTS,
+  YEARS,
+} from '../data/examOptions';
 import PdfField from './PdfField';
 import { cardClass, inputClass, labelClass, primaryButton, secondaryButton } from './ui';
 
@@ -128,7 +136,7 @@ export default function ExamEditor({ initialExam }) {
       PDF_FIELDS.forEach(clearPendingPdf);
       if (isNew) {
         // Recién creado vuelve a la lista de exámenes, donde se puede ver, editar y publicar
-        const label = `${saved.name} ${saved.variant} (${saved.year} · Semestre ${saved.semester})`;
+        const label = `${examLabel(saved)} (${saved.year} · Semestre ${saved.semester})`;
         navigate('/admin', {
           replace: true,
           state: {
@@ -239,22 +247,30 @@ export default function ExamEditor({ initialExam }) {
                 id="examen-nombre"
                 label="Examen"
                 value={exam.name}
-                onChange={value => updateExam({ name: value })}
+                onChange={value =>
+                  // La reposición no tiene tipo: se fija sola; al volver a un parcial se elige de nuevo
+                  updateExam({
+                    name: value,
+                    variant: hasVariant(value) ? (hasVariant(exam.name) ? exam.variant : VARIANTS[0]) : MAKEUP_VARIANT,
+                  })
+                }
                 options={EXAM_NAMES.map(name => ({ value: name, label: name }))}
               />
-              <SelectField
-                id="examen-tipo"
-                label="Tipo"
-                value={exam.variant}
-                onChange={value => updateExam({ variant: value })}
-                options={VARIANTS.map(variant => ({ value: variant, label: variant }))}
-              />
+              {hasVariant(exam.name) && (
+                <SelectField
+                  id="examen-tipo"
+                  label="Tipo"
+                  value={exam.variant}
+                  onChange={value => updateExam({ variant: value })}
+                  options={VARIANTS.map(variant => ({ value: variant, label: variant }))}
+                />
+              )}
             </div>
 
             {duplicate && (
               <p role="alert" className="mt-4 rounded-control bg-danger-soft px-4 py-3 text-small text-danger">
                 Ya existe un examen {duplicate.status === 'published' ? 'publicado' : 'en borrador'} con
-                estas asignaciones ({duplicate.name} {duplicate.variant},{' '}
+                estas asignaciones ({examLabel(duplicate)},{' '}
                 {SEMESTERS.find(option => option.id === duplicate.semester)?.label} {duplicate.year}). Cambia
                 algún dato o{' '}
                 <Link to={`/admin/examen/${duplicate.id}`} className="font-semibold underline">

@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase';
-import { EXAM_NAMES, VARIANTS } from './examOptions';
+import { EXAM_NAMES, hasVariant, VARIANTS } from './examOptions';
 
 const PDF_BUCKET = 'exam-pdfs';
 
@@ -77,7 +77,8 @@ export function getPdfUrl(pdfPath) {
 // Nombre con el que se guarda el PDF al descargarlo, p. ej. ED-2025-II-Primer-Parcial-Ordinario.pdf
 // o ED-2025-II-Primer-Parcial-Ordinario-Solucion.pdf para la versión con solución
 export function getPdfFileName(exam, { solution = false } = {}) {
-  const slug = ['ED', exam.year, exam.semester, exam.name, exam.variant, solution && 'Solucion']
+  const variant = hasVariant(exam.name) && exam.variant;
+  const slug = ['ED', exam.year, exam.semester, exam.name, variant, solution && 'Solucion']
     .filter(Boolean)
     .join(' ')
     .normalize('NFD')

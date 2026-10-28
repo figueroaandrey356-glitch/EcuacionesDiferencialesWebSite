@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPublishedExams, getPdfDownloadUrl, getPdfFileName } from '../data/examsApi';
+import { examLabel, hasVariant } from '../data/examOptions';
 import MathLoader from './MathLoader';
 
 // Columnas compartidas por el encabezado y las filas (solo desde sm; en móvil la fila se apila)
@@ -39,6 +40,7 @@ export default function ExamTypeList({ year, semester, name = 'Todos', variant =
   let emptyMessage = activeFilters
     ? `Aún no hay exámenes de ${activeFilters} cargados para este periodo.`
     : 'Aún no hay exámenes cargados para este periodo.';
+  if (!hasVariant(name)) emptyMessage = 'Aún no hay examen de reposición cargado para este periodo.';
   if (result.failed) emptyMessage = 'No se pudieron cargar los exámenes. Revisa tu conexión e inténtalo de nuevo.';
 
   return (
@@ -85,7 +87,9 @@ export default function ExamTypeList({ year, semester, name = 'Todos', variant =
                 >
                   {exam.name}
                 </Link>
-                <span className="block text-small text-neutral-600">{exam.variant}</span>
+                <span className="block text-small text-neutral-600">
+                  {hasVariant(exam.name) ? exam.variant : <span className="sr-only">Sin tipo</span>}
+                </span>
                 <span className="mt-3 flex gap-5 text-small font-semibold sm:mt-0 sm:justify-end">
                   <Link to={`/exam/${exam.id}`} className="text-accent hover:underline">
                     Ver examen<span aria-hidden="true"> →</span>
@@ -94,7 +98,7 @@ export default function ExamTypeList({ year, semester, name = 'Todos', variant =
                     // Descarga el enunciado; si el examen solo tiene la versión con solución, esa
                     href={getPdfDownloadUrl(exam, { solution: !exam.pdfPath })}
                     download={getPdfFileName(exam, { solution: !exam.pdfPath })}
-                    aria-label={`Descargar ${exam.name} ${exam.variant} en PDF`}
+                    aria-label={`Descargar ${examLabel(exam)} en PDF`}
                     className="text-neutral-600 hover:text-ink hover:underline"
                   >
                     Descargar<span aria-hidden="true"> ↓</span>

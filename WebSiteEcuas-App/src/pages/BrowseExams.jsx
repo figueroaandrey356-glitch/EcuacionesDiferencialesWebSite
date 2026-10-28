@@ -5,7 +5,7 @@ import YearSelector from '../components/YearSelector';
 import SemesterSelector from '../components/SemesterSelector';
 import FilterSelector from '../components/FilterSelector';
 import ExamTypeList from '../components/ExamTypeList';
-import { EXAM_NAMES, VARIANTS } from '../data/examOptions';
+import { EXAM_NAMES, hasVariant, VARIANTS } from '../data/examOptions';
 
 export default function BrowseExams() {
   const [selectedYear, setSelectedYear] = useState(2026);
@@ -13,6 +13,10 @@ export default function BrowseExams() {
   const [selectedName, setSelectedName] = useState('Todos');
   const [selectedVariant, setSelectedVariant] = useState('Todos');
   const [showAdvanced, setShowAdvanced] = useState(false);
+
+  // La reposición no tiene tipo: con ese examen elegido el filtro de tipo se esconde y no se aplica
+  const showVariant = hasVariant(selectedName);
+  const variant = showVariant ? selectedVariant : 'Todos';
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -54,7 +58,7 @@ export default function BrowseExams() {
                   ▶
                 </span>
                 Filtros avanzados
-                {[selectedName, selectedVariant]
+                {[selectedName, variant]
                   .filter(choice => choice !== 'Todos')
                   .map(choice => (
                     <span key={choice} className="rounded-pill bg-accent/10 px-2 py-0.5 text-caption text-accent">
@@ -71,12 +75,14 @@ export default function BrowseExams() {
                     selected={selectedName}
                     onSelect={setSelectedName}
                   />
-                  <FilterSelector
-                    title="Tipo"
-                    options={VARIANTS}
-                    selected={selectedVariant}
-                    onSelect={setSelectedVariant}
-                  />
+                  {showVariant && (
+                    <FilterSelector
+                      title="Tipo"
+                      options={VARIANTS}
+                      selected={selectedVariant}
+                      onSelect={setSelectedVariant}
+                    />
+                  )}
                 </div>
               )}
             </div>
@@ -87,7 +93,7 @@ export default function BrowseExams() {
             year={selectedYear}
             semester={selectedSemester}
             name={selectedName}
-            variant={selectedVariant}
+            variant={variant}
           />
         </div>
       </main>

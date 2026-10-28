@@ -1,4 +1,5 @@
 import { lazy, Suspense, useState } from 'react';
+import { examLabel, hasVariant } from '../data/examOptions';
 import { getPdfDownloadUrl, getPdfFileName, getPdfUrl } from '../data/examsApi';
 import { loadPdfViewer } from './loadPdfViewer';
 import PdfPlaceholder from './PdfPlaceholder';
@@ -33,7 +34,7 @@ export default function ExamView({ exam, pdfUrl, solutionPdfUrl }) {
   const viewUrl = solution ? solutionUrl : statementUrl;
   const downloadUrl = (solution ? solutionPdfUrl : pdfUrl) ?? getPdfDownloadUrl(exam, { solution });
   const semesterLabel = `Semestre ${exam.semester}`;
-  const title = `${exam.name} · ${exam.variant}`;
+  const title = examLabel(exam);
 
   return (
     <>
@@ -41,7 +42,7 @@ export default function ExamView({ exam, pdfUrl, solutionPdfUrl }) {
       <div className="mb-section-sm flex flex-wrap items-end justify-between gap-x-10 gap-y-6">
         <div>
           <p className="font-sans tabular-nums text-label font-medium uppercase text-neutral-500">
-            {[exam.year, semesterLabel, exam.variant].filter(Boolean).join(' · ')}
+            {[exam.year, semesterLabel, hasVariant(exam.name) && exam.variant].filter(Boolean).join(' · ')}
           </p>
           <h1 className="mt-3 font-display text-title font-semibold text-ink">
             {exam.name}
