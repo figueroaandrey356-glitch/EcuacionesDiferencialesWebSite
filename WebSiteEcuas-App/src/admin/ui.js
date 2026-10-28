@@ -3,7 +3,7 @@ export const inputClass =
   'w-full rounded-control border border-neutral-300 bg-surface px-3 py-2 text-small text-ink placeholder:text-neutral-400 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20';
 
 export const labelClass =
-  'mb-1.5 block font-mono text-label font-medium uppercase text-neutral-500';
+  'mb-1.5 block font-sans text-label font-medium uppercase text-neutral-500';
 
 export const primaryButton =
   'rounded-control bg-accent px-4 py-2.5 text-small font-semibold text-white transition-colors duration-150 hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-50';

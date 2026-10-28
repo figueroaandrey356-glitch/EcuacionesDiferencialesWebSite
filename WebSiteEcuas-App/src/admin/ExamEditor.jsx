@@ -7,8 +7,6 @@ import { EXAM_NAMES, SEMESTERS, VARIANTS, YEARS } from '../data/examOptions';
 import PdfField from './PdfField';
 import { cardClass, inputClass, labelClass, primaryButton, secondaryButton } from './ui';
 
-const MAX_PDF_BYTES = 20 * 1024 * 1024;
-
 function SelectField({ id, label, value, onChange, options }) {
   return (
     <div>
@@ -83,16 +81,8 @@ export default function ExamEditor({ initialExam }) {
     setPendingPdfs(current => ({ ...current, [field]: null }));
   };
 
+  // PdfField ya revisó que sea un PDF válido
   const acceptPdf = (field, file) => {
-    if (file.type !== 'application/pdf') {
-      setNotice({ type: 'error', text: 'El archivo debe ser un PDF.' });
-      return;
-    }
-    if (file.size > MAX_PDF_BYTES) {
-      setNotice({ type: 'error', text: 'El PDF no puede pesar más de 20 MB.' });
-      return;
-    }
-
     clearPendingPdf(field);
     setPendingPdfs(current => ({ ...current, [field]: { file, url: URL.createObjectURL(file) } }));
     setNotice(null);
@@ -283,7 +273,6 @@ export default function ExamEditor({ initialExam }) {
             pendingName={pendingPdfs.pdfPath?.file.name}
             onFile={file => acceptPdf('pdfPath', file)}
             onRemove={() => removePdf('pdfPath')}
-            onError={text => setNotice({ type: 'error', text })}
           />
           <PdfField
             title="PDF con solución"
@@ -292,7 +281,6 @@ export default function ExamEditor({ initialExam }) {
             pendingName={pendingPdfs.solutionPdfPath?.file.name}
             onFile={file => acceptPdf('solutionPdfPath', file)}
             onRemove={() => removePdf('solutionPdfPath')}
-            onError={text => setNotice({ type: 'error', text })}
           />
         </div>
       )}
