@@ -8,4 +8,5 @@ export const createEmptyExam = () => ({
   variant: VARIANTS[0],
   status: 'draft',
   pdfPath: null,
+  solutionPdfPath: null,
 });

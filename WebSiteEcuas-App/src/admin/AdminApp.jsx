@@ -8,6 +8,7 @@ import ExamDashboard from './ExamDashboard';
 import ExamEditor from './ExamEditor';
 import { createEmptyExam } from './examDraft';
 import { secondaryButton } from './ui';
+import MathLoader from '../components/MathLoader';
 
 function CenteredMessage({ title, children }) {
   return (
@@ -39,7 +40,7 @@ function EditExamPage() {
   }, [examId]);
 
   if (result.examId !== examId) {
-    return <p className="py-12 text-center text-neutral-500">Cargando examen…</p>;
+    return <MathLoader label="Cargando examen…" className="py-12" />;
   }
 
   if (!result.exam) {
@@ -103,7 +104,11 @@ export default function AdminApp() {
   }
 
   if (session === undefined || (userId && adminCheck.userId !== userId)) {
-    return <CenteredMessage>Cargando…</CenteredMessage>;
+    return (
+      <CenteredMessage>
+        <MathLoader />
+      </CenteredMessage>
+    );
   }
 
   if (!session) return <AdminLogin />;

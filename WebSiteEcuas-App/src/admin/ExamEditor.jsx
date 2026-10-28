@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ExamView from '../components/ExamView';
-import { DUPLICATE_KEY, findDuplicateExam, getPdfUrl, saveExam } from '../data/examsApi';
+import MathLoader from '../components/MathLoader';
+import { DUPLICATE_KEY, findDuplicateExam, getPdfUrl, PDF_FIELDS, saveExam } from '../data/examsApi';
 import { EXAM_NAMES, SEMESTERS, VARIANTS, YEARS } from '../data/examOptions';
+import PdfField from './PdfField';
 import { cardClass, inputClass, labelClass, primaryButton, secondaryButton } from './ui';
 
 const MAX_PDF_BYTES = 20 * 1024 * 1024;
@@ -24,24 +26,28 @@ function SelectField({ id, label, value, onChange, options }) {
   );
 }
 
+const pickPdfPaths = exam => Object.fromEntries(PDF_FIELDS.map(field => [field, exam[field]]));
+
 export default function ExamEditor({ initialExam }) {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [exam, setExam] = useState(initialExam);
-  // PDF elegido pero aún sin subir: { file, url } con una URL local para la vista previa
-  const [pendingPdf, setPendingPdf] = useState(null);
-  // PDF que el examen tiene guardado, para borrarlo si se reemplaza o se quita
-  const [savedPdfPath, setSavedPdfPath] = useState(initialExam.pdfPath);
+  // PDF elegidos pero aún sin subir, por campo (pdfPath, solutionPdfPath): { file, url } con una
+  // URL local para la vista previa
+  const [pendingPdfs, setPendingPdfs] = useState({});
+  // PDF que el examen tiene guardados, para borrarlos si se reemplazan o se quitan
+  const [savedPaths, setSavedPaths] = useState(() => pickPdfPaths(initialExam));
   const [view, setView] = useState('edit');
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState(location.state?.notice ?? null);
   // Examen que ya tiene el mismo año, semestre, nombre y tipo; null si la combinación está libre
   const [duplicate, setDuplicate] = useState(null);
-  const [draggingPdf, setDraggingPdf] = useState(false);
 
   const isNew = exam.id === null;
-  const pdfUrl = pendingPdf?.url ?? getPdfUrl(exam.pdfPath);
+  const urlFor = field => pendingPdfs[field]?.url ?? getPdfUrl(exam[field]);
+  const pdfUrl = urlFor('pdfPath');
+  const solutionPdfUrl = urlFor('solutionPdfPath');
 
   const updateExam = changes => setExam(current => ({ ...current, ...changes }));
 
@@ -72,12 +78,12 @@ export default function ExamEditor({ initialExam }) {
     };
   }, []);
 
-  const clearPendingPdf = () => {
-    if (pendingPdf) URL.revokeObjectURL(pendingPdf.url);
-    setPendingPdf(null);
+  const clearPendingPdf = field => {
+    if (pendingPdfs[field]) URL.revokeObjectURL(pendingPdfs[field].url);
+    setPendingPdfs(current => ({ ...current, [field]: null }));
   };
 
-  const acceptPdf = file => {
+  const acceptPdf = (field, file) => {
     if (file.type !== 'application/pdf') {
       setNotice({ type: 'error', text: 'El archivo debe ser un PDF.' });
       return;
@@ -87,43 +93,14 @@ export default function ExamEditor({ initialExam }) {
       return;
     }
 
-    clearPendingPdf();
-    setPendingPdf({ file, url: URL.createObjectURL(file) });
+    clearPendingPdf(field);
+    setPendingPdfs(current => ({ ...current, [field]: { file, url: URL.createObjectURL(file) } }));
     setNotice(null);
   };
 
-  const handleSelectPdf = event => {
-    const file = event.target.files[0];
-    // Permite volver a elegir el mismo archivo después de quitarlo
-    event.target.value = '';
-    if (file) acceptPdf(file);
-  };
-
-  const handleDragOver = event => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = 'copy';
-    setDraggingPdf(true);
-  };
-
-  const handleDragLeave = event => {
-    // Pasar por encima de un elemento hijo también dispara dragleave
-    if (!event.currentTarget.contains(event.relatedTarget)) setDraggingPdf(false);
-  };
-
-  const handleDrop = event => {
-    event.preventDefault();
-    setDraggingPdf(false);
-    const files = event.dataTransfer.files;
-    if (files.length > 1) {
-      setNotice({ type: 'error', text: 'Suelta un solo PDF por examen.' });
-      return;
-    }
-    if (files.length === 1) acceptPdf(files[0]);
-  };
-
-  const handleRemovePdf = () => {
-    clearPendingPdf();
-    updateExam({ pdfPath: null });
+  const removePdf = field => {
+    clearPendingPdf(field);
+    updateExam({ [field]: null });
   };
 
   const handleSave = async status => {
@@ -145,10 +122,8 @@ export default function ExamEditor({ initialExam }) {
         return;
       }
 
-      const saved = await saveExam(
-        { ...exam, status },
-        { pdfFile: pendingPdf?.file ?? null, previousPdfPath: savedPdfPath }
-      );
+      const files = Object.fromEntries(PDF_FIELDS.map(field => [field, pendingPdfs[field]?.file ?? null]));
+      const saved = await saveExam({ ...exam, status }, { files, previousPaths: savedPaths });
       const savedNotice = {
         type: 'success',
         text:
@@ -157,7 +132,7 @@ export default function ExamEditor({ initialExam }) {
             : 'Borrador guardado. Aún no es visible para el estudiantado.',
       };
 
-      clearPendingPdf();
+      PDF_FIELDS.forEach(clearPendingPdf);
       if (isNew) {
         // La pantalla de edición vuelve a cargar el examen ya con su id
         navigate(`/admin/examen/${saved.id}`, { replace: true, state: { notice: savedNotice } });
@@ -165,7 +140,7 @@ export default function ExamEditor({ initialExam }) {
       }
 
       setExam(saved);
-      setSavedPdfPath(saved.pdfPath);
+      setSavedPaths(pickPdfPaths(saved));
       setNotice(savedNotice);
     } catch (error) {
       setNotice({
@@ -229,10 +204,10 @@ export default function ExamEditor({ initialExam }) {
 
       {view === 'preview' ? (
         <div className="mt-6 rounded-panel border-2 border-dashed border-neutral-300 p-4 sm:p-8">
-          <p className="mb-6 font-mono text-label font-medium uppercase text-neutral-500">
+          <p className="mb-6 font-sans tabular-nums text-label font-medium uppercase text-neutral-500">
             Así lo verá el estudiante
           </p>
-          <ExamView exam={exam} pdfUrl={pdfUrl} />
+          <ExamView exam={exam} pdfUrl={pdfUrl} solutionPdfUrl={solutionPdfUrl} />
         </div>
       ) : (
         <div className="mt-6 space-y-6">
@@ -284,68 +259,37 @@ export default function ExamEditor({ initialExam }) {
             )}
           </section>
 
-          {/* PDF descargable: se puede elegir o arrastrar desde el explorador de archivos */}
-          <section
-            className={`${cardClass} transition-colors duration-150 ${
-              draggingPdf ? 'border-accent bg-accent/5' : ''
-            }`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            <h2 className="font-display text-subheading font-semibold text-ink">PDF del examen</h2>
-            <p className="mt-1 text-small text-neutral-500">
-              Se muestra en la página del examen y el estudiante puede descargarlo.
-            </p>
-
-            <div
-              className={`mt-4 rounded-control border-2 border-dashed px-4 py-8 text-center text-small transition-colors duration-150 ${
-                draggingPdf ? 'border-accent text-accent' : 'border-neutral-300 text-neutral-500'
-              }`}
-            >
-              {draggingPdf
-                ? 'Suelta el PDF aquí'
-                : `Arrastra el PDF desde el explorador de archivos${pdfUrl ? ' para reemplazarlo' : ''}, o usa el botón.`}
-            </div>
-
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              {pdfUrl && (
-                <a
-                  href={pdfUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="max-w-full truncate rounded-control bg-neutral-100 px-3 py-2 text-small font-semibold text-ink hover:text-accent"
-                >
-                  {pendingPdf ? `${pendingPdf.file.name} · se subirá al guardar` : 'Ver PDF actual ↗'}
-                </a>
-              )}
-
-              <label className={`${secondaryButton} cursor-pointer`}>
-                {pdfUrl ? 'Reemplazar PDF' : 'Elegir PDF'}
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  onChange={handleSelectPdf}
-                  className="sr-only"
-                />
-              </label>
-
-              {pdfUrl && (
-                <button
-                  type="button"
-                  onClick={handleRemovePdf}
-                  className="text-small font-semibold text-neutral-500 transition-colors duration-150 hover:text-danger"
-                >
-                  Quitar PDF
-                </button>
-              )}
-            </div>
-          </section>
+          {/* Los dos PDF: el enunciado es obligatorio para publicar, la solución es opcional */}
+          <PdfField
+            title="PDF del examen (sin solución)"
+            description="Se muestra en la página del examen y el estudiante puede descargarlo. Es obligatorio para publicar."
+            url={pdfUrl}
+            pendingName={pendingPdfs.pdfPath?.file.name}
+            onFile={file => acceptPdf('pdfPath', file)}
+            onRemove={() => removePdf('pdfPath')}
+            onError={text => setNotice({ type: 'error', text })}
+          />
+          <PdfField
+            title="PDF con solución"
+            description="Opcional. Si lo subes, el estudiante puede cambiar a la versión con solución."
+            url={solutionPdfUrl}
+            pendingName={pendingPdfs.solutionPdfPath?.file.name}
+            onFile={file => acceptPdf('solutionPdfPath', file)}
+            onRemove={() => removePdf('solutionPdfPath')}
+            onError={text => setNotice({ type: 'error', text })}
+          />
         </div>
       )}
 
       {/* Guardar */}
       <div className="sticky bottom-0 mt-8 flex flex-wrap items-center justify-end gap-2 border-t border-neutral-200 bg-paper/95 py-4 backdrop-blur">
+        {saving && (
+          <MathLoader
+            size="sm"
+            label={PDF_FIELDS.some(field => pendingPdfs[field]) ? 'Subiendo PDF…' : 'Guardando…'}
+            className="mr-auto"
+          />
+        )}
         <button
           type="button"
           disabled={saving || Boolean(duplicate)}

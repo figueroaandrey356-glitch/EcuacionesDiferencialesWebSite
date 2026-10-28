@@ -15,7 +15,7 @@ export default function Footer() {
           </div>
 
           <div className="md:col-span-3">
-            <h3 className="font-mono text-label font-medium uppercase text-neutral-300">
+            <h3 className="font-sans tabular-nums text-label font-medium uppercase text-neutral-300">
               Curso
             </h3>
             <p className="mt-3 text-small font-medium text-white">
@@ -27,7 +27,7 @@ export default function Footer() {
           </div>
 
           <div className="md:col-span-3">
-            <h3 className="font-mono text-label font-medium uppercase text-neutral-300">
+            <h3 className="font-sans tabular-nums text-label font-medium uppercase text-neutral-300">
               Profesor
             </h3>
             <p className="mt-3 text-small font-medium text-white">

@@ -5,7 +5,7 @@ export default function YearSelector({ selectedYear, onSelectYear }) {
 
   return (
     <div>
-      <h2 className="mb-2 font-mono text-label font-medium uppercase text-neutral-500">
+      <h2 className="mb-2 font-sans tabular-nums text-label font-medium uppercase text-neutral-500">
         Año
       </h2>
 

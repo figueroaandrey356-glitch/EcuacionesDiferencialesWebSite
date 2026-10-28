@@ -48,7 +48,7 @@
 ### Paso 2.3: Crear página Browse Exams
 - [ ] `pages/BrowseExams.jsx`
 - [ ] `components/YearSelector.jsx` - Selector de año (2023, 2024, 2025, 2026)
-- [ ] `components/SemesterSelector.jsx` - Selector de semestre (I, II, Verano)
+- [ ] `components/SemesterSelector.jsx` - Selector de semestre (I, II)
 - [ ] `components/ExamTypeList.jsx` - Lista de tipos de examen:
   - Primer Parcial (Ordinario/Extraordinario)
   - Segundo Parcial (Ordinario/Extraordinario)

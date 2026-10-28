@@ -60,7 +60,7 @@ export default function Home() {
               className="rounded-panel bg-paper p-6 text-ink shadow-overlay lg:col-span-4 lg:self-end"
               aria-hidden="true"
             >
-              <p className="font-mono text-label font-medium uppercase text-neutral-500">
+              <p className="font-sans tabular-nums text-label font-medium uppercase text-neutral-500">
                 {previewExam.period}
               </p>
               <p className="mt-3 font-display text-heading font-semibold">{previewExam.name}</p>
@@ -94,7 +94,7 @@ export default function Home() {
                 key={feature.title}
                 className="grid gap-x-8 gap-y-2 border-b border-neutral-200 py-8 sm:grid-cols-[3rem_1fr]"
               >
-                <span className="pt-1.5 font-mono text-small text-neutral-500">
+                <span className="pt-1.5 font-sans tabular-nums text-small text-neutral-500">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <div>

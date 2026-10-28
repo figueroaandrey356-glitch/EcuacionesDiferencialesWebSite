@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { deleteExam, fetchAllExams, setExamStatus } from '../data/examsApi';
 import { primaryButton } from './ui';
+import MathLoader from '../components/MathLoader';
 
 const statusStyles = {
   published: 'bg-success-soft text-success',
@@ -94,14 +95,14 @@ export default function ExamDashboard() {
 
       <div className="mt-6 overflow-x-auto rounded-panel border border-neutral-200 bg-surface">
         {exams === null ? (
-          <p className="px-6 py-12 text-center text-neutral-500">Cargando exámenes…</p>
+          <MathLoader label="Cargando exámenes…" className="px-6 py-12" />
         ) : exams.length === 0 ? (
           <p className="px-6 py-12 text-center text-neutral-500">
             Aún no hay exámenes. Sube el primero con su PDF.
           </p>
         ) : (
           <table className="w-full min-w-[640px] text-left text-small">
-            <thead className="border-b border-neutral-200 font-mono text-label uppercase text-neutral-500">
+            <thead className="border-b border-neutral-200 font-sans tabular-nums text-label uppercase text-neutral-500">
               <tr>
                 <th className="px-6 py-3 font-semibold">Examen</th>
                 <th className="px-4 py-3 font-semibold">Periodo</th>

@@ -16,6 +16,7 @@ const fromRow = row => ({
   variant: row.variant,
   status: row.status,
   pdfPath: row.pdf_path,
+  solutionPdfPath: row.solution_pdf_path,
 });
 
 const toRow = exam => ({
@@ -25,6 +26,7 @@ const toRow = exam => ({
   variant: exam.variant,
   status: exam.status,
   pdf_path: exam.pdfPath,
+  solution_pdf_path: exam.solutionPdfPath,
 });
 
 const byExamOrder = (a, b) =>
@@ -70,8 +72,10 @@ export function getPdfUrl(pdfPath) {
 }
 
 // Nombre con el que se guarda el PDF al descargarlo, p. ej. ED-2025-II-Primer-Parcial-Ordinario.pdf
-export function getPdfFileName(exam) {
-  const slug = ['ED', exam.year, exam.semester, exam.name, exam.variant]
+// o ED-2025-II-Primer-Parcial-Ordinario-Solucion.pdf para la versión con solución
+export function getPdfFileName(exam, { solution = false } = {}) {
+  const slug = ['ED', exam.year, exam.semester, exam.name, exam.variant, solution && 'Solucion']
+    .filter(Boolean)
     .join(' ')
     .normalize('NFD')
     .replace(/[̀-ͯ]/g, '')
@@ -81,11 +85,12 @@ export function getPdfFileName(exam) {
 
 // El atributo download no funciona con archivos de otro dominio; Supabase fuerza la descarga
 // con el parámetro ?download y le pone el nombre indicado
-export function getPdfDownloadUrl(exam) {
-  if (!supabase || !exam.pdfPath) return null;
+export function getPdfDownloadUrl(exam, { solution = false } = {}) {
+  const pdfPath = solution ? exam.solutionPdfPath : exam.pdfPath;
+  if (!supabase || !pdfPath) return null;
   return supabase.storage
     .from(PDF_BUCKET)
-    .getPublicUrl(exam.pdfPath, { download: getPdfFileName(exam) }).data.publicUrl;
+    .getPublicUrl(pdfPath, { download: getPdfFileName(exam, { solution }) }).data.publicUrl;
 }
 
 // --- Administración (requieren sesión de admin) ---
@@ -135,33 +140,49 @@ async function removePdf(pdfPath) {
   await supabase.storage.from(PDF_BUCKET).remove([pdfPath]);
 }
 
-// previousPdfPath: el PDF que tenía el examen antes de editarlo, para borrarlo si se reemplazó o quitó
-export async function saveExam(exam, { pdfFile = null, previousPdfPath = null } = {}) {
-  let pdfPath = exam.pdfPath;
+// Los dos PDF de un examen: el enunciado (obligatorio para publicar) y la solución (opcional)
+export const PDF_FIELDS = ['pdfPath', 'solutionPdfPath'];
 
-  if (pdfFile) {
-    pdfPath = `${crypto.randomUUID()}.pdf`;
-    const { error } = await supabase.storage
-      .from(PDF_BUCKET)
-      .upload(pdfPath, pdfFile, { contentType: 'application/pdf' });
+async function uploadPdf(file) {
+  const pdfPath = `${crypto.randomUUID()}.pdf`;
+  const { error } = await supabase.storage
+    .from(PDF_BUCKET)
+    .upload(pdfPath, file, { contentType: 'application/pdf' });
+  if (error) throw error;
+  return pdfPath;
+}
+
+// files: PDF nuevos por campo, p. ej. { solutionPdfPath: File }
+// previousPaths: los PDF que tenía el examen antes de editarlo, para borrar los que se reemplazaron o quitaron
+export async function saveExam(exam, { files = {}, previousPaths = {} } = {}) {
+  const paths = Object.fromEntries(PDF_FIELDS.map(field => [field, exam[field]]));
+  const uploaded = [];
+
+  try {
+    for (const field of PDF_FIELDS) {
+      if (!files[field]) continue;
+      paths[field] = await uploadPdf(files[field]);
+      uploaded.push(paths[field]);
+    }
+
+    const row = toRow({ ...exam, ...paths });
+    const query = exam.id
+      ? supabase.from('exams').update(row).eq('id', exam.id)
+      : supabase.from('exams').insert(row);
+    const { data, error } = await query.select().single();
     if (error) throw error;
-  }
 
-  const row = toRow({ ...exam, pdfPath });
-  const query = exam.id
-    ? supabase.from('exams').update(row).eq('id', exam.id)
-    : supabase.from('exams').insert(row);
-  const { data, error } = await query.select().single();
-  if (error) {
-    if (pdfFile) await removePdf(pdfPath);
+    for (const field of PDF_FIELDS) {
+      const previous = previousPaths[field];
+      if (previous && previous !== paths[field]) await removePdf(previous);
+    }
+
+    return fromRow(data);
+  } catch (error) {
+    // Lo que se alcanzó a subir no quedó asociado a ningún examen
+    await Promise.all(uploaded.map(removePdf));
     throw error;
   }
-
-  if (previousPdfPath && previousPdfPath !== pdfPath) {
-    await removePdf(previousPdfPath);
-  }
-
-  return fromRow(data);
 }
 
 export async function setExamStatus(id, status) {
@@ -173,5 +194,5 @@ export async function deleteExam(exam) {
   const { error } = await supabase.from('exams').delete().eq('id', exam.id);
   if (error) throw error;
 
-  if (exam.pdfPath) await removePdf(exam.pdfPath);
+  await Promise.all(PDF_FIELDS.filter(field => exam[field]).map(field => removePdf(exam[field])));
 }

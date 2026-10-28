@@ -3,12 +3,14 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import YearSelector from '../components/YearSelector';
 import SemesterSelector from '../components/SemesterSelector';
-import VariantSelector from '../components/VariantSelector';
+import FilterSelector from '../components/FilterSelector';
 import ExamTypeList from '../components/ExamTypeList';
+import { EXAM_NAMES, VARIANTS } from '../data/examOptions';
 
 export default function BrowseExams() {
   const [selectedYear, setSelectedYear] = useState(2026);
   const [selectedSemester, setSelectedSemester] = useState('II');
+  const [selectedName, setSelectedName] = useState('Todos');
   const [selectedVariant, setSelectedVariant] = useState('Todos');
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -38,7 +40,7 @@ export default function BrowseExams() {
               />
             </div>
 
-            {/* Filtros avanzados: tipo de examen */}
+            {/* Filtros avanzados: qué examen (parcial o reposición) y de qué tipo */}
             <div className="mt-5 border-t border-neutral-200 pt-4">
               <button
                 onClick={() => setShowAdvanced(!showAdvanced)}
@@ -52,18 +54,28 @@ export default function BrowseExams() {
                   ▶
                 </span>
                 Filtros avanzados
-                {selectedVariant !== 'Todos' && (
-                  <span className="rounded-pill bg-accent/10 px-2 py-0.5 text-caption text-accent">
-                    {selectedVariant}
-                  </span>
-                )}
+                {[selectedName, selectedVariant]
+                  .filter(choice => choice !== 'Todos')
+                  .map(choice => (
+                    <span key={choice} className="rounded-pill bg-accent/10 px-2 py-0.5 text-caption text-accent">
+                      {choice}
+                    </span>
+                  ))}
               </button>
 
               {showAdvanced && (
-                <div className="mt-4">
-                  <VariantSelector
-                    selectedVariant={selectedVariant}
-                    onSelectVariant={setSelectedVariant}
+                <div className="mt-4 flex flex-wrap gap-x-10 gap-y-5">
+                  <FilterSelector
+                    title="Examen"
+                    options={EXAM_NAMES}
+                    selected={selectedName}
+                    onSelect={setSelectedName}
+                  />
+                  <FilterSelector
+                    title="Tipo"
+                    options={VARIANTS}
+                    selected={selectedVariant}
+                    onSelect={setSelectedVariant}
                   />
                 </div>
               )}
@@ -74,6 +86,7 @@ export default function BrowseExams() {
           <ExamTypeList
             year={selectedYear}
             semester={selectedSemester}
+            name={selectedName}
             variant={selectedVariant}
           />
         </div>

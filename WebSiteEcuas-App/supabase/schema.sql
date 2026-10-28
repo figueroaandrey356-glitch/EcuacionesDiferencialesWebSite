@@ -33,15 +33,20 @@ $$;
 create table if not exists public.exams (
   id uuid primary key default gen_random_uuid(),
   year integer not null,
-  semester text not null check (semester in ('I', 'II', 'Verano')),
+  semester text not null check (semester in ('I', 'II')),
   name text not null,
   variant text not null,
   status text not null default 'draft' check (status in ('draft', 'published')),
   -- Ruta del PDF dentro del bucket exam-pdfs (null si aún no se ha subido)
   pdf_path text,
+  -- PDF con la solución, opcional; el estudiante puede alternar entre las dos versiones
+  solution_pdf_path text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- Proyectos creados antes de que existiera la versión con solución:
+alter table public.exams add column if not exists solution_pdf_path text;
 
 create index if not exists exams_period_idx on public.exams (year, semester);
 

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchPublishedExams, getPdfDownloadUrl, getPdfFileName } from '../data/examsApi';
+import MathLoader from './MathLoader';
 
 // Columnas compartidas por el encabezado y las filas (solo desde sm; en móvil la fila se apila)
 const rowColumns = 'sm:grid sm:grid-cols-[2.5rem_minmax(0,1fr)_9rem_12rem] sm:items-baseline sm:gap-x-6';
 
-export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
+export default function ExamTypeList({ year, semester, name = 'Todos', variant = 'Todos' }) {
   const period = `${year}_${semester}`;
   // period identifica a qué consulta pertenece el resultado, para no mostrar uno viejo al cambiar de filtro
   const [result, setResult] = useState({ period: null, exams: [], failed: false });
@@ -29,33 +30,39 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
   const loading = result.period !== period;
   const exams = loading
     ? []
-    : result.exams.filter(exam => variant === 'Todos' || exam.variant === variant);
+    : result.exams.filter(
+        exam => (name === 'Todos' || exam.name === name) && (variant === 'Todos' || exam.variant === variant)
+      );
 
-  let emptyMessage = `Aún no hay exámenes de tipo ${variant} cargados para este periodo.`;
-  if (loading) emptyMessage = 'Cargando exámenes…';
-  else if (result.failed) emptyMessage = 'No se pudieron cargar los exámenes. Revisa tu conexión e inténtalo de nuevo.';
-  else if (variant === 'Todos') emptyMessage = 'Aún no hay exámenes cargados para este periodo.';
+  // Describe los filtros activos en el mensaje, p. ej. "de Segundo Parcial Extraordinario"
+  const activeFilters = [name, variant].filter(choice => choice !== 'Todos').join(' ');
+  let emptyMessage = activeFilters
+    ? `Aún no hay exámenes de ${activeFilters} cargados para este periodo.`
+    : 'Aún no hay exámenes cargados para este periodo.';
+  if (result.failed) emptyMessage = 'No se pudieron cargar los exámenes. Revisa tu conexión e inténtalo de nuevo.';
 
   return (
     <section className="mt-section-sm">
       <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
         <h2 className="font-display text-heading font-semibold text-ink">
-          {semester === 'Verano' ? 'Verano' : `Semestre ${semester}`} · {year}
+          Semestre {semester} · {year}
         </h2>
         {!loading && !result.failed && (
-          <p className="font-mono text-small text-neutral-500">
+          <p className="font-sans tabular-nums text-small text-neutral-500">
             {exams.length === 1 ? '1 examen' : `${exams.length} exámenes`}
           </p>
         )}
       </div>
 
-      {exams.length === 0 ? (
+      {loading ? (
+        <MathLoader label="Cargando exámenes…" className="mt-6 border-y border-neutral-300 py-12" />
+      ) : exams.length === 0 ? (
         <p className="mt-6 border-y border-neutral-300 py-12 text-neutral-600">{emptyMessage}</p>
       ) : (
         <div className="mt-6 border-t border-ink">
           <div
             aria-hidden="true"
-            className={`hidden border-b border-neutral-300 py-2.5 font-mono text-label font-medium uppercase text-neutral-500 ${rowColumns}`}
+            className={`hidden border-b border-neutral-300 py-2.5 font-sans tabular-nums text-label font-medium uppercase text-neutral-500 ${rowColumns}`}
           >
             <span>N.º</span>
             <span>Examen</span>
@@ -69,7 +76,7 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
                 key={exam.id}
                 className={`border-b border-neutral-200 py-5 transition-colors duration-150 hover:bg-neutral-100 ${rowColumns}`}
               >
-                <span className="hidden font-mono text-small text-neutral-500 sm:block">
+                <span className="hidden font-sans tabular-nums text-small text-neutral-500 sm:block">
                   {String(index + 1).padStart(2, '0')}
                 </span>
                 <Link

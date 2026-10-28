@@ -272,9 +272,6 @@ const downloadPDF = async (examId) => {
   - Tercer Parcial (Ordinario, Extraordinario)
   - Examen de Reposición
 
-- **Verano** (Diciembre - Enero, variable)
-  - Según disponibilidad
-
 ---
 
 ## 10. Criterios de Éxito
