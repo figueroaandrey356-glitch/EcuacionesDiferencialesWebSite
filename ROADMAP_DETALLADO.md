@@ -291,7 +291,7 @@
 - [ ] Push a main y verificar que aparece en URL
 
 ### Paso 10.3: Verificar en producción
-- [ ] Abrir https://andreyfigueroa3-lgtm.github.io/WebSiteEcuas/
+- [ ] Abrir https://figueroaandrey356-glitch.github.io/EcuacionesDiferencialesWebSite/
 - [ ] Probar flujo completo en producción
 - [ ] Verificar que no hay errores
 
