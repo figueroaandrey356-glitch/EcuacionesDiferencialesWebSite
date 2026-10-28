@@ -10,6 +10,14 @@ const versions = [
   { id: true, label: 'Con solución' },
 ];
 
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 16 16" aria-hidden="true" className="h-3.5 w-3.5" fill="currentColor">
+      <path d="M8 1a3.5 3.5 0 0 0-3.5 3.5V7H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1h-.5V4.5A3.5 3.5 0 0 0 8 1Zm2 6H6V4.5a2 2 0 1 1 4 0V7Z" />
+    </svg>
+  );
+}
+
 // Lo que ve el estudiante de un examen. También lo usa la vista previa del administrador.
 // pdfUrl y solutionPdfUrl permiten a la vista previa mostrar PDF que aún no se han subido; en ese
 // caso se descargan desde la misma URL local.
@@ -18,8 +26,9 @@ export default function ExamView({ exam, pdfUrl, solutionPdfUrl }) {
 
   const statementUrl = pdfUrl ?? getPdfUrl(exam.pdfPath);
   const solutionUrl = solutionPdfUrl ?? getPdfUrl(exam.solutionPdfPath);
-  // Si la solución se quita en el editor mientras se ve, vuelve al enunciado
-  const solution = showSolution && Boolean(solutionUrl);
+  // Un examen puede tener solo una de las dos versiones: se muestra la elegida si existe, si no la otra
+  const available = { false: Boolean(statementUrl), true: Boolean(solutionUrl) };
+  const solution = available[showSolution] ? showSolution : available.true && !available.false;
 
   const viewUrl = solution ? solutionUrl : statementUrl;
   const downloadUrl = (solution ? solutionPdfUrl : pdfUrl) ?? getPdfDownloadUrl(exam, { solution });
@@ -60,12 +69,12 @@ export default function ExamView({ exam, pdfUrl, solutionPdfUrl }) {
         )}
       </div>
 
-      {/* Versión del PDF: solo aparece si el examen tiene solución */}
-      {statementUrl && solutionUrl && (
-        <div className="mb-6 flex flex-wrap items-center gap-3 print:hidden">
-          <span className="font-sans text-label font-medium uppercase text-neutral-500">Versión</span>
-          <div className="inline-flex gap-1 rounded-control bg-neutral-100 p-1">
-            {versions.map(version => (
+      {/* Versión del PDF: siempre están los dos botones; la que no se subió aparece con candado */}
+      <div className="mb-6 flex flex-wrap items-center gap-3 print:hidden">
+        <span className="font-sans text-label font-medium uppercase text-neutral-500">Versión</span>
+        <div className="inline-flex gap-1 rounded-control bg-neutral-100 p-1">
+          {versions.map(version =>
+            available[version.id] ? (
               <button
                 key={version.label}
                 type="button"
@@ -77,10 +86,22 @@ export default function ExamView({ exam, pdfUrl, solutionPdfUrl }) {
               >
                 {version.label}
               </button>
-            ))}
-          </div>
+            ) : (
+              <button
+                key={version.label}
+                type="button"
+                disabled
+                title="Esta versión no está disponible para este examen"
+                className="inline-flex cursor-not-allowed items-center gap-1.5 rounded-control px-4 py-2 text-small font-semibold text-neutral-400"
+              >
+                <LockIcon />
+                {version.label}
+                <span className="sr-only"> (no disponible)</span>
+              </button>
+            )
+          )}
         </div>
-      )}
+      </div>
 
       {viewUrl ? (
         <div className="-mx-gutter bg-surface px-3 py-6 sm:mx-0 sm:rounded-panel sm:p-8">

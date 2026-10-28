@@ -91,8 +91,9 @@ export default function ExamTypeList({ year, semester, name = 'Todos', variant =
                     Ver examen<span aria-hidden="true"> →</span>
                   </Link>
                   <a
-                    href={getPdfDownloadUrl(exam)}
-                    download={getPdfFileName(exam)}
+                    // Descarga el enunciado; si el examen solo tiene la versión con solución, esa
+                    href={getPdfDownloadUrl(exam, { solution: !exam.pdfPath })}
+                    download={getPdfFileName(exam, { solution: !exam.pdfPath })}
                     aria-label={`Descargar ${exam.name} ${exam.variant} en PDF`}
                     className="text-neutral-600 hover:text-ink hover:underline"
                   >

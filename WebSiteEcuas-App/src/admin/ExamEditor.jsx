@@ -105,8 +105,11 @@ export default function ExamEditor({ initialExam }) {
 
   const handleSave = async status => {
     if (duplicate) return;
-    if (status === 'published' && !pdfUrl) {
-      setNotice({ type: 'error', text: 'Para publicar, el examen necesita su PDF.' });
+    if (status === 'published' && !pdfUrl && !solutionPdfUrl) {
+      setNotice({
+        type: 'error',
+        text: 'Para publicar, sube al menos uno de los dos PDF: sin solución o con solución.',
+      });
       return;
     }
 
@@ -262,7 +265,7 @@ export default function ExamEditor({ initialExam }) {
           {/* Los dos PDF: el enunciado es obligatorio para publicar, la solución es opcional */}
           <PdfField
             title="PDF del examen (sin solución)"
-            description="Se muestra en la página del examen y el estudiante puede descargarlo. Es obligatorio para publicar."
+            description="El enunciado que ve el estudiante. Para publicar basta con este o con el de solución."
             url={pdfUrl}
             pendingName={pendingPdfs.pdfPath?.file.name}
             onFile={file => acceptPdf('pdfPath', file)}
@@ -271,7 +274,7 @@ export default function ExamEditor({ initialExam }) {
           />
           <PdfField
             title="PDF con solución"
-            description="Opcional. Si lo subes, el estudiante puede cambiar a la versión con solución."
+            description="El estudiante cambia entre las dos versiones; la que falte le aparece con candado."
             url={solutionPdfUrl}
             pendingName={pendingPdfs.solutionPdfPath?.file.name}
             onFile={file => acceptPdf('solutionPdfPath', file)}

@@ -42,8 +42,8 @@ export async function fetchPublishedExams(year, semester) {
     .eq('status', 'published')
     .eq('year', year)
     .eq('semester', semester)
-    // Un examen sin PDF no tiene nada que mostrar en el banco
-    .not('pdf_path', 'is', null);
+    // Un examen sin ningún PDF no tiene nada que mostrar en el banco; basta con una de las dos versiones
+    .or('pdf_path.not.is.null,solution_pdf_path.not.is.null');
   if (error) throw error;
 
   return data.map(fromRow).sort(byExamOrder);
@@ -65,6 +65,9 @@ export async function fetchExam(id) {
 
   return data ? fromRow(data) : null;
 }
+
+// Para publicar basta con una de las dos versiones: algunos profesores solo tienen una
+export const hasAnyPdf = exam => Boolean(exam.pdfPath || exam.solutionPdfPath);
 
 export function getPdfUrl(pdfPath) {
   if (!supabase || !pdfPath) return null;

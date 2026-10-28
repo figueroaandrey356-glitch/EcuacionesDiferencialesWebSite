@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { deleteExam, fetchAllExams, setExamStatus } from '../data/examsApi';
+import { deleteExam, fetchAllExams, hasAnyPdf, setExamStatus } from '../data/examsApi';
 import { primaryButton } from './ui';
 import MathLoader from '../components/MathLoader';
 
@@ -56,8 +56,8 @@ export default function ExamDashboard() {
 
   const handleToggleStatus = exam => {
     const nextStatus = exam.status === 'published' ? 'draft' : 'published';
-    if (nextStatus === 'published' && !exam.pdfPath) {
-      setError(`"${exam.name} - ${exam.variant}" no tiene PDF. Súbelo antes de publicarlo.`);
+    if (nextStatus === 'published' && !hasAnyPdf(exam)) {
+      setError(`"${exam.name} - ${exam.variant}" no tiene ningún PDF. Sube al menos uno antes de publicarlo.`);
       return;
     }
     runAction(exam, () => setExamStatus(exam.id, nextStatus), 'No se pudo cambiar el estado del examen.');
@@ -130,7 +130,13 @@ export default function ExamDashboard() {
                       {exam.year} · {exam.semester}
                     </td>
                     <td className="px-4 py-4 text-neutral-600">
-                      {exam.pdfPath ? 'Sí' : <span className="text-danger">Falta</span>}
+                      {hasAnyPdf(exam) ? (
+                        [exam.pdfPath && 'Sin solución', exam.solutionPdfPath && 'Con solución']
+                          .filter(Boolean)
+                          .join(' · ')
+                      ) : (
+                        <span className="text-danger">Falta</span>
+                      )}
                     </td>
                     <td className="px-4 py-4">
                       <span
