@@ -1,0 +1,6 @@
+{
+  "installCommand": "npm ci --prefix WebSiteEcuas-App",
+  "buildCommand": "npm run build --prefix WebSiteEcuas-App",
+  "outputDirectory": "WebSiteEcuas-App/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}
