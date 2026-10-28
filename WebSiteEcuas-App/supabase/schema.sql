@@ -37,15 +37,17 @@ create table if not exists public.exams (
   name text not null,
   variant text not null,
   status text not null default 'draft' check (status in ('draft', 'published')),
-  -- Ruta del PDF dentro del bucket exam-pdfs (null si no tiene)
+  -- Ruta del PDF dentro del bucket exam-pdfs (null si aún no se ha subido)
   pdf_path text,
-  -- [{ id, topic, statement, steps: [], fullSolution }]
-  questions jsonb not null default '[]'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
 create index if not exists exams_period_idx on public.exams (year, semester);
+
+-- Proyectos creados antes de que el sitio fuera solo un banco de exámenes tenían una columna
+-- con la solución paso a paso. El sitio ya no la usa; se puede borrar con:
+--   alter table public.exams drop column if exists questions;
 
 create or replace function public.touch_updated_at()
 returns trigger

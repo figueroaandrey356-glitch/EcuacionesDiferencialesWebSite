@@ -1,16 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchPublishedExams } from '../data/examsApi';
+import { fetchPublishedExams, getPdfDownloadUrl, getPdfFileName } from '../data/examsApi';
 
 // Columnas compartidas por el encabezado y las filas (solo desde sm; en móvil la fila se apila)
-const rowColumns = 'sm:grid sm:grid-cols-[2.5rem_minmax(0,1fr)_9rem_8rem_7rem] sm:items-baseline sm:gap-x-6';
-
-const describeContent = exam => {
-  const count = exam.questions.length;
-  if (count === 0) return 'Solo PDF';
-  const problems = count === 1 ? '1 problema' : `${count} problemas`;
-  return exam.pdfPath ? `${problems} + PDF` : problems;
-};
+const rowColumns = 'sm:grid sm:grid-cols-[2.5rem_minmax(0,1fr)_9rem_12rem] sm:items-baseline sm:gap-x-6';
 
 export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
   const period = `${year}_${semester}`;
@@ -67,42 +60,40 @@ export default function ExamTypeList({ year, semester, variant = 'Todos' }) {
             <span>N.º</span>
             <span>Examen</span>
             <span>Tipo</span>
-            <span>Contenido</span>
             <span />
           </div>
 
           <ul>
-            {exams.map((exam, index) => {
-              const hasQuestions = exam.questions.length > 0;
-
-              return (
-                <li key={exam.id} className="border-b border-neutral-200">
-                  <Link
-                    to={`/exam/${exam.id}`}
-                    className={`group block py-5 transition-colors duration-150 hover:bg-neutral-100 ${rowColumns}`}
-                  >
-                    <span className="hidden font-mono text-small text-neutral-500 sm:block">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span className="block font-display text-subheading font-semibold text-ink">
-                      {exam.name}
-                    </span>
-                    {/* En móvil, tipo y contenido comparten una línea bajo el nombre */}
-                    <span className="text-small text-neutral-600 sm:block">
-                      {exam.variant}
-                      <span className="sm:hidden"> · </span>
-                    </span>
-                    <span className="text-small text-neutral-600 sm:block">
-                      {describeContent(exam)}
-                    </span>
-                    <span className="mt-3 block text-small font-semibold text-accent group-hover:underline sm:mt-0 sm:text-right">
-                      {hasQuestions ? 'Practicar' : 'Descargar'}
-                      <span aria-hidden="true"> →</span>
-                    </span>
+            {exams.map((exam, index) => (
+              <li
+                key={exam.id}
+                className={`border-b border-neutral-200 py-5 transition-colors duration-150 hover:bg-neutral-100 ${rowColumns}`}
+              >
+                <span className="hidden font-mono text-small text-neutral-500 sm:block">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <Link
+                  to={`/exam/${exam.id}`}
+                  className="block font-display text-subheading font-semibold text-ink underline-offset-4 hover:underline"
+                >
+                  {exam.name}
+                </Link>
+                <span className="block text-small text-neutral-600">{exam.variant}</span>
+                <span className="mt-3 flex gap-5 text-small font-semibold sm:mt-0 sm:justify-end">
+                  <Link to={`/exam/${exam.id}`} className="text-accent hover:underline">
+                    Ver examen<span aria-hidden="true"> →</span>
                   </Link>
-                </li>
-              );
-            })}
+                  <a
+                    href={getPdfDownloadUrl(exam)}
+                    download={getPdfFileName(exam)}
+                    aria-label={`Descargar ${exam.name} ${exam.variant} en PDF`}
+                    className="text-neutral-600 hover:text-ink hover:underline"
+                  >
+                    Descargar<span aria-hidden="true"> ↓</span>
+                  </a>
+                </span>
+              </li>
+            ))}
           </ul>
         </div>
       )}

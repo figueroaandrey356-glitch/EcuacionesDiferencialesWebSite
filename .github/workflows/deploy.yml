@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       # Claves públicas de Supabase (Settings → Secrets and variables → Actions → Variables).
-      # Si faltan, el sitio se publica con los exámenes de ejemplo y sin /admin.
+      # Si faltan, el sitio se publica sin exámenes y sin /admin.
       - name: Build React app
         working-directory: ./WebSiteEcuas-App
         env:

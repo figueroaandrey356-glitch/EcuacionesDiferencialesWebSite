@@ -8,11 +8,9 @@ export default function Footer() {
             <p className="font-display text-heading font-semibold text-white">
               Estudiando ED
             </p>
-            {/* TODO(copy): texto genérico. Propuesta: "Exámenes anteriores de Ecuaciones Diferenciales
-                del TEC, con la solución paso a paso." */}
             <p className="mt-3 max-w-sm text-small text-neutral-300">
-              Plataforma interactiva de práctica para estudiantes de
-              Ecuaciones Diferenciales.
+              Banco de exámenes anteriores de Ecuaciones Diferenciales del TEC, para ver en línea o
+              descargar en PDF.
             </p>
           </div>
 

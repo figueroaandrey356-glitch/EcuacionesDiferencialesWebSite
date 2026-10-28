@@ -1,5 +1,4 @@
 import { supabase } from '../lib/supabase';
-import { examQuestions } from './examQuestions';
 import { EXAM_NAMES, VARIANTS } from './examOptions';
 
 const PDF_BUCKET = 'exam-pdfs';
@@ -15,7 +14,6 @@ const fromRow = row => ({
   variant: row.variant,
   status: row.status,
   pdfPath: row.pdf_path,
-  questions: row.questions ?? [],
 });
 
 const toRow = exam => ({
@@ -25,22 +23,6 @@ const toRow = exam => ({
   variant: exam.variant,
   status: exam.status,
   pdf_path: exam.pdfPath,
-  questions: exam.questions,
-});
-
-// Exámenes de ejemplo: se usan solo mientras Supabase no esté configurado
-const localExams = Object.entries(examQuestions).map(([key, exam]) => {
-  const [name, variant] = exam.title.split(' - ');
-  return {
-    id: key,
-    year: exam.year,
-    semester: exam.semester,
-    name,
-    variant,
-    status: 'published',
-    pdfPath: null,
-    questions: exam.questions,
-  };
 });
 
 const byExamOrder = (a, b) =>
@@ -48,18 +30,16 @@ const byExamOrder = (a, b) =>
   VARIANTS.indexOf(a.variant) - VARIANTS.indexOf(b.variant);
 
 export async function fetchPublishedExams(year, semester) {
-  if (!supabase) {
-    return localExams
-      .filter(exam => exam.year === year && exam.semester === semester)
-      .sort(byExamOrder);
-  }
+  if (!supabase) return [];
 
   const { data, error } = await supabase
     .from('exams')
     .select('*')
     .eq('status', 'published')
     .eq('year', year)
-    .eq('semester', semester);
+    .eq('semester', semester)
+    // Un examen sin PDF no tiene nada que mostrar en el banco
+    .not('pdf_path', 'is', null);
   if (error) throw error;
 
   return data.map(fromRow).sort(byExamOrder);
@@ -67,9 +47,7 @@ export async function fetchPublishedExams(year, semester) {
 
 // Devuelve null si el examen no existe (o es un borrador y no hay sesión de admin)
 export async function fetchExam(id) {
-  if (!supabase) {
-    return localExams.find(exam => exam.id === id) ?? null;
-  }
+  if (!supabase) return null;
 
   const { data, error } = await supabase
     .from('exams')
@@ -87,6 +65,25 @@ export async function fetchExam(id) {
 export function getPdfUrl(pdfPath) {
   if (!supabase || !pdfPath) return null;
   return supabase.storage.from(PDF_BUCKET).getPublicUrl(pdfPath).data.publicUrl;
+}
+
+// Nombre con el que se guarda el PDF al descargarlo, p. ej. ED-2025-II-Primer-Parcial-Ordinario.pdf
+export function getPdfFileName(exam) {
+  const slug = ['ED', exam.year, exam.semester, exam.name, exam.variant]
+    .join(' ')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^A-Za-z0-9]+/g, '-');
+  return `${slug}.pdf`;
+}
+
+// El atributo download no funciona con archivos de otro dominio; Supabase fuerza la descarga
+// con el parámetro ?download y le pone el nombre indicado
+export function getPdfDownloadUrl(exam) {
+  if (!supabase || !exam.pdfPath) return null;
+  return supabase.storage
+    .from(PDF_BUCKET)
+    .getPublicUrl(exam.pdfPath, { download: getPdfFileName(exam) }).data.publicUrl;
 }
 
 // --- Administración (requieren sesión de admin) ---

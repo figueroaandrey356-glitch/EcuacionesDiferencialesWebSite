@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { deleteExam, fetchAllExams, saveExam, setExamStatus } from '../data/examsApi';
-import { primaryButton, secondaryButton } from './ui';
+import { Link } from 'react-router-dom';
+import { deleteExam, fetchAllExams, setExamStatus } from '../data/examsApi';
+import { primaryButton } from './ui';
 
 const statusStyles = {
   published: 'bg-success-soft text-success',
@@ -10,16 +10,7 @@ const statusStyles = {
 
 const statusLabels = { published: 'Publicado', draft: 'Borrador' };
 
-const describeContent = exam => {
-  const parts = [];
-  const count = exam.questions.length;
-  if (count > 0) parts.push(count === 1 ? '1 problema' : `${count} problemas`);
-  if (exam.pdfPath) parts.push('PDF');
-  return parts.join(' + ') || 'Vacío';
-};
-
 export default function ExamDashboard() {
-  const navigate = useNavigate();
   // null mientras carga
   const [exams, setExams] = useState(null);
   const [error, setError] = useState('');
@@ -64,20 +55,11 @@ export default function ExamDashboard() {
 
   const handleToggleStatus = exam => {
     const nextStatus = exam.status === 'published' ? 'draft' : 'published';
-    runAction(exam, () => setExamStatus(exam.id, nextStatus), 'No se pudo cambiar el estado del examen.');
-  };
-
-  const handleDuplicate = async exam => {
-    setBusyId(exam.id);
-    setError('');
-    try {
-      // La copia no comparte el PDF: si lo hiciera, borrar un examen dejaría al otro sin archivo
-      const copy = await saveExam({ ...exam, id: null, status: 'draft', pdfPath: null });
-      navigate(`/admin/examen/${copy.id}`);
-    } catch {
-      setError('No se pudo duplicar el examen.');
-      setBusyId(null);
+    if (nextStatus === 'published' && !exam.pdfPath) {
+      setError(`"${exam.name} - ${exam.variant}" no tiene PDF. Súbelo antes de publicarlo.`);
+      return;
     }
+    runAction(exam, () => setExamStatus(exam.id, nextStatus), 'No se pudo cambiar el estado del examen.');
   };
 
   const handleDelete = exam => {
@@ -99,14 +81,9 @@ export default function ExamDashboard() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
-          <Link to="/admin/subir" className={secondaryButton}>
-            Subir PDF
-          </Link>
-          <Link to="/admin/nuevo" className={primaryButton}>
-            + Crear paso a paso
-          </Link>
-        </div>
+        <Link to="/admin/subir" className={primaryButton}>
+          + Subir examen
+        </Link>
       </div>
 
       {error && (
@@ -120,7 +97,7 @@ export default function ExamDashboard() {
           <p className="px-6 py-12 text-center text-neutral-500">Cargando exámenes…</p>
         ) : exams.length === 0 ? (
           <p className="px-6 py-12 text-center text-neutral-500">
-            Aún no hay exámenes. Sube un PDF o crea uno paso a paso para empezar.
+            Aún no hay exámenes. Sube el primero con su PDF.
           </p>
         ) : (
           <table className="w-full min-w-[640px] text-left text-small">
@@ -128,7 +105,7 @@ export default function ExamDashboard() {
               <tr>
                 <th className="px-6 py-3 font-semibold">Examen</th>
                 <th className="px-4 py-3 font-semibold">Periodo</th>
-                <th className="px-4 py-3 font-semibold">Contenido</th>
+                <th className="px-4 py-3 font-semibold">PDF</th>
                 <th className="px-4 py-3 font-semibold">Estado</th>
                 <th className="px-6 py-3 text-right font-semibold">Acciones</th>
               </tr>
@@ -151,7 +128,9 @@ export default function ExamDashboard() {
                     <td className="px-4 py-4 text-neutral-600">
                       {exam.year} · {exam.semester}
                     </td>
-                    <td className="px-4 py-4 text-neutral-600">{describeContent(exam)}</td>
+                    <td className="px-4 py-4 text-neutral-600">
+                      {exam.pdfPath ? 'Sí' : <span className="text-danger">Falta</span>}
+                    </td>
                     <td className="px-4 py-4">
                       <span
                         className={`rounded-pill px-2.5 py-1 text-caption font-semibold ${statusStyles[exam.status]}`}
@@ -170,13 +149,6 @@ export default function ExamDashboard() {
                           className="text-neutral-600 hover:text-ink hover:underline"
                         >
                           {exam.status === 'published' ? 'Despublicar' : 'Publicar'}
-                        </button>
-                        <button
-                          disabled={busy}
-                          onClick={() => handleDuplicate(exam)}
-                          className="text-neutral-600 hover:text-ink hover:underline"
-                        >
-                          Duplicar
                         </button>
                         <button
                           disabled={busy}

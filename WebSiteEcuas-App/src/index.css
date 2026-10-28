@@ -81,6 +81,8 @@
   --spacing-section: 5rem;
   --spacing-section-lg: 8rem;
   --container-page: 72rem;
+  /* Ancho máximo del visor de PDF: una hoja carta se lee completa sin ocupar toda la pantalla */
+  --container-reader: 56rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -124,13 +126,6 @@ h4 {
 
 p {
   text-wrap: pretty;
-}
-
-/* Las fórmulas en bloque no deben desbordar la página en pantallas angostas */
-.katex-display {
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding-block: 0.25rem;
 }
 
 button:not(:disabled),

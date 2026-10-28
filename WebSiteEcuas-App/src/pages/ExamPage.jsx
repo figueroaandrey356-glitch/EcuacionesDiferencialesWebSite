@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 import ExamView from '../components/ExamView';
 import { fetchExam } from '../data/examsApi';
 
-export default function ExamPractice() {
+export default function ExamPage() {
   const { examId } = useParams();
   // examId identifica a qué examen pertenece el resultado, para no mostrar uno viejo al navegar
   const [result, setResult] = useState({ examId: null, exam: null, failed: false });

@@ -1,31 +1,24 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import MathText from '../components/MathText';
 
 const features = [
   {
     title: 'Exámenes anteriores',
-    text: 'Parciales ordinarios, extraordinarios y de reposición, organizados por año y semestre.',
+    text: 'Parciales ordinarios, extraordinarios y de reposición desde 2023, organizados por año y semestre.',
   },
   {
-    title: 'Solución paso a paso',
-    text: 'Revela un paso a la vez y comprueba tu avance antes de ver el siguiente.',
+    title: 'Léelo en el sitio',
+    text: 'Cada examen se abre aquí mismo, en la computadora o en el celular, sin descargar nada.',
   },
   {
-    // TODO(copy): título genérico. Propuesta: 'Intenta primero'
-    title: 'A tu ritmo',
-    text: 'Intenta cada problema primero y consulta solo lo que necesites para destrabarte.',
+    title: 'Descárgalo en PDF',
+    text: 'Guárdalo o imprímelo para resolverlo por tu cuenta.',
   },
 ];
 
-// TODO(contenido): problema de relleno. Reemplazar por uno tomado de un examen real del curso.
-const previewStatement = '$\\dfrac{dy}{dx} + 2y = 0, \\quad y(0) = 3$';
-
-const previewSteps = [
-  'Separamos variables: $\\frac{dy}{y} = -2\\,dx$',
-  'Integramos: $\\ln|y| = -2x + C_1$',
-];
+// Fila de ejemplo para la tarjeta decorativa del hero
+const previewExam = { period: '2025 · Semestre II', name: 'Primer Parcial', variant: 'Ordinario' };
 
 export default function Home() {
   return (
@@ -44,53 +37,47 @@ export default function Home() {
           <div className="relative mx-auto grid max-w-page gap-x-12 gap-y-14 px-gutter pb-section pt-section-sm lg:grid-cols-12 lg:pt-section">
             <div className="lg:col-span-8">
               <h1 className="font-display text-display font-semibold text-white">
-                Ecuaciones diferenciales,{' '}
-                <em className="font-normal text-accent-soft">paso a paso</em>.
+                Exámenes de Ecuaciones Diferenciales,{' '}
+                <em className="font-normal text-accent-soft">en un solo lugar</em>.
               </h1>
 
-              {/* TODO(copy): texto genérico. Propuesta: "Exámenes parciales de Ecuaciones Diferenciales del TEC,
-                  resueltos paso a paso. Intenta cada problema y revela solo el paso que te falta." */}
               <p className="mt-8 max-w-prose text-lead text-neutral-300">
-                Practica con exámenes de semestres anteriores y revela la
-                solución gradualmente, a tu ritmo.
+                Los parciales de semestres anteriores del curso del TEC, para verlos en línea o
+                descargarlos en PDF.
               </p>
 
               <Link
                 to="/exams"
                 className="mt-10 inline-flex items-center gap-2 rounded-control bg-crimson px-6 py-3 font-semibold text-white transition-colors duration-150 hover:bg-crimson-dark focus-visible:outline-white"
               >
-                {/* TODO(copy): botón genérico. Propuesta: "Ver exámenes" */}
-                Comenzar a practicar
+                Ver exámenes
                 <span aria-hidden="true">→</span>
               </Link>
             </div>
 
-            {/* Vista previa decorativa de un problema */}
+            {/* Vista previa decorativa de un examen del banco */}
             <div
               className="rounded-panel bg-paper p-6 text-ink shadow-overlay lg:col-span-4 lg:self-end"
               aria-hidden="true"
             >
               <p className="font-mono text-label font-medium uppercase text-neutral-500">
-                Problema de ejemplo
+                {previewExam.period}
               </p>
-              <p className="mt-4 text-body text-ink">
-                <MathText text={previewStatement} />
-              </p>
+              <p className="mt-3 font-display text-heading font-semibold">{previewExam.name}</p>
+              <p className="text-small text-neutral-600">{previewExam.variant}</p>
 
-              <ol className="mt-6 space-y-3 border-t border-neutral-200 pt-5">
-                {previewSteps.map((step, index) => (
-                  <li key={index} className="flex gap-3 text-small text-neutral-700">
-                    <span className="font-mono text-neutral-500">{index + 1}</span>
-                    <span>
-                      <MathText text={step} />
-                    </span>
-                  </li>
-                ))}
-                <li className="flex gap-3 text-small text-neutral-500">
-                  <span className="font-mono">3</span>
-                  <span>Paso oculto</span>
-                </li>
-              </ol>
+              {/* Hoja del examen esbozada con líneas */}
+              <div className="mt-5 space-y-2 rounded-control bg-surface p-4">
+                <div className="h-2 w-2/3 rounded-pill bg-neutral-300" />
+                <div className="h-2 w-full rounded-pill bg-neutral-200" />
+                <div className="h-2 w-5/6 rounded-pill bg-neutral-200" />
+                <div className="h-2 w-1/2 rounded-pill bg-neutral-200" />
+              </div>
+
+              <div className="mt-5 flex gap-5 border-t border-neutral-200 pt-4 text-small font-semibold">
+                <span className="text-accent">Ver examen →</span>
+                <span className="text-neutral-600">Descargar ↓</span>
+              </div>
             </div>
           </div>
         </section>

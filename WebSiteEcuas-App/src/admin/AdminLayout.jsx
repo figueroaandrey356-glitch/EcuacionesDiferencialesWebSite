@@ -3,8 +3,7 @@ import { supabase } from '../lib/supabase';
 
 const menuItems = [
   { path: '/admin', label: 'Exámenes', hint: 'Ver, editar y publicar', end: true },
-  { path: '/admin/subir', label: 'Subir examen (PDF)', hint: 'Solo para descargar' },
-  { path: '/admin/nuevo', label: 'Crear paso a paso', hint: 'Enunciados y soluciones' },
+  { path: '/admin/subir', label: 'Subir examen', hint: 'Datos del examen y PDF' },
 ];
 
 export default function AdminLayout({ email, children }) {

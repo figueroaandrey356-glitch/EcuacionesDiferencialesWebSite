@@ -6,7 +6,7 @@ import AdminLayout from './AdminLayout';
 import AdminLogin from './AdminLogin';
 import ExamDashboard from './ExamDashboard';
 import ExamEditor from './ExamEditor';
-import { createEmptyExam, createEmptyQuestion } from './examDraft';
+import { createEmptyExam } from './examDraft';
 import { secondaryButton } from './ui';
 
 function CenteredMessage({ title, children }) {
@@ -123,19 +123,7 @@ export default function AdminApp() {
     <AdminLayout email={session.user.email}>
       <Routes>
         <Route index element={<ExamDashboard />} />
-        <Route
-          path="subir"
-          element={<ExamEditor key="subir" initialExam={createEmptyExam()} pdfOnly />}
-        />
-        <Route
-          path="nuevo"
-          element={
-            <ExamEditor
-              key="nuevo"
-              initialExam={{ ...createEmptyExam(), questions: [createEmptyQuestion()] }}
-            />
-          }
-        />
+        <Route path="subir" element={<ExamEditor key="subir" initialExam={createEmptyExam()} />} />
         <Route path="examen/:examId" element={<EditExamPage />} />
       </Routes>
     </AdminLayout>

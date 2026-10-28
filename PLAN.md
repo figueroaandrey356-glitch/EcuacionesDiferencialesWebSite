@@ -2,7 +2,9 @@
 
 ## 1. Visión del Proyecto
 
-Plataforma web interactiva para estudiantes de Ecuaciones Diferenciales del TEC Costa Rica, donde puedan practicar con exámenes de semestres anteriores (2023 en adelante) con un sistema de desbloqueo progresivo de soluciones paso a paso.
+Banco de exámenes para estudiantes de Ecuaciones Diferenciales del TEC Costa Rica: exámenes de semestres anteriores (2023 en adelante) que se pueden ver dentro del sitio o descargar en PDF.
+
+> **Cambio de alcance (27/10/2026):** se descartó la solución paso a paso. El sitio es solo un banco de exámenes en PDF (visor embebido + descarga). Más adelante se podrían agregar otros recursos. Las secciones de este documento que hablan de pasos, preguntas o `StepReveal` quedan como referencia histórica.
 
 ---
 
