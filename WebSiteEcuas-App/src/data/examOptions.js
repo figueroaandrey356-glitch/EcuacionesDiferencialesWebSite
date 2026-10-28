@@ -13,7 +13,7 @@ export const EXAM_NAMES = [
   'Examen de Reposición',
 ];
 
-export const VARIANTS = ['Ordinario', 'Extraordinario', 'Reposición'];
+export const VARIANTS = ['Ordinario', 'Extraordinario'];
 
 // El examen de reposición se hace una sola vez por semestre: no tiene tipo que elegir ni mostrar.
 // Se guarda con este tipo fijo, así la regla de no repetir exámenes permite uno por semestre.
